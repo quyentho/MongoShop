@@ -35,22 +35,22 @@ namespace MongoShop.BusinessDomain.Product
             throw new NotImplementedException();
         }
 
-        public Task Edit(string id, Product product)
+        public Task EditAsync(string id, Product product)
         {
             throw new NotImplementedException();
         }
 
-        public List<Product> GetAll()
+        public async Task<List<Product>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Product> GetById(string id)
+        public Task<Product> GetByIdAsync(string id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Product>> GetByName(string name)
+        public Task<List<Product>> GetByNameAsync(string name)
         {
             throw new NotImplementedException();
         }
