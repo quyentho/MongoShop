@@ -7,19 +7,21 @@ namespace MongoShop.BusinessDomain.Product
 {
     public class ProductServices : IProductServices
     {
+        private readonly IMongoCollection<Product> _collection;
+        private readonly IDatabaseSetting _databaseSetting;
         private const string CollectionName = "product";
 
-        private readonly IMongoDatabase _mongoDatabase;
-
-        private readonly IMongoCollection<Product> _collection;
-
-        public ProductServices(IMongoDatabase mongoDatabase)
+        public ProductServices(IDatabaseSetting databaseSetting)
         {
-            _mongoDatabase = mongoDatabase;
 
-            _collection = _mongoDatabase.GetCollection<Product>(CollectionName);
+            _databaseSetting = databaseSetting;
+
+            var client = new MongoClient(_databaseSetting.ConnectionString);
+            var database = client.GetDatabase(_databaseSetting.DatabaseName);
+
+            _collection = database.GetCollection<Product>(CollectionName);
         }
-        
+
         /// <summary>
         /// Add one product to collection.
         /// </summary>
@@ -27,6 +29,7 @@ namespace MongoShop.BusinessDomain.Product
         /// <returns></returns>
         public async Task AddAsync(Product product)
         {
+            product.Status = true;
             await _collection.InsertOneAsync(product);
         }
 
@@ -40,7 +43,7 @@ namespace MongoShop.BusinessDomain.Product
             throw new NotImplementedException();
         }
 
-        public async Task<List<Product>> GetAll()
+        public Task<List<Product>> GetAllAsync()
         {
             throw new NotImplementedException();
         }

@@ -5,21 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MongoShop.BusinessDomain.Product;
 using MongoShop.Models;
 
 namespace MongoShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProductServices _productServices;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IProductServices productServices)
         {
-            _logger = logger;
+            this._productServices = productServices;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            await _productServices.AddAsync(new Product() { Name = "Test" });
             return View();
         }
 

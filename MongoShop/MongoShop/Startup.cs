@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using MongoShop.BusinessDomain;
+using MongoShop.BusinessDomain.Product;
 
 namespace MongoShop
 {
@@ -23,6 +22,17 @@ namespace MongoShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            // requires using Microsoft.Extensions.Options
+            services.Configure<DatabaseSetting>(
+                Configuration.GetSection(nameof(DatabaseSetting)));
+
+            services.AddSingleton<IDatabaseSetting>(sp =>
+                sp.GetRequiredService<IOptions<DatabaseSetting>>().Value);
+
+
+
+            services.AddSingleton<IProductServices,ProductServices>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,6 +46,7 @@ namespace MongoShop
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseStaticFiles();
 
             app.UseRouting();
