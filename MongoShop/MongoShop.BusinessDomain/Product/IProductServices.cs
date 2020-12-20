@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MongoShop.BusinessDomain.Product
 {
     public interface IProductServices
     {
-
+        List<Product> GetAll();
         void Add(Product product);
         void Edit(string id, Product product);
         void Delete(string id);
+        Product GetById(string id);
+        List<Product> GetByName(string name);
     }
 }
