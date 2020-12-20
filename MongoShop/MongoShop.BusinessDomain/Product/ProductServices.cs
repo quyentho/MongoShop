@@ -19,7 +19,12 @@ namespace MongoShop.BusinessDomain.Product
 
             _collection = _mongoDatabase.GetCollection<Product>(CollectionName);
         }
-
+        
+        /// <summary>
+        /// Add one product to collection.
+        /// </summary>
+        /// <param name="product">product model.</param>
+        /// <returns></returns>
         public async Task AddAsync(Product product)
         {
             await _collection.InsertOneAsync(product);
