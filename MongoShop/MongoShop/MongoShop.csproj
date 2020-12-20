@@ -8,4 +8,12 @@
     <ProjectReference Include="..\MongoShop.BusinessDomain\MongoShop.BusinessDomain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\pages\dashboards\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
 </Project>

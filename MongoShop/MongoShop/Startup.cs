@@ -29,10 +29,7 @@ namespace MongoShop
             services.AddSingleton<IDatabaseSetting>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSetting>>().Value);
 
-
-
             services.AddSingleton<IProductServices,ProductServices>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
