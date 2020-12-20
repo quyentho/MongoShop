@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
@@ -22,17 +20,17 @@ namespace MongoShop.BusinessDomain.Product
             _collection = _mongoDatabase.GetCollection<Product>(CollectionName);
         }
 
-        public void Add(Product product)
+        public async Task AddAsync(Product product)
         {
-            _collection.InsertOneAsync(product);
+            await _collection.InsertOneAsync(product);
         }
 
-        public void Delete(string id)
+        public Task Delete(string id)
         {
             throw new NotImplementedException();
         }
 
-        public void Edit(string id, Product product)
+        public Task Edit(string id, Product product)
         {
             throw new NotImplementedException();
         }
@@ -42,12 +40,12 @@ namespace MongoShop.BusinessDomain.Product
             throw new NotImplementedException();
         }
 
-        public Product GetById(string id)
+        public Task<Product> GetById(string id)
         {
             throw new NotImplementedException();
         }
 
-        public List<Product> GetByName(string name)
+        public Task<List<Product>> GetByName(string name)
         {
             throw new NotImplementedException();
         }
