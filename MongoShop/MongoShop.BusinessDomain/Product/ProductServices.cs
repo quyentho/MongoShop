@@ -29,6 +29,7 @@ namespace MongoShop.BusinessDomain.Product
         /// <returns></returns>
         public async Task AddAsync(Product product)
         {
+            product.Status = true;
             await _collection.InsertOneAsync(product);
         }
 
