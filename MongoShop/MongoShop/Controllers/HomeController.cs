@@ -21,7 +21,7 @@ namespace MongoShop.Controllers
 
         public async Task<IActionResult> Index()
         {
-            await _productServices.AddAsync(new Product() { Name = "Test" });
+            await _productServices.EditAsync("5fe01939926a8508ad93d075", new Product { Id= "5fe01939926a8508ad93d075", Name = "Test2"});
             return View();
         }
 

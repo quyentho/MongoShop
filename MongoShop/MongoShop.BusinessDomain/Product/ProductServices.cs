@@ -38,9 +38,10 @@ namespace MongoShop.BusinessDomain.Product
             throw new NotImplementedException();
         }
 
-        public Task EditAsync(string id, Product product)
+        public async Task EditAsync(string id, Product product)
         {
-            throw new NotImplementedException();
+            await _collection.ReplaceOneAsync(c => c.Id == id, product);
+
         }
 
         public Task<List<Product>> GetAllAsync()
