@@ -16,18 +16,21 @@ namespace MongoShop.Controllers
     {
         private readonly IProductServices _productServices;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public HomeController(IProductServices productServices, UserManager<ApplicationUser> userManager)
+
+        public HomeController(IProductServices productServices, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             this._productServices = productServices;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index()
         {
             var user = new ApplicationUser("thokimquangquyen@gmail.com", "thokimquangquyen@gmail.com");
-
-            var result = await _userManager.CreateAsync(user);
+            await _userManager.CreateAsync(user, "123456");
+            await _userManager.AddToRoleAsync(user, UserRole.Admin);
             return View();
         }
 
