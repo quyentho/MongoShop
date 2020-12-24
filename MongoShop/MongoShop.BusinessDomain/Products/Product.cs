@@ -5,7 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 
-namespace MongoShop.BusinessDomain.Product
+namespace MongoShop.BusinessDomain.Products
 {
     public class Product
     {
@@ -31,6 +31,6 @@ namespace MongoShop.BusinessDomain.Product
         [BsonElement("images")]
         public List<string> Images { get; set;}
 
-        public MongoDBRef Category { get; set; }
+        public string Category { get; set; }
     }
 }

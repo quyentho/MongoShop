@@ -36,6 +36,6 @@ namespace MongoShop.BusinessDomain.Products
 
     public class Cart
     {
-        List<MongoDBRef> Products { get; set; }
+        List<string> Products { get; set; }
     }
 }

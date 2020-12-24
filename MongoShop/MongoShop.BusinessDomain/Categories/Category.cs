@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace MongoShop.BusinessDomain.Category
+namespace MongoShop.BusinessDomain.Categories
 {
     public class Category
     {
