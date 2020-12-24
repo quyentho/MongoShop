@@ -1,24 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using AspNetCore.Identity.MongoDbCore.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+using MongoDbGenericRepository.Attributes;
 
 namespace MongoShop.BusinessDomain.User
 {
-    public class User
+    [CollectionName("user")]
+    public class ApplicationUser : MongoIdentityUser<Guid>
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public ApplicationUser() :base()
+        {
+
+        }
+
+        public ApplicationUser(string userName, string email): base(userName,email)
+        {
+
+        }
 
         [BsonElement("name")]
         public string Name { get; set; }
 
         [BsonElement("permission")]
         public string Permission { get; set; }
-
-        [BsonElement("email")]
-        public string Email { get; set; }
 
         [BsonElement("password")]
         public string Password { get; set; }
@@ -37,6 +44,12 @@ namespace MongoShop.BusinessDomain.User
 
         [BsonElement("reset_password_token")]
         public string ResetPasswordToken { get; set; }
+
+        [BsonIgnore]
+        public string AuthenticationType { get; set; }
+
+        [BsonIgnore]
+        public bool IsAuthenticated { get; set; }
     }
 
     public class Cart
