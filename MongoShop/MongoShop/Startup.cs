@@ -64,6 +64,8 @@ namespace MongoShop
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
 
             services.AddSingleton<IProductServices, ProductServices>();
+
+            services.AddSingleton<IUserServices, UserServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
