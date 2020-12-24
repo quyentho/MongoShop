@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using MongoDbGenericRepository.Attributes;
 
-namespace MongoShop.BusinessDomain.User
+namespace MongoShop.BusinessDomain.Products
 {
     [CollectionName("user")]
     public class ApplicationUser : MongoIdentityUser<Guid>

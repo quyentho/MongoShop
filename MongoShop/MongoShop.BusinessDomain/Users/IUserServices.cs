@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MongoShop.BusinessDomain.User
+namespace MongoShop.BusinessDomain.Products
 {
     public interface IUserServices
     {

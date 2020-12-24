@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
-namespace MongoShop.BusinessDomain.Product
+namespace MongoShop.BusinessDomain.Products
 {
     public class ProductServices : IProductServices
     {

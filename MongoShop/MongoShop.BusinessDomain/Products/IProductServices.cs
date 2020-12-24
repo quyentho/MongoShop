@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MongoShop.BusinessDomain.Product
+namespace MongoShop.BusinessDomain.Products
 {
     public interface IProductServices
     {
