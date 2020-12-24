@@ -17,9 +17,9 @@ namespace MongoShop.BusinessDomain.User
         }
     }
 
-    public static class UserRole
+    public enum UserRole
     {
-        public const string Admin = "Admin";
-        public const string User = "User";
+        Admin,
+        User
     }
 }
