@@ -28,9 +28,6 @@ namespace MongoShop.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = new ApplicationUser("thokimquangquyen@gmail.com", "thokimquangquyen@gmail.com");
-            await _userManager.CreateAsync(user, "123456");
-            await _userManager.AddToRoleAsync(user, UserRole.Admin);
             return View();
         }
 
