@@ -1,3 +1,6 @@
+using System;
+using AspNetCore.Identity.MongoDbCore.Extensions;
+using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MongoShop.BusinessDomain;
 using MongoShop.BusinessDomain.Product;
+using MongoShop.BusinessDomain.User;
 
 namespace MongoShop
 {
@@ -22,14 +26,45 @@ namespace MongoShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             // requires using Microsoft.Extensions.Options
-            services.Configure<DatabaseSetting>(
-                Configuration.GetSection(nameof(DatabaseSetting)));
+             services.Configure<DatabaseSetting>(
+                  Configuration.GetSection(nameof(DatabaseSetting)));
 
             services.AddSingleton<IDatabaseSetting>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSetting>>().Value);
 
-            services.AddSingleton<IProductServices,ProductServices>();
+         
+
+            var mongoDbIdentityConfiguration = new MongoDbIdentityConfiguration
+            {
+                MongoDbSettings = new MongoDbSettings
+                {
+                    ConnectionString = Configuration["DatabaseSetting:ConnectionString"],
+                    DatabaseName = Configuration["DatabaseSetting:DatabaseName"]
+                },
+                IdentityOptionsAction = options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+
+                    // Lockout settings
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+                    options.Lockout.MaxFailedAccessAttempts = 3;
+
+                    // ApplicationUser settings
+                    options.User.RequireUniqueEmail = true;
+                    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
+                }
+            };
+            services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
+
+            
+
+            services.AddSingleton<IProductServices, ProductServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +82,8 @@ namespace MongoShop
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
