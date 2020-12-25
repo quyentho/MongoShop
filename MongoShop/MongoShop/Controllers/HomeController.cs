@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MongoShop.BusinessDomain.Product;
-using MongoShop.BusinessDomain.User;
+using MongoShop.BusinessDomain.Products;
+using MongoShop.BusinessDomain.Users;
 using MongoShop.Models;
 
 namespace MongoShop.Controllers
