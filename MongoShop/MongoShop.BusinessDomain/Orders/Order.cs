@@ -17,9 +17,6 @@ namespace MongoShop.BusinessDomain.Orders
         [BsonElement("users")]
         public List<string> Users { get; set; }
 
-        [BsonElement("status")]
-        public bool Status { get; set; }
-
         [BsonElement("grand_total")]
         public double Total { get; set; }
 
@@ -28,12 +25,11 @@ namespace MongoShop.BusinessDomain.Orders
 
     }
 
-    public class Invoice
+    public static class InvoiceStatus
     {
-        [BsonElement("payment_method")]
-        public string PaymentMethod { get; set; }
+        public const string Paid = "Paid";
+        public const string Pending = "Pending";
+        public const string Cancel = "Cancel";
 
-        [BsonElement("status")]
-        public string Status { get; set; }
     }
 }
