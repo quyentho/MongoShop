@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MongoShop.BusinessDomain.User;
+using MongoShop.BusinessDomain.Users;
 using MongoShop.Models.Account;
 
 namespace MongoShop.Controllers

@@ -25,11 +25,5 @@ namespace MongoShop.BusinessDomain.Orders
 
     }
 
-    public static class InvoiceStatus
-    {
-        public const string Paid = "Paid";
-        public const string Pending = "Pending";
-        public const string Cancel = "Cancel";
-
-    }
+   
 }

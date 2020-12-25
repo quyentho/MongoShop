@@ -9,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MongoShop.BusinessDomain;
-using MongoShop.BusinessDomain.Product;
-using MongoShop.BusinessDomain.User;
+using MongoShop.BusinessDomain.Products;
+using MongoShop.BusinessDomain.Users;
 
 namespace MongoShop
 {

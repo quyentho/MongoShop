@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace MongoShop.BusinessDomain.Products
+namespace MongoShop.BusinessDomain.Users
 {
     public class Contacts
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
-namespace MongoShop.BusinessDomain.Products
+namespace MongoShop.BusinessDomain.Users
 {
     public class UserServices : IUserServices
     {
