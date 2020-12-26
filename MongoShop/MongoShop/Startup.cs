@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MongoShop.BusinessDomain;
+using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
 
@@ -66,6 +67,8 @@ namespace MongoShop
             services.AddSingleton<IProductServices, ProductServices>();
 
             services.AddSingleton<IUserServices, UserServices>();
+
+            services.AddSingleton<IOrderServices,OrderServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

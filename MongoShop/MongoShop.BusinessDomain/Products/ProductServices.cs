@@ -22,41 +22,49 @@ namespace MongoShop.BusinessDomain.Products
             _collection = database.GetCollection<Product>(CollectionName);
         }
 
-        /// <summary>
-        /// Add one product to collection.
-        /// </summary>
-        /// <param name="product">product model.</param>
-        /// <returns></returns>
+        /// <inheritdoc/>     
         public async Task AddAsync(Product product)
         {
             product.Status = true;
             await _collection.InsertOneAsync(product);
         }
 
-        public Task Delete(string id)
+        /// <inheritdoc/>  
+        public async Task DeleteAsync(string id, Product product)
         {
-            throw new NotImplementedException();
+            product.Status = false;
+            await _collection.ReplaceOneAsync(c => c.Id == id, product);
         }
 
+        /// <inheritdoc/>  
         public async Task EditAsync(string id, Product product)
         {
             await _collection.ReplaceOneAsync(c => c.Id == id, product);
+        }
+
+        /// <inheritdoc/>  
+        public async Task<List<Product>> GetAllAsync()
+        {
+            var _list = await _collection.FindAsync(c => c.Status == true);
+            //var debug = await _list.ToListAsync();
+            return await _list.ToListAsync();
 
         }
 
-        public Task<List<Product>> GetAllAsync()
+        /// <inheritdoc/>  
+        public async Task<Product> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var _product = await _collection.FindAsync(c => c.Id == id && c.Status == true);
+            //var debug = await _product.SingleOrDefaultAsync();
+            return await _product.SingleOrDefaultAsync();
         }
 
-        public Task<Product> GetByIdAsync(string id)
+        /// <inheritdoc/>  
+        public async Task<List<Product>> GetByNameAsync(string name)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Product>> GetByNameAsync(string name)
-        {
-            throw new NotImplementedException();
+            var _list = await _collection.FindAsync(c => c.Name == name && c.Status == true);
+            //var debug = await _list.ToListAsync();
+            return await _list.ToListAsync();
         }
     }
 }
