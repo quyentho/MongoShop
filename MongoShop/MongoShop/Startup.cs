@@ -35,7 +35,7 @@ namespace MongoShop
             services.AddSingleton<IDatabaseSetting>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSetting>>().Value);
 
-         
+            services.AddScoped<IUserConfirmation<ApplicationUser>, UserConfirmation>();
 
             var mongoDbIdentityConfiguration = new MongoDbIdentityConfiguration
             {
@@ -58,6 +58,7 @@ namespace MongoShop
 
                     // ApplicationUser settings
                     options.User.RequireUniqueEmail = true;
+                    options.SignIn.RequireConfirmedAccount = true;
                     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
                 }
             };

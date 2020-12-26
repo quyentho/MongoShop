@@ -26,6 +26,7 @@ namespace MongoShop.Controllers
 
         public async Task<IActionResult> Index()
         {
+            await _roleManager.CreateAsync(new ApplicationRole(UserRole.User));
             return View();
         }
 
