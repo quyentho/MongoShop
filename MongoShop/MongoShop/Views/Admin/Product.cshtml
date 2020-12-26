@@ -2,6 +2,8 @@
     ViewData["Title"] = "Manage Products";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
+@using MongoShop.BusinessDomain.Products
+@model IEnumerable<Product>
 
 <div class="row">
     <div class="col-12">
@@ -20,74 +22,34 @@
                 </div>
             </div>
             <!-- /.card-header -->
+            
             <div class="card-body table-responsive p-0" style="height: 300px;">
                 <table class="table table-head-fixed text-nowrap">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>User</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Reason</th>
-                        </tr>
+                            <th>@Html.DisplayNameFor(model => model.Id)</th>
+                            <th>@Html.DisplayNameFor(model => model.Name)</th>
+                            <th>@Html.DisplayNameFor(model => model.Price)</th>
+                            <th>@Html.DisplayNameFor(model => model.StockQuantity)</th>
+                            <th>@Html.DisplayNameFor(model => model.Size)</th>
+                            <th>@Html.DisplayNameFor(model => model.Status)</th>
+                            <th>@Html.DisplayNameFor(model => model.Images)</th>
+                            <th>@Html.DisplayNameFor(model => model.Category)</th>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>183</td>
-                            <td>John Doe</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-success">Approved</span></td>
-                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                        </tr>
-                        <tr>
-                            <td>219</td>
-                            <td>Alexander Pierce</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-warning">Pending</span></td>
-                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                        </tr>
-                        <tr>
-                            <td>657</td>
-                            <td>Bob Doe</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-primary">Approved</span></td>
-                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                        </tr>
-                        <tr>
-                            <td>175</td>
-                            <td>Mike Doe</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-danger">Denied</span></td>
-                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                        </tr>
-                        <tr>
-                            <td>134</td>
-                            <td>Jim Doe</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-success">Approved</span></td>
-                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                        </tr>
-                        <tr>
-                            <td>494</td>
-                            <td>Victoria Doe</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-warning">Pending</span></td>
-                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                        </tr>
-                        <tr>
-                            <td>832</td>
-                            <td>Michael Doe</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-primary">Approved</span></td>
-                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                        </tr>
-                        <tr>
-                            <td>982</td>
-                            <td>Rocky Doe</td>
-                            <td>11-7-2014</td>
-                            <td><span class="tag tag-danger">Denied</span></td>
-                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                        </tr>
+                        @foreach (var item in @Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(model => item.Id)</td>
+                                <td>@Html.DisplayFor(model => item.Name)</td>
+                                <td>@String.Format("{0:c}", item.Price)</td>
+                                <td>@Html.DisplayFor(model => item.StockQuantity)</td>
+                                <td>@Html.DisplayFor(model => item.Size)</td>
+                                <td>@Html.DisplayFor(model => item.Status)</td>
+                                <td>@Html.DisplayFor(model => item.Images)</td>
+                                <td>@Html.DisplayFor(model => item.Category)</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

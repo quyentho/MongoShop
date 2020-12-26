@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MongoShop.Controllers
 {
-    [Authorize(Roles = UserRole.Admin)]
+    //[Authorize(Roles = UserRole.Admin)]
     public class AdminController : Controller
     {
         private readonly IProductServices _productServices;
@@ -17,10 +17,13 @@ namespace MongoShop.Controllers
             _productServices = productServices;
             //_orderServices = orderServices;
         }
+
+        [HttpGet]
         public async Task<IActionResult> Product()
         {
-            await _productServices.GetAllAsync();
-            return View();
+            var products = await _productServices.GetAllAsync();
+            
+            return View(products);
         }
     }
 }
