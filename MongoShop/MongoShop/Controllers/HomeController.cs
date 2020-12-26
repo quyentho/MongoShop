@@ -1,27 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MongoShop.BusinessDomain.Product;
+using MongoShop.BusinessDomain.Products;
+using MongoShop.BusinessDomain.Users;
 using MongoShop.Models;
 
 namespace MongoShop.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly IProductServices _productServices;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public HomeController(IProductServices productServices)
+
+        public HomeController(IProductServices productServices, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             this._productServices = productServices;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index()
         {
-            await _productServices.EditAsync("5fe01939926a8508ad93d075", new Product { Id= "5fe01939926a8508ad93d075", Name = "Test2"});
             return View();
         }
 
