@@ -31,7 +31,20 @@ namespace MongoShop.Controllers
             return View(productsViewModels);
         }
 
+        public IActionResult CreateProduct()
+        {
+            return View(pro);
+        }
         
+        [HttpPost, ActionName("Create")]
+        public async Task<IActionResult> PostCreateProduct()
+        {
+            Product product = new Product
+            {
+                Name = 
+            };
+        }
+
         public async Task<IActionResult> EditProduct(string id)
         {
             var product = await _productServices.GetByIdAsync(id);
