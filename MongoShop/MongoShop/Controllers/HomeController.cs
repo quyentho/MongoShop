@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
-using MongoShop.BusinessDomain.Users;
 using MongoShop.Models;
 
 namespace MongoShop.Controllers
@@ -13,20 +12,17 @@ namespace MongoShop.Controllers
     public class HomeController : Controller
     {
         private readonly IProductServices _productServices;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly ICategoryServices _categoryServices;
 
 
-        public HomeController(IProductServices productServices, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public HomeController(IProductServices productServices, ICategoryServices categoryServices)
         {
             this._productServices = productServices;
-            _userManager = userManager;
-            _roleManager = roleManager;
+            this._categoryServices = categoryServices;
         }
 
         public async Task<IActionResult> Index()
         {
-            await _roleManager.CreateAsync(new ApplicationRole(UserRole.User));
             return View();
         }
 

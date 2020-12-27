@@ -27,6 +27,6 @@ namespace MongoShop.Models.Admin
 
         public List<string> Images { get; set; }
 
-        public CategoryViewModel Category { get; set; }
+        public List<CategoryViewModel> Category { get; set; }
     }
 }
