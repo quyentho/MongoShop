@@ -22,13 +22,22 @@ namespace MongoShop.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Product()
+        public async Task<IActionResult> IndexProduct()
         {
             var products = await _productServices.GetAllAsync();
 
             var productsViewModels = _mapper.Map<List<ProductViewModel>>(products);
             
             return View(productsViewModels);
+        }
+
+        
+        public async Task<IActionResult> EditProduct(string id)
+        {
+            var product = await _productServices.GetByIdAsync(id);
+
+            var productViewModel = _mapper.Map<ProductViewModel>(product);
+            return View(productViewModel);
         }
     }
 }

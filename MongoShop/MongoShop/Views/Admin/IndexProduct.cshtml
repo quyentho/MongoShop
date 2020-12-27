@@ -23,8 +23,8 @@
                 </div>
             </div>
             <!-- /.card-header -->
-            
-            <div class="card-body table-responsive p-0" style="height: 300px;">
+
+            <div class="card-body table-responsive p-0" style="height: 500px;">
                 <table class="table table-head-fixed text-nowrap">
                     <thead>
                         <tr>
@@ -36,11 +36,12 @@
                             <th>@Html.DisplayNameFor(model => model.Status)</th>
                             <th>@Html.DisplayNameFor(model => model.Images)</th>
                             <th>@Html.DisplayNameFor(model => model.Category)</th>
+                        </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in @Model)
                         {
-                            <tr>
+                             <tr>
                                 <td>@Html.DisplayFor(model => item.Id)</td>
                                 <td>@Html.DisplayFor(model => item.Name)</td>
                                 <td>@String.Format("{0:c}", item.Price)</td>
@@ -49,11 +50,17 @@
                                 <td>@Html.DisplayFor(model => item.Status)</td>
                                 <td>@Html.DisplayFor(model => item.Images)</td>
                                 <td>@Html.DisplayFor(model => item.Category)</td>
+                                <td>
+                                    <div class="btn-group-vertical">
+                                        <a type="button" class="btn btn-default" href="@Url.Action("EditProduct/" + item.Id).Replace("%2F", "/")">Edit</a>
+                                        <button type="button" class="btn btn-default">Delete</button>
+                                    </div>
+                                </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-            </div>
+            </div>        
             <!-- /.card-body -->
         </div>
         <!-- /.card -->

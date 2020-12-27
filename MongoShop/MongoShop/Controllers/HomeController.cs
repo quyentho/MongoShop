@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -26,7 +27,17 @@ namespace MongoShop.Controllers
 
         public async Task<IActionResult> Index()
         {
-            await _roleManager.CreateAsync(new ApplicationRole(UserRole.User));
+            //await _roleManager.CreateAsync(new ApplicationRole(UserRole.User));
+            //Product product = new Product
+            //{
+            //    Name = "Product4",
+            //    Price = 450,
+            //    StockQuantity = 10,
+            //    Size = "XL",
+            //    Status = true,
+            //    CreatedAt = DateTime.Now
+            //};
+            //await _productServices.AddAsync(product);
             return View();
         }
 
