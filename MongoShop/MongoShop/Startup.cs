@@ -1,6 +1,8 @@
 using System;
+using System.Reflection;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -73,6 +75,8 @@ namespace MongoShop
             services.AddSingleton<IOrderServices,OrderServices>();
 
             services.AddSingleton<ICategoryServices, CategoryServices>();
+
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
