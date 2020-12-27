@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoShop.BusinessDomain.Categories;
 
@@ -51,6 +52,7 @@ namespace MongoShop.BusinessDomain.Products
             var resultOfJoin = _collection.Aggregate()
                 .Match(p => p.Status == true)
                 .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
+                .Unwind("CategoryId")
                 .As<Product>();
 
 
