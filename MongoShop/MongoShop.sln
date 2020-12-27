@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoShop", "MongoShop\MongoShop.csproj", "{335B0388-B806-49BF-9F76-8230E64138BB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoShop.BusinessDomain", "MongoShop.BusinessDomain\MongoShop.BusinessDomain.csproj", "{D597A1E3-6D60-4F27-A731-3313DBE6C1E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoShop.BusinessDomain", "MongoShop.BusinessDomain\MongoShop.BusinessDomain.csproj", "{D597A1E3-6D60-4F27-A731-3313DBE6C1E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
