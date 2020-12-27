@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+using MongoShop.BusinessDomain.Categories;
 
 namespace MongoShop.BusinessDomain.Products
 {
@@ -31,6 +33,12 @@ namespace MongoShop.BusinessDomain.Products
         [BsonElement("images")]
         public List<string> Images { get; set;}
 
-        public string Category { get; set; }
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
+
+        public string CategoryId { get; set; }
+
+        public Category Category { get; set; }
     }
 }
