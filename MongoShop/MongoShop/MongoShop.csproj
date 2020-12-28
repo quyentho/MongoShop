@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\js\pages\dashboards\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
   <ItemGroup>
