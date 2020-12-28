@@ -15,6 +15,7 @@ using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
+using MongoShop.Services.FileUpload;
 
 namespace MongoShop
 {
@@ -75,6 +76,8 @@ namespace MongoShop
             services.AddSingleton<IOrderServices,OrderServices>();
 
             services.AddSingleton<ICategoryServices, CategoryServices>();
+
+            services.AddTransient<IFileUploadService, FileUploadService>();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
         }

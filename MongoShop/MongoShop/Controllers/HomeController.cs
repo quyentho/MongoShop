@@ -1,32 +1,35 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MongoShop.BusinessDomain.Products;
-using MongoShop.BusinessDomain.Users;
 using MongoShop.Models;
+using MongoShop.Services.FileUpload;
 
 namespace MongoShop.Controllers
 {
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly IProductServices _productServices;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IFileUploadService _fileUploadService;
 
 
-        public HomeController(IProductServices productServices, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public HomeController(IFileUploadService fileUploadService)
         {
-            this._productServices = productServices;
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _fileUploadService = fileUploadService;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpPost]
+        public async Task<IActionResult> Index(ImagesUpload images)
         {
-            await _roleManager.CreateAsync(new ApplicationRole(UserRole.User));
+            await _fileUploadService.Upload(images);
+
+            ModelState.AddModelError(string.Empty, "images are uploaded");
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
             return View();
         }
 
