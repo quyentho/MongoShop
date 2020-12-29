@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MongoShop.Areas.General.ViewModels.Account
+namespace MongoShop.Models.Account
 {
     public class RegisterViewModel
     {

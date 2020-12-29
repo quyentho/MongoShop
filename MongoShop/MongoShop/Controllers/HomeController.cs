@@ -2,10 +2,10 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoShop.Areas.General.ViewModels;
+using MongoShop.Models;
 using MongoShop.Services.FileUpload;
 
-namespace MongoShop.Areas.Customer.Controllers
+namespace MongoShop.Controllers
 {
     [AllowAnonymous]
     public class HomeController : Controller

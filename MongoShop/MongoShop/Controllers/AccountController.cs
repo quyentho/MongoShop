@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MongoShop.Areas.Customer.Controllers;
-using MongoShop.Areas.General.ViewModels.Account;
 using MongoShop.BusinessDomain.Users;
+using MongoShop.Models.Account;
 
-namespace MongoShop.Areas.General.Controllers
+namespace MongoShop.Controllers
 {
     public class AccountController : Controller
     {
@@ -59,7 +58,7 @@ namespace MongoShop.Areas.General.Controllers
                     return View(model);
                 }
 
-
+                
             }
 
             // If we got this far, something failed, redisplay form
