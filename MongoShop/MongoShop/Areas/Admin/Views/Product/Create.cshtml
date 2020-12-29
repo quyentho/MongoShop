@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Create Product";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+@using MongoShop.Areas.Admin.ViewModels.Product;
+
+@model DisplayProductViewModel
+
+<form method="post" asp-controller="Admin" asp-action="CreateProduct">
+    <div class="card-body">
+        <div class="form-group">
+            <label for="inputName">@Html.DisplayNameFor(model => model.Name)</label>
+            <input asp-for=Name type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="inputName">@Html.DisplayNameFor(model => model.Price)</label>
+            <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+                <input asp-for=Price type="text" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputName">@Html.DisplayNameFor(model => model.StockQuantity)</label>
+            <input asp-for=StockQuantity type="number" class="form-control" step="1">
+        </div>
+        <div class="form-group">
+            <label for="inputStatus">@Html.DisplayNameFor(model => model.Size)</label>
+            <select asp-for=Size class="form-control custom-select">
+                <option selected disabled>--------</option>
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+                <option>XXL</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary" value="Create">Submit</button>
+    </div>
+</form>

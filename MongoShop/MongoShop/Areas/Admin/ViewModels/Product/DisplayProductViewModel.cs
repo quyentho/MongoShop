@@ -1,11 +1,11 @@
-﻿using MongoShop.Services.FileUpload;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using MongoShop.Areas.Admin.ViewModels.Category;
 
-namespace MongoShop.Models.Admin
+namespace MongoShop.Areas.Admin.ViewModels.Product
 {
-    public class CreateProductViewModel
+    public class DisplayProductViewModel
     {
         public string Id { get; set; }
 
@@ -26,7 +26,7 @@ namespace MongoShop.Models.Admin
 
         public DateTime UpdatedAt { get; set; }
 
-        public List<ImagesUpload> Images { get; set; }
+        public List<string> Images { get; set; }
 
         public CategoryViewModel Category { get; set; }
     }

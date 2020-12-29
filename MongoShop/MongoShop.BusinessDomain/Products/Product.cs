@@ -37,6 +37,7 @@ namespace MongoShop.BusinessDomain.Products
 
         public DateTime UpdatedAt { get; set; }
 
+        [BsonRepresentation(BsonType.ObjectId)]
         public string CategoryId { get; set; }
 
         public Category Category { get; set; }

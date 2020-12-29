@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Admin\" />
     <Folder Include="wwwroot\js\pages\dashboards\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>

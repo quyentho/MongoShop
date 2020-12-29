@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace MongoShop.Models.Admin
+namespace MongoShop.Areas.Admin.ViewModels.Category
 {
     public class CategoryViewModel
     {

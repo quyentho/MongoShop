@@ -34,7 +34,7 @@ namespace MongoShop
             services.AddControllersWithViews();
 
             // requires using Microsoft.Extensions.Options
-             services.Configure<DatabaseSetting>(
+            services.Configure<DatabaseSetting>(
                   Configuration.GetSection(nameof(DatabaseSetting)));
 
             services.AddSingleton<IDatabaseSetting>(sp =>
@@ -105,14 +105,12 @@ namespace MongoShop
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute(
-                    name: "Admin",
+                    name: "admin_route",
                     areaName: "Admin",
-                    pattern: "Admin/{controller=Home}/{action=Index}/{id}");
+                    pattern: "Admin/{controller=product}/{action=index}"
+                    );
 
-
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default_route", "{controller}/{action}/{id?}");
             });
 
             
