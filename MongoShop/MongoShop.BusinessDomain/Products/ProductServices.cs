@@ -26,6 +26,8 @@ namespace MongoShop.BusinessDomain.Products
         public async Task AddAsync(Product product)
         {
             product.Status = true;
+            product.CreatedAt = DateTime.Now;
+            product.UpdatedAt = product.CreatedAt;
             await _collection.InsertOneAsync(product);
         }
 

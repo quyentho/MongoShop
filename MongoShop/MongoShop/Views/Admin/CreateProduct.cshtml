@@ -10,22 +10,22 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="inputName">@Html.DisplayNameFor(model => model.Name)</label>
-                <input asp-for="Name" type="text" class="form-control">
+                <input asp-for=Name type="text" class="form-control">
             </div>
             <div class="form-group">
                 <label for="inputName">@Html.DisplayNameFor(model => model.Price)</label>
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
-                    <input type="text" class="form-control">
+                    <input asp-for=Price type="text" class="form-control">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputName">@Html.DisplayNameFor(model => model.StockQuantity)</label>
-                <input type="number" class="form-control" step="1">
+                <input asp-for=StockQuantity type="number" class="form-control" step="1">
             </div>
             <div class="form-group">
                 <label for="inputStatus">@Html.DisplayNameFor(model => model.Size)</label>
-                <select class="form-control custom-select">
+                <select asp-for=Size class="form-control custom-select">
                     <option selected disabled>--------</option>
                     <option>S</option>
                     <option>M</option>
@@ -33,13 +33,7 @@
                     <option>XL</option>
                     <option>XXL</option>
                 </select>
-            </div>
-            <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox">
-                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Status)</label>
-                </div>
-            </div>
+            </div>            
         </div>
 
         <div class="card-footer">

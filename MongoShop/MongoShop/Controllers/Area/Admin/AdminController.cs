@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.Models.Admin;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -36,11 +37,13 @@ namespace MongoShop.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(DisplayProductViewModel productViewModel)
+        public async Task<IActionResult> CreateProduct(CreateProductViewModel productViewModel)
         {
-            _mapper.Map<Product>(productViewModel);
+            var product = _mapper.Map<Product>(productViewModel);
+
+            await _productServices.AddAsync(product);
             
-            return View();
+            return RedirectToAction(nameof(IndexProduct));
         }
 
         public async Task<IActionResult> EditProduct(string id)
