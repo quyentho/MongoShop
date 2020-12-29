@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
@@ -34,6 +35,16 @@ namespace MongoShop.Areas.Admin.Controllers
             var displayProductViewModel = _mapper.Map<List<DisplayProductViewModel>>(products);
 
             return View(displayProductViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            List<Category> categories = await _categoryServices.GetAllAsync();
+
+            ViewData["Categories"] = _mapper.Map<List<CategoryViewModel>>(categories);
+
+            return View();
         }
 
         [HttpPost]
