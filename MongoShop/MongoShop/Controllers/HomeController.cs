@@ -31,20 +31,6 @@ namespace MongoShop.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-<<<<<<< HEAD
-            //await _roleManager.CreateAsync(new ApplicationRole(UserRole.User));
-            //Product product = new Product
-            //{
-            //    Name = "Product4",
-            //    Price = 450,
-            //    StockQuantity = 10,
-            //    Size = "XL",
-            //    Status = true,
-            //    CreatedAt = DateTime.Now
-            //};
-            //await _productServices.AddAsync(product);
-=======
->>>>>>> 122171ce13e8b840ea85b126c1c860720046c8c5
             return View();
         }
 

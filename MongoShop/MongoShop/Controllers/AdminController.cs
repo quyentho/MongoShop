@@ -13,12 +13,11 @@ namespace MongoShop.Controllers
         private readonly IProductServices _productServices;
         private readonly IMapper _mapper;
 
-        //private readonly IOrderServices _orderServices;
         public AdminController(IProductServices productServices, IMapper mapper)
         {
             _productServices = productServices;
             this._mapper = mapper;
-            //_orderServices = orderServices;
+            
         }
 
         [HttpGet]
@@ -30,19 +29,19 @@ namespace MongoShop.Controllers
             
             return View(productsViewModels);
         }
-
+        
+        [HttpGet]
         public IActionResult CreateProduct()
         {
-            return View(pro);
+            return View();
         }
         
-        [HttpPost, ActionName("Create")]
-        public async Task<IActionResult> PostCreateProduct()
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(ProductViewModel productViewModel)
         {
-            Product product = new Product
-            {
-                Name = 
-            };
+            _mapper.Map<Product>(productViewModel);
+            
+            return View();
         }
 
         public async Task<IActionResult> EditProduct(string id)
