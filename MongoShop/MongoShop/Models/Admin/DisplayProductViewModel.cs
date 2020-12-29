@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace MongoShop.Models.Admin
 {
-    public class ProductViewModel
+    public class DisplayProductViewModel
     {
         public string Id { get; set; }
 

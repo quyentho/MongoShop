@@ -11,7 +11,8 @@ namespace MongoShop
     {
         public AutoMapperProfile()
         {
-            CreateMap<Product, ProductViewModel>();
+            CreateMap<Product, DisplayProductViewModel>();
+
             CreateMap<Category, CategoryViewModel>();
         }
     }

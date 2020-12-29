@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace MongoShop.Controllers
 {
-    //[Authorize(Roles = UserRole.Admin)]
     public class AdminController : Controller
     {
         private readonly IProductServices _productServices;
@@ -25,7 +24,7 @@ namespace MongoShop.Controllers
         {
             var products = await _productServices.GetAllAsync();
 
-            var productsViewModels = _mapper.Map<List<ProductViewModel>>(products);
+            var productsViewModels = _mapper.Map<List<DisplayProductViewModel>>(products);
             
             return View(productsViewModels);
         }
@@ -37,7 +36,7 @@ namespace MongoShop.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(ProductViewModel productViewModel)
+        public async Task<IActionResult> CreateProduct(DisplayProductViewModel productViewModel)
         {
             _mapper.Map<Product>(productViewModel);
             
@@ -48,7 +47,7 @@ namespace MongoShop.Controllers
         {
             var product = await _productServices.GetByIdAsync(id);
 
-            var productViewModel = _mapper.Map<ProductViewModel>(product);
+            var productViewModel = _mapper.Map<DisplayProductViewModel>(product);
             return View(productViewModel);
         }
     }
