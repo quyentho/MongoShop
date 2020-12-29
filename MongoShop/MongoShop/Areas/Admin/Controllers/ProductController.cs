@@ -6,6 +6,7 @@ using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
+using MongoShop.Services.FileUpload;
 
 namespace MongoShop.Areas.Admin.Controllers
 {
@@ -16,14 +17,17 @@ namespace MongoShop.Areas.Admin.Controllers
         private readonly IProductServices _productServices;
         private readonly ICategoryServices _categoryServices;
         private readonly IMapper _mapper;
+        private readonly IFileUploadService _fileUploadService;
 
-        public ProductController(IProductServices productServices, 
-            IMapper mapper, 
-            ICategoryServices categoryServices)
+        public ProductController(IProductServices productServices,
+            IMapper mapper,
+            ICategoryServices categoryServices,
+            IFileUploadService fileUploadService)
         {
             _productServices = productServices;
             _mapper = mapper;
             _categoryServices = categoryServices;
+            _fileUploadService = fileUploadService;
         }
 
         [HttpGet]
@@ -53,7 +57,12 @@ namespace MongoShop.Areas.Admin.Controllers
 
             var category = await _categoryServices.GetByIdAsync(categoryId);
 
+            // upload image and get back the paths
+            List<string> imagePaths = await _fileUploadService.Upload(productViewModel.Images);
+
             var product = _mapper.Map<Product>(productViewModel);
+            
+            product.Images = imagePaths;
 
             await _productServices.AddAsync(product, categoryId);
 

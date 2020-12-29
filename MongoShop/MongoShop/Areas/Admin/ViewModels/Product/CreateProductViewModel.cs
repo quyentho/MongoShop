@@ -8,10 +8,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 {
     public class CreateProductViewModel
     {
-        public string Id { get; set; }
-
         [DisplayName("Product name")]
-
         public string Name { get; set; }
 
         public double Price { get; set; }
@@ -27,7 +24,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 
         public DateTime UpdatedAt { get; set; }
 
-        public List<ImagesUpload> Images { get; set; }
+        public ImagesUpload Images { get; set; }
 
         public CategoryViewModel Category { get; set; }
     }

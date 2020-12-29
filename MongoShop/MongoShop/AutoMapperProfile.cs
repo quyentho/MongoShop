@@ -14,7 +14,8 @@ namespace MongoShop
         {
             CreateMap<Product, CreateProductViewModel>();
 
-            CreateMap<CreateProductViewModel, Product>();
+            CreateMap<CreateProductViewModel, Product>()
+                .ForMember(dest=> dest.Images, opt=>opt.Ignore());
 
             CreateMap<Product, DisplayProductViewModel>();
 
