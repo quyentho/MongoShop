@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Wish</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Wish shop project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <partial name="CustomerTemplate/_Styles" /></head>
+<body>
+
+    <div class="super_container">
+
+        <!-- Header -->
+        <partial name="CustomerTemplate/_Headers" />
+
+
+
+        <!-- Menu -->
+        <partial name="CustomerTemplate/_Menus" />
+
+        <!-- New Arrivals -->
+
+        <div class="arrivals">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="section_title_container text-center">
+                            <div class="section_subtitle">only the best</div>
+                            <div class="section_title">new arrivals</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row products_container">
+
+                    <!-- Product -->
+                    @RenderBody()
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Extra -->
+        <!-- Footer -->
+        <partial name="CustomerTemplate/_Footers" />
+
+
+    </div>
+
+    <partial name="CustomerTemplate/_Scripts" />
+
+</body>
+</html>
