@@ -53,9 +53,10 @@
                                 <td>@Html.DisplayFor(model => item.Size)</td>
                                 <td>@Html.DisplayFor(model => item.Status)</td>
                                 <td>@Html.DisplayFor(model => item.Images)</td>
-                                <td>@Html.DisplayFor(model => item.Category)</td>
+                                <td>@Html.DisplayFor(model => item.Category.Name)</td>
                                 <td>
                                     <div class="btn-group-vertical">
+                                        // TODO: This should be changed.
                                         <a type="button" class="btn btn-default" href="@Url.Action("EditProduct/" + item.Id).Replace("%2F", "/")">Edit</a>
                                         <button type="button" class="btn btn-default">Delete</button>
                                     </div>

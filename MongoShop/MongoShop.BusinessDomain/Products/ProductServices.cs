@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoShop.BusinessDomain.Categories;
 
 namespace MongoShop.BusinessDomain.Products
 {
@@ -9,13 +12,13 @@ namespace MongoShop.BusinessDomain.Products
     {
         private readonly IMongoCollection<Product> _collection;
         private readonly IDatabaseSetting _databaseSetting;
+        private readonly ICategoryServices _categoryServices;
         private const string CollectionName = "product";
 
-        public ProductServices(IDatabaseSetting databaseSetting)
+        public ProductServices(IDatabaseSetting databaseSetting, ICategoryServices categoryServices)
         {
-
             _databaseSetting = databaseSetting;
-
+            this._categoryServices = categoryServices;
             var client = new MongoClient(_databaseSetting.ConnectionString);
             var database = client.GetDatabase(_databaseSetting.DatabaseName);
 
@@ -23,11 +26,13 @@ namespace MongoShop.BusinessDomain.Products
         }
 
         /// <inheritdoc/>     
-        public async Task AddAsync(Product product)
+        public async Task AddAsync(Product product, string categoryId)
         {
             product.Status = true;
             product.CreatedAt = DateTime.Now;
             product.UpdatedAt = product.CreatedAt;
+            product.CategoryId = categoryId;
+
             await _collection.InsertOneAsync(product);
         }
 
@@ -47,17 +52,21 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>  
         public async Task<List<Product>> GetAllAsync()
         {
-            var _list = await _collection.FindAsync(c => c.Status == true);
-            //var debug = await _list.ToListAsync();
-            return await _list.ToListAsync();
 
+            var projection = Builders<Product>.Projection.Include(p => p.Category);
+            var resultOfJoin = _collection.Aggregate()
+                .Match(p => p.Status == true)
+                .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
+                .Unwind("Category")
+                .As<Product>();
+
+            return await resultOfJoin.ToListAsync();
         }
 
         /// <inheritdoc/>  
         public async Task<Product> GetByIdAsync(string id)
         {
             var _product = await _collection.FindAsync(c => c.Id == id && c.Status == true);
-            //var debug = await _product.SingleOrDefaultAsync();
             return await _product.SingleOrDefaultAsync();
         }
 
@@ -65,7 +74,6 @@ namespace MongoShop.BusinessDomain.Products
         public async Task<List<Product>> GetByNameAsync(string name)
         {
             var _list = await _collection.FindAsync(c => c.Name == name && c.Status == true);
-            //var debug = await _list.ToListAsync();
             return await _list.ToListAsync();
         }
     }
