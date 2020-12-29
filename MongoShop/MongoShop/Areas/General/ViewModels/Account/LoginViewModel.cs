@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MongoShop.Models.Account
+namespace MongoShop.Areas.General.ViewModels.Account
 {
     public class LoginViewModel
     {

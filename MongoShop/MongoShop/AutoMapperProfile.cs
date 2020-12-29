@@ -3,8 +3,6 @@ using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
-using MongoShop.BusinessDomain.Users;
-using MongoShop.Models.Account;
 
 namespace MongoShop
 {

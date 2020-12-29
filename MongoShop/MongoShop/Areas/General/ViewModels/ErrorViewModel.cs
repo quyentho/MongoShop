@@ -1,6 +1,4 @@
-using System;
-
-namespace MongoShop.Models
+namespace MongoShop.Areas.General.ViewModels
 {
     public class ErrorViewModel
     {

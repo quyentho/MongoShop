@@ -110,10 +110,8 @@ namespace MongoShop
                     pattern: "Admin/{controller=product}/{action=index}"
                     );
 
-                endpoints.MapControllerRoute("default_route", "{controller}/{action}/{id?}");
+                endpoints.MapControllerRoute("default_route", "{controller=Home}/{action=Index}/{id?}");
             });
-
-            
         }
     }
 }
