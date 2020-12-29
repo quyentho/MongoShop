@@ -40,11 +40,11 @@ namespace MongoShop.Areas.Admin.Controllers
         public async Task<IActionResult> Create(CreateProductViewModel productViewModel, string categoryId)
         {
 
-            _categoryServices.GetById()
+            var category = await _categoryServices.GetByIdAsync(categoryId);
 
             var product = _mapper.Map<Product>(productViewModel);
 
-            await _productServices.AddAsync(product);
+            await _productServices.AddAsync(product, categoryId);
 
             return RedirectToAction(nameof(Index));
         }

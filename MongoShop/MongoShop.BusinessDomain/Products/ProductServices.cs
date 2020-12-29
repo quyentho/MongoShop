@@ -66,15 +66,15 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>  
         public async Task<Product> GetByIdAsync(string id)
         {
-            var _product = await _collection.FindAsync(c => c.Id == id && c.Status == true);
-            return await _product.SingleOrDefaultAsync();
+            var product = await _collection.FindAsync(c => c.Id == id && c.Status == true);
+            return await product.SingleOrDefaultAsync();
         }
 
         /// <inheritdoc/>  
         public async Task<List<Product>> GetByNameAsync(string name)
         {
-            var _list = await _collection.FindAsync(c => c.Name == name && c.Status == true);
-            return await _list.ToListAsync();
+            var list = await _collection.FindAsync(c => c.Name == name && c.Status == true);
+            return await list.ToListAsync();
         }
     }
 }

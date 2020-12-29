@@ -6,10 +6,10 @@ namespace MongoShop.BusinessDomain.Categories
     public class Category
     {
 
-        //public Category(string name)
-        //{
-        //    Name = name;
-        //}
+        public Category(string name)
+        {
+            Name = name;
+        }
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -17,5 +17,7 @@ namespace MongoShop.BusinessDomain.Categories
 
         [BsonElement("name")]
         public string Name { get; set; }
+
+        public bool Status { get; set; }
     }
 }

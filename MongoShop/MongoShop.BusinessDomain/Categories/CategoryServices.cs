@@ -24,6 +24,8 @@ namespace MongoShop.BusinessDomain.Categories
 
         public async Task AddAsync(Category category)
         {
+            category.Status = true;
+
             await _collection.InsertOneAsync(category);
         }
 
@@ -39,8 +41,14 @@ namespace MongoShop.BusinessDomain.Categories
 
         public async Task<List<Category>> GetAllAsync()
         {
-            var _list = await _collection.FindAsync(_ => true);
-            return await _list.ToListAsync();
+            var list = await _collection.FindAsync(_ => true);
+            return await list.ToListAsync();
+        }
+
+        public async Task<Category> GetByIdAsync(string id)
+        {
+            var category = await _collection.FindAsync(c => c.Id == id && c.Status == true);
+            return await category.SingleOrDefaultAsync();
         }
     }
 }

@@ -14,5 +14,6 @@ namespace MongoShop.BusinessDomain.Categories
         Task EditAsync(string id, Category category);
 
         Task DeleteAsync(string id, Category category);
+        Task<Category> GetByIdAsync(string id);
     }
 }
