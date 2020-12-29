@@ -49,12 +49,13 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>  
         public async Task<List<Product>> GetAllAsync()
         {
+
+            var projection = Builders<Product>.Projection.Include(p => p.Category);
             var resultOfJoin = _collection.Aggregate()
                 .Match(p => p.Status == true)
                 .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
-                .Unwind("CategoryId")
+                .Unwind("Category")
                 .As<Product>();
-
 
             return await resultOfJoin.ToListAsync();
         }

@@ -24,12 +24,6 @@ namespace MongoShop.Controllers
 
         public async Task<IActionResult> Index()
         {
-            await _categoryServices.AddAsync(new Category("testCate"));
-
-            var cate = await _categoryServices.GetAllAsync();
-            var cate1 = cate.First();
-            await _productServices.AddAsync(new Product() { Name = "proNew" }, cate1.Id);
-
             return View();
         }
 

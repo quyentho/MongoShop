@@ -24,6 +24,7 @@ namespace MongoShop.Controllers
         [HttpGet]
         public async Task<IActionResult> Product()
         {
+            
             var products = await _productServices.GetAllAsync();
 
             var productsViewModels = _mapper.Map<List<ProductViewModel>>(products);

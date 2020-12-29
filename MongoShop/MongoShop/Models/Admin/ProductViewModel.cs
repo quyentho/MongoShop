@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using MongoShop.BusinessDomain.Categories;
 
 namespace MongoShop.Models.Admin
 {
@@ -27,6 +28,6 @@ namespace MongoShop.Models.Admin
 
         public List<string> Images { get; set; }
 
-        public List<CategoryViewModel> Category { get; set; }
+        public CategoryViewModel Category { get; set; }
     }
 }
