@@ -16,8 +16,10 @@ namespace MongoShop
                 .ForMember(dest=>dest.Category, opt=>opt.NullSubstitute(new Category()));
 
             CreateMap<CreateProductViewModel, Product>()
-                .ForMember(dest=> dest.Images, opt=>opt.Ignore())
-                .ForMember(dest=>dest.CategoryId, opt => opt.MapFrom(scr=>scr.Category.Id));
+                .ForMember(dest => dest.Images, opt => opt.Ignore())
+                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(scr => scr.Category.Id))
+                .ForMember(dest => dest.Category, opt => opt.Ignore());
+
 
             CreateMap<Product, DisplayProductViewModel>();
             CreateMap<Product, CreateProductViewModel>()

@@ -46,6 +46,8 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>  
         public async Task EditAsync(string id, Product product)
         {
+            product.Id = id;
+            product.Status = true;
             await _collection.ReplaceOneAsync(c => c.Id == id, product);
         }
 

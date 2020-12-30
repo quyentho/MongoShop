@@ -55,11 +55,7 @@ namespace MongoShop.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                List<Category> categories = await _categoryServices.GetAllAsync();
-
-                ViewData["Categories"] = _mapper.Map<List<CategoryViewModel>>(categories);
-
-                return View();
+                return await Create();
             }
 
             string categoryId = productViewModel.Category.Id;
@@ -97,9 +93,13 @@ namespace MongoShop.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string id, CreateProductViewModel createProductViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return await Edit(id);
+            }
+
             var editedProduct = _mapper.Map<Product>(createProductViewModel);
 
-            editedProduct.Id = id;
             await _productServices.EditAsync(id, editedProduct);
 
             return RedirectToAction(nameof(Index));

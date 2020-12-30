@@ -1,10 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Edit Product";
+    ViewData["Title"] = "Manage Products";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
-@using MongoShop.Areas.Admin.ViewModels.Category;
-@using MongoShop.Areas.Admin.ViewModels.Product;
 
+@using MongoShop.Areas.Admin.ViewModels.Product;
+@using MongoShop.Areas.Admin.ViewModels.Category;
 @model CreateProductViewModel
 
 <form asp-controller="Product" asp-area="Admin" asp-action="Edit" method="post" enctype="multipart/form-data">
@@ -20,40 +20,43 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="form-group">
-                        <input type="hidden" name="id" value="@ViewData["productId"]"  />
-                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label>@Html.DisplayNameFor(model => model.Name)</label>
                         <input type="text" asp-for="Name" class="form-control">
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>@Html.DisplayNameFor(model => model.Category)</label>
-                        <select asp-for="Category.Id" class="form-control custom-select">
+                        <select asp-for="Category.Id" class="form-control custom-select" required>
                             <option selected="" disabled="">Select one</option>
                             @foreach (var category in (List<CategoryViewModel>)ViewData["categories"])
                             {
                                 <option value="@category.Id">@category.Name</option>
                             }
                         </select>
+                        <span asp-validation-for="Category.Id" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>@Html.DisplayNameFor(model => model.Price)</label>
                         <input type="number" asp-for="Price" class="form-control" min="0" step="500">
+                        <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>@Html.DisplayNameFor(model => model.StockQuantity)</label>
-                        <input type="number" asp-for="StockQuantity" class="form-control" min="0" step="1">
+                        <input type="number" asp-for="StockQuantity" class="form-control" min="0" step="1" />
+                        <span asp-validation-for="StockQuantity" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>@Html.DisplayNameFor(model => model.Size)</label>
-                        <select asp-for="Size" class="form-control custom-select">
+                        <select asp-for="Size" class="form-control custom-select" required>
                             <option selected="" disabled="">Select one</option>
                             <option value="S">S</option>
                             <option value="M">M</option>
                             <option value="L">L</option>
                             <option value="XL">XL</option>
                         </select>
+                        <span asp-validation-for="Size" class="text-danger"></span>
                     </div>
                     <input type="file" asp-for="@Model.Images.Files" class="form-control" multiple="multiple" accept="image/*">
                 </div>
@@ -61,8 +64,8 @@
             </div>
             <!-- /.card -->
             <div class="col-12">
-                <a class="btn btn-secondary">Back to list</a>
-                <input type="submit" value="Edit" class="btn btn-success float-right">
+                <a href="@Url.Action("Index", "Product")" class="btn btn-secondary">Back to list</a>
+                <input type="submit" value="Edit product" class="btn btn-success float-right">
             </div>
         </div>
     </div>

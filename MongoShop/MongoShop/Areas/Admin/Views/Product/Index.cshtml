@@ -10,7 +10,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Fixed Header Table</h3>
+                <h3 class="card-title">Product List</h3>
 
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 200px;">
@@ -21,7 +21,7 @@
                         </div>
 
                         <div class="input-group-append">
-                            <a type="button" class="btn btn-default" href="@Url.Action("Create","Product")">Create</a>
+                            <a type="button" class="btn btn-success" href="@Url.Action("Create","Product")">Create</a>
                         </div>
                     </div>
                 </div>
@@ -32,13 +32,10 @@
                 <table class="table table-head-fixed text-nowrap">
                     <thead>
                         <tr>
-                            <th>@Html.DisplayNameFor(model => model.Id)</th>
                             <th>@Html.DisplayNameFor(model => model.Name)</th>
                             <th>@Html.DisplayNameFor(model => model.Price)</th>
                             <th>@Html.DisplayNameFor(model => model.StockQuantity)</th>
                             <th>@Html.DisplayNameFor(model => model.Size)</th>
-                            <th>@Html.DisplayNameFor(model => model.Status)</th>
-                            <th>@Html.DisplayNameFor(model => model.Images)</th>
                             <th>@Html.DisplayNameFor(model => model.Category)</th>
                         </tr>
                     </thead>
@@ -46,19 +43,18 @@
                         @foreach (var item in @Model)
                         {
                              <tr>
-                                <td>@Html.DisplayFor(model => item.Id)</td>
                                 <td>@Html.DisplayFor(model => item.Name)</td>
                                 <td>@String.Format("{0:c}", item.Price)</td>
                                 <td>@Html.DisplayFor(model => item.StockQuantity)</td>
                                 <td>@Html.DisplayFor(model => item.Size)</td>
-                                <td>@Html.DisplayFor(model => item.Status)</td>
                                 <td>@Html.DisplayFor(model => item.Images)</td>
                                 <td>@Html.DisplayFor(model => item.Category.Name)</td>
                                 <td>
-                                    <div class="btn-group-vertical">
+                                    <div class="btn-group">
                                         @* TODO: This should be changed.*@
-                                        <a type="button" class="btn btn-default" href="@Url.Action("EditProduct/" + item.Id).Replace("%2F", "/")">Edit</a>
-                                        <button type="button" class="btn btn-default">Delete</button>
+                                        <a type="button" class="btn btn-default" href="@Url.Action("Detail","Product", new { id = item.Id})">Deltail</a>
+                                        <a type="button" class="btn btn-primary" href="@Url.Action("Edit","Product", new { id = item.Id})">Edit</a>
+                                        <button type="button" class="btn btn-danger" href="@Url.Action("Delete","Product", new { id = item.Id})">Delete</button>
                                     </div>
                                 </td>
                             </tr>
