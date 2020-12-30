@@ -1,11 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Edit Product";
+    ViewData["Title"] = "Product Detail";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
 
 @using MongoShop.Areas.Admin.ViewModels.Product;
 @using MongoShop.Areas.Admin.ViewModels.Category;
-@model CreateProductViewModel
+@model DisplayProductViewModel
 
 <form asp-controller="Product" asp-area="Admin" asp-action="Edit" method="post" enctype="multipart/form-data">
     <div class="row">
