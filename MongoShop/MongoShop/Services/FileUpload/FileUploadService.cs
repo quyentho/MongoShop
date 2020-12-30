@@ -16,8 +16,18 @@ namespace MongoShop.Services.FileUpload
             _webHostEnvironment = webHostEnvironment;
         }
 
+        /// <summary>
+        /// Upload images to wwwroot/uploads folder with new random file name.
+        /// </summary>
+        /// <param name="imagesUpload">List of file to upload.</param>
+        /// <returns>List of file paths.</returns>
         public async Task<List<string>> Upload(ImagesUpload imagesUpload)
         {
+            if (imagesUpload.Files is null)
+            {
+                return null;
+            }
+
             var filePaths = new List<string>();
             foreach (var file in imagesUpload.Files)
             {

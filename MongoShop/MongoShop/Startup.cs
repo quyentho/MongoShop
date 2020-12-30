@@ -107,7 +107,7 @@ namespace MongoShop
                 endpoints.MapAreaControllerRoute(
                     name: "admin_route",
                     areaName: "Admin",
-                    pattern: "Admin/{controller=product}/{action=index}"
+                    pattern: "Admin/{controller=product}/{action=index}/{id?}"
                     );
 
                 endpoints.MapControllerRoute("default_route", "{controller=Home}/{action=Index}/{id?}");

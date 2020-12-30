@@ -33,7 +33,6 @@ namespace MongoShop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-
             var products = await _productServices.GetAllAsync();
 
             var displayProductViewModel = _mapper.Map<List<DisplayProductViewModel>>(products);
@@ -52,16 +51,25 @@ namespace MongoShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateProductViewModel productViewModel, string categoryId)
+        public async Task<IActionResult> Create(CreateProductViewModel productViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                List<Category> categories = await _categoryServices.GetAllAsync();
 
+                ViewData["Categories"] = _mapper.Map<List<CategoryViewModel>>(categories);
+
+                return View();
+            }
+
+            string categoryId = productViewModel.Category.Id;
             var category = await _categoryServices.GetByIdAsync(categoryId);
 
             // upload image and get back the paths
             List<string> imagePaths = await _fileUploadService.Upload(productViewModel.Images);
 
             var product = _mapper.Map<Product>(productViewModel);
-            
+
             product.Images = imagePaths;
 
             await _productServices.AddAsync(product, categoryId);
@@ -69,12 +77,33 @@ namespace MongoShop.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> EditProduct(string id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
         {
             var product = await _productServices.GetByIdAsync(id);
 
-            var displayProductViewModel = _mapper.Map<DisplayProductViewModel>(product);
-            return View(displayProductViewModel);
+            var createProductViewModel = _mapper.Map<CreateProductViewModel>(product);
+
+            List<Category> categories = await _categoryServices.GetAllAsync();
+
+            ViewData["Categories"] = _mapper.Map<List<CategoryViewModel>>(categories);
+
+            ViewData["imagePaths"] = product.Images;
+
+            ViewData["productId"] = id;
+            return View(createProductViewModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, CreateProductViewModel createProductViewModel)
+        {
+            var editedProduct = _mapper.Map<Product>(createProductViewModel);
+
+            editedProduct.Id = id;
+            await _productServices.EditAsync(id, editedProduct);
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

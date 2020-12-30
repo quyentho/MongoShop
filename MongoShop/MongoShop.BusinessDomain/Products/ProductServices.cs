@@ -53,7 +53,6 @@ namespace MongoShop.BusinessDomain.Products
         public async Task<List<Product>> GetAllAsync()
         {
 
-            var projection = Builders<Product>.Projection.Include(p => p.Category);
             var resultOfJoin = _collection.Aggregate()
                 .Match(p => p.Status == true)
                 .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
