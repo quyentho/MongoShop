@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MongoShop.Areas.Admin.ViewModels.Product
 {
-    public class ProductViewModel
+    public class CreateProductViewModel
     {
-        public ProductViewModel()
+        public CreateProductViewModel()
         {
             Category = new CategoryViewModel();
             Images = new ImagesUpload();

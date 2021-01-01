@@ -36,9 +36,9 @@ namespace MongoShop.Areas.Admin.Controllers
         {
             var products = await _productServices.GetAllAsync();
 
-            var displayProductViewModel = _mapper.Map<List<ProductViewModel>>(products);
+            var indexProductViewModel = _mapper.Map<List<IndexProductViewModel>>(products);
 
-            return View(displayProductViewModel);
+            return View(indexProductViewModel);
         }
 
         [HttpGet]
@@ -52,7 +52,7 @@ namespace MongoShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductViewModel productViewModel)
+        public async Task<IActionResult> Create(CreateProductViewModel productViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace MongoShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, ProductViewModel ProductViewModel)
+        public async Task<IActionResult> Edit(string id, CreateProductViewModel ProductViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -124,7 +124,7 @@ namespace MongoShop.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<ProductViewModel> PrepareProductData(Product product)
+        private async Task<CreateProductViewModel> PrepareProductData(Product product)
         {
             List<Category> categories = await _categoryServices.GetAllAsync();
 
@@ -134,7 +134,7 @@ namespace MongoShop.Areas.Admin.Controllers
 
             ViewData["productId"] = product.Id;
 
-            return _mapper.Map<ProductViewModel>(product);
+            return _mapper.Map<CreateProductViewModel>(product);
         }
     }
 }

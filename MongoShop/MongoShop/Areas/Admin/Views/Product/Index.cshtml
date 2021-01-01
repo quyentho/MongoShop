@@ -4,7 +4,7 @@
 }
 
 @using MongoShop.Areas.Admin.ViewModels.Product;
-@model IEnumerable<ProductViewModel>
+@model IEnumerable<IndexProductViewModel>
 
 <div class="row">
     <div class="col-12">
@@ -47,8 +47,7 @@
                                 <td>@String.Format("{0:c}", item.Price)</td>
                                 <td>@Html.DisplayFor(model => item.StockQuantity)</td>
                                 <td>@Html.DisplayFor(model => item.Size)</td>
-                                <td>@Html.DisplayFor(model => item.Images)</td>
-                                <td>@Html.DisplayFor(model => item.Category.Name)</td>
+                                <td>@Html.DisplayFor(model => item.Category)</td>
                                 <td>
                                     <div class="btn-group">
                                         @* TODO: This should be changed.*@
