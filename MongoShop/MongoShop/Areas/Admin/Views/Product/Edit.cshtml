@@ -1,13 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Edit Product";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
-
-    var categories = (List<CategoryViewModel>)@ViewData["categories"];
 }
 
 @using MongoShop.Areas.Admin.ViewModels.Product;
 @using MongoShop.Areas.Admin.ViewModels.Category;
-@model CreateProductViewModel
+@model EditProductViewModel
 
 <form asp-controller="Product" asp-area="Admin" asp-action="Edit" method="post" enctype="multipart/form-data">
     <div class="row">
@@ -29,11 +27,12 @@
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label>@Html.DisplayNameFor(model => model.Category)</label>
-                        <select asp-for="Category.Id" asp-items="@(new SelectList(categories,"Id","Name"))" class="form-control custom-select" required>
-                            <option selected="" disabled="">Select one</option>
-                        </select>
-                        <span asp-validation-for="Category" class="text-danger"></span>
+                        <label>@Html.DisplayNameFor(model => model.CategoryList)</label>
+                        @Html.DropDownListFor(
+                                    x => x.SelectedCategoryId,
+                                    new SelectList(Model.CategoryList, "Value", "Text"), 
+                                    new { @required = true, @class= "form-control custom-select" })
+                        <span asp-validation-for="SelectedCategoryId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>@Html.DisplayNameFor(model => model.Price)</label>
@@ -56,7 +55,7 @@
                         </select>
                         <span asp-validation-for="Size" class="text-danger"></span>
                     </div>
-                    <input type="file" asp-for="@Model.Images.Files" class="form-control" multiple="multiple" accept="image/*">
+                    <input type="file" asp-for="@Model.ImagesUpload" class="form-control" multiple="multiple" accept="image/*">
                 </div>
                 <!-- /.card-body -->
             </div>

@@ -11,6 +11,12 @@ namespace MongoShop.BusinessDomain.Products
 {
     public class Product
     {
+
+        public Product()
+        {
+            Images = new List<string>();
+        }
+
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
@@ -78,21 +79,31 @@ namespace MongoShop.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var product = await _productServices.GetByIdAsync(id);
+            
+            var categories = await _categoryServices.GetAllAsync();
+            
+            var editProductViewModel = _mapper.Map<EditProductViewModel>(product);
 
-            var productViewmodel = await PrepareProductData(product);
+            editProductViewModel.CategoryList = _mapper.Map<List<SelectListItem>>(categories);
 
-            return View(productViewmodel);
+            return View(editProductViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, CreateProductViewModel ProductViewModel)
+        public async Task<IActionResult> Edit(string id, EditProductViewModel editProductViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return await Edit(id);
             }
 
-            var editedProduct = _mapper.Map<Product>(ProductViewModel);
+            var editedProduct = _mapper.Map<Product>(editProductViewModel);
+
+            if (editProductViewModel.ImagesUpload != null)
+            {
+                List<string> imagePaths = await _fileUploadService.Upload(editProductViewModel.ImagesUpload);
+                editedProduct.Images.AddRange(imagePaths);
+            }
 
             await _productServices.EditAsync(id, editedProduct);
 
@@ -122,12 +133,6 @@ namespace MongoShop.Areas.Admin.Controllers
 
             await _productServices.DeleteAsync(id, product);
             return RedirectToAction(nameof(Index));
-        }
-
-        // TODO: temp
-        private async Task<CreateProductViewModel> PrepareProductData(Product product)
-        {
-            return new CreateProductViewModel();
         }
     }
 }
