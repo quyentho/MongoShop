@@ -8,7 +8,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Category
         [Required]
         public string Id { get; set; }
 
-        //[Required]
+        [Required]
         [DisplayName("Category name")]
         public string Name { get; set; }
     }
