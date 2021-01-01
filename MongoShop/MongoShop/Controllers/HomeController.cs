@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoShop.Models;
 using MongoShop.Services.FileUpload;
@@ -19,7 +21,7 @@ namespace MongoShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(ImagesUpload images)
+        public async Task<IActionResult> Index(List<IFormFile> images)
         {
             await _fileUploadService.Upload(images);
 

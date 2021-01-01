@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace MongoShop.Services.FileUpload
 {
@@ -21,15 +22,15 @@ namespace MongoShop.Services.FileUpload
         /// </summary>
         /// <param name="imagesUpload">List of file to upload.</param>
         /// <returns>List of file paths.</returns>
-        public async Task<List<string>> Upload(ImagesUpload imagesUpload)
+        public async Task<List<string>> Upload(List<IFormFile> imagesUpload)
         {
-            if (imagesUpload.Files is null)
+            if (imagesUpload is null)
             {
                 return null;
             }
 
             var filePaths = new List<string>();
-            foreach (var file in imagesUpload.Files)
+            foreach (var file in imagesUpload)
             {
                 if (file.Length > 0)
                 {

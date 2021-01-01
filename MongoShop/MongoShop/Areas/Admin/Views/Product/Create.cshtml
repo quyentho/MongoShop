@@ -5,7 +5,7 @@
 
 @using MongoShop.Areas.Admin.ViewModels.Product;
 @using MongoShop.Areas.Admin.ViewModels.Category;
-@model ProductViewModel
+@model CreateProductViewModel
 
 <form asp-controller="Product" asp-area="Admin" asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="row">
@@ -27,15 +27,12 @@
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label>@Html.DisplayNameFor(model => model.Category)</label>
-                        <select asp-for="Category.Id" class="form-control custom-select" required>
-                            <option selected="" disabled="">Select one</option>
-                            @foreach (var category in (List<CategoryViewModel>)ViewData["categories"])
-                            {
-                                <option value="@category.Id">@category.Name</option>
-                            }
-                        </select>
-                        <span asp-validation-for="Category.Id" class="text-danger"></span>
+                        <label>@Html.DisplayNameFor(model => model.CategoryList)</label>
+                        @Html.DropDownListFor(
+                                    x => x.SelectedCategoryId,
+                                    new SelectList(Model.CategoryList, "Value", "Text"),
+                                    new { @required = true, @class = "form-control custom-select" })
+                        <span asp-validation-for="SelectedCategoryId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>@Html.DisplayNameFor(model => model.Price)</label>
@@ -58,14 +55,14 @@
                         </select>
                         <span asp-validation-for="Size" class="text-danger"></span>
                     </div>
-                    <input type="file" asp-for="@Model.Images.Files" class="form-control" multiple="multiple" accept="image/*">
+                    <input type="file" asp-for="@Model.ImagesUpload" class="form-control" multiple="multiple" accept="image/*">
                 </div>
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
             <div class="col-12">
                 <a href="@Url.Action("Index", "Product")" class="btn btn-secondary">Back to list</a>
-                <input type="submit" value="Create new product" class="btn btn-success float-right">
+                <input type="submit" value="Create" class="btn btn-success float-right">
             </div>
         </div>
     </div>

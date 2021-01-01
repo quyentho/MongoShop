@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Category Detail";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+@using MongoShop.Areas.Admin.ViewModels.Category;
+@using MongoShop.Areas.Admin.ViewModels.Category;
+@model DetailCategoryViewModel
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Category</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>@Html.DisplayNameFor(model => model.Name)</label>
+                    <label class="form-control">@Html.DisplayFor(model => model.Name)</label>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        <div class="col-12">
+            <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Back to list</a>
+            <a href="@Url.Action("Edit", "Category", new { id = Model.Id})" class="btn btn-primary float-right">Edit this product</a>
+        </div>
+    </div>
+</div>
