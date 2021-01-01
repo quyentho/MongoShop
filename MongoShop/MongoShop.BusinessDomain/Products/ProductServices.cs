@@ -79,8 +79,13 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>  
         public async Task<List<Product>> GetByNameAsync(string name)
         {
-            var list = await _collection.FindAsync(c => c.Name == name && c.Status == true);
-            return await list.ToListAsync();
+            var product = _collection.Aggregate()
+               .Match(p => p.Name == name && p.Status == true)
+               .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
+               .Unwind("Category")
+               .As<Product>();
+
+            return await product.ToListAsync();
         }
     }
 }

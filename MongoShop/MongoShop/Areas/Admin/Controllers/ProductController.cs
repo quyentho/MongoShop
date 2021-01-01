@@ -109,6 +109,21 @@ namespace MongoShop.Areas.Admin.Controllers
             return View(productViewmodel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var product = await _productServices.GetByIdAsync(id);
+
+            if (product is null)
+            {
+                ModelState.AddModelError(string.Empty, "Product is not existing");
+                return await Index();
+            }
+
+            await _productServices.DeleteAsync(id, product);
+            return RedirectToAction(nameof(Index));
+        }
+
         private async Task<ProductViewModel> PrepareProductData(Product product)
         {
             List<Category> categories = await _categoryServices.GetAllAsync();
