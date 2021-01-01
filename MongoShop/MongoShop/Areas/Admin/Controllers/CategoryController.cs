@@ -88,19 +88,19 @@ namespace MongoShop.Areas.Admin.Controllers
             return View(detailCategoryViewmodel);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Delete(string id)
-        //{
-        //    var category = await _categoryServices.GetByIdAsync(id);
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var category = await _categoryServices.GetByIdAsync(id);
 
-        //    if (category is null)
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Category is not existing");
-        //        return await Index();
-        //    }
+            if (category is null)
+            {
+                ModelState.AddModelError(string.Empty, "Category is not existing");
+                return await Index();
+            }
 
-        //    await _categoryServices.DeleteAsync(id, category);
-        //    return RedirectToAction(nameof(Index));
-        //}
+            await _categoryServices.DeleteAsync(id, category);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
