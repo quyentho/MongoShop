@@ -67,7 +67,12 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>  
         public async Task<Product> GetByIdAsync(string id)
         {
-            var product = await _collection.FindAsync(c => c.Id == id && c.Status == true);
+            var product = _collection.Aggregate()
+                .Match(p => p.Id == id && p.Status == true)
+                .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
+                .Unwind("Category")
+                .As<Product>();
+
             return await product.SingleOrDefaultAsync();
         }
 

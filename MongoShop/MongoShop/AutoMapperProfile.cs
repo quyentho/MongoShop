@@ -12,20 +12,17 @@ namespace MongoShop
     {
         public AutoMapperProfile()
         {
-            CreateMap<Product, CreateProductViewModel>()
-                .ForMember(dest=>dest.Category, opt=>opt.NullSubstitute(new Category()));
+            CreateMap<Product, ProductViewModel>()
+                .ForMember(dest => dest.Category, opt => opt.NullSubstitute(new Category()))
+                .ForPath(dest => dest.Category.Id, opt => opt.MapFrom(scr => scr.CategoryId))
+                .ForPath(dest => dest.Images.Files, opt => opt.Ignore())
+                .ForPath(dest => dest.Images.FilePaths, opt => opt.MapFrom(scr=>scr.Images));
 
-            CreateMap<CreateProductViewModel, Product>()
+
+            CreateMap<ProductViewModel, Product>()
                 .ForMember(dest => dest.Images, opt => opt.Ignore())
                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(scr => scr.Category.Id))
                 .ForMember(dest => dest.Category, opt => opt.Ignore());
-
-
-            CreateMap<Product, DisplayProductViewModel>();
-            CreateMap<Product, CreateProductViewModel>()
-                .ForMember(dest=>dest.Images, opt=>opt.Ignore());
-
-            CreateMap<CreateProductViewModel, DisplayProductViewModel>();
 
             CreateMap<Category, CategoryViewModel>();
             CreateMap<CategoryViewModel, Category>();
