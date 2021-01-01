@@ -40,6 +40,7 @@ namespace MongoShop
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Name));
 
             CreateMap<Category, IndexCategoryViewModel>();
+            CreateMap<Category, DetailCategoryViewModel>();
             CreateMap<CreateCategoryViewModel, Category>();
 
             #endregion

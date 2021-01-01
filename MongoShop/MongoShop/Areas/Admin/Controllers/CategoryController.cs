@@ -89,15 +89,15 @@ namespace MongoShop.Areas.Admin.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
 
-        //[HttpGet]
-        //public async Task<IActionResult> Detail(string id)
-        //{
-        //    var category = await _categoryServices.GetByIdAsync(id);
+        [HttpGet]
+        public async Task<IActionResult> Detail(string id)
+        {
+            var category = await _categoryServices.GetByIdAsync(id);
 
-        //    var detailCategoryViewmodel = _mapper.Map<DetailCategoryViewModel>(category);
+            var detailCategoryViewmodel = _mapper.Map<DetailCategoryViewModel>(category);
 
-        //    return View(detailCategoryViewmodel);
-        //}
+            return View(detailCategoryViewmodel);
+        }
 
         //[HttpGet]
         //public async Task<IActionResult> Delete(string id)
