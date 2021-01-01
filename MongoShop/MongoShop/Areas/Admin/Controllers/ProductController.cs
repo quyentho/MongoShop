@@ -104,9 +104,9 @@ namespace MongoShop.Areas.Admin.Controllers
         {
             var product = await _productServices.GetByIdAsync(id);
 
-            var productViewmodel = await PrepareProductData(product);
+            var detailProductViewmodel = _mapper.Map<DetailProductViewModel>(product);
 
-            return View(productViewmodel);
+            return View(detailProductViewmodel);
         }
 
         [HttpGet]
@@ -124,17 +124,10 @@ namespace MongoShop.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // TODO: temp
         private async Task<CreateProductViewModel> PrepareProductData(Product product)
         {
-            List<Category> categories = await _categoryServices.GetAllAsync();
-
-            ViewData["Categories"] = _mapper.Map<List<CategoryViewModel>>(categories);
-
-            ViewData["imagePaths"] = product.Images;
-
-            ViewData["productId"] = product.Id;
-
-            return _mapper.Map<CreateProductViewModel>(product);
+            return new CreateProductViewModel();
         }
     }
 }
