@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
@@ -37,9 +36,9 @@ namespace MongoShop.Areas.Admin.Controllers
         {
             var products = await _productServices.GetAllAsync();
 
-            var indexProductViewModels = _mapper.Map<List<IndexProductViewModel>>(products);
+            var displayProductViewModel = _mapper.Map<List<ProductViewModel>>(products);
 
-            return View(indexProductViewModels);
+            return View(displayProductViewModel);
         }
 
         [HttpGet]
@@ -60,7 +59,7 @@ namespace MongoShop.Areas.Admin.Controllers
                 return await Create();
             }
 
-            string categoryId = productViewModel.SelectedCategoryId;
+            string categoryId = productViewModel.Category.Id;
             var category = await _categoryServices.GetByIdAsync(categoryId);
 
             // upload image and get back the paths
@@ -129,7 +128,7 @@ namespace MongoShop.Areas.Admin.Controllers
         {
             List<Category> categories = await _categoryServices.GetAllAsync();
 
-            _mapper.Map<List<SelectListItem>>(categories);
+            ViewData["Categories"] = _mapper.Map<List<CategoryViewModel>>(categories);
 
             ViewData["imagePaths"] = product.Images;
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using MongoShop.Areas.Admin.ViewModels.Category;
+﻿using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.Services.FileUpload;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
     {
         public ProductViewModel()
         {
+            Category = new CategoryViewModel();
             Images = new ImagesUpload();
         }
 
@@ -33,10 +33,6 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 
         public ImagesUpload Images { get; set; }
 
-        [Required]
-        [DisplayName("Category")]
-        public string SelectedCategoryId { get; set; }
-
-        public List<SelectListItem> CategoryList { get; set; }
+        public CategoryViewModel Category { get; set; }
     }
 }

@@ -4,13 +4,14 @@
 }
 
 @using MongoShop.Areas.Admin.ViewModels.Product;
-@model IEnumerable<IndexProductViewModel>
+@model IEnumerable<ProductViewModel>
 
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Product List</h3>
+
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 200px;">
                         <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -28,7 +29,6 @@
             <!-- /.card-header -->
 
             <div class="card-body table-responsive p-0" style="height: 500px;">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <table class="table table-head-fixed text-nowrap">
                     <thead>
                         <tr>
@@ -36,7 +36,7 @@
                             <th>@Html.DisplayNameFor(model => model.Price)</th>
                             <th>@Html.DisplayNameFor(model => model.StockQuantity)</th>
                             <th>@Html.DisplayNameFor(model => model.Size)</th>
-                            <th>@Html.DisplayNameFor(model => model.CategoryName)</th>
+                            <th>@Html.DisplayNameFor(model => model.Category)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +47,8 @@
                                 <td>@String.Format("{0:c}", item.Price)</td>
                                 <td>@Html.DisplayFor(model => item.StockQuantity)</td>
                                 <td>@Html.DisplayFor(model => item.Size)</td>
-                                <td>@Html.DisplayFor(model => item.CategoryName)</td>
+                                <td>@Html.DisplayFor(model => item.Images)</td>
+                                <td>@Html.DisplayFor(model => item.Category.Name)</td>
                                 <td>
                                     <div class="btn-group">
                                         @* TODO: This should be changed.*@

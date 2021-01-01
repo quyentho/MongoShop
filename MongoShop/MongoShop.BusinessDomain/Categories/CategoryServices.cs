@@ -29,10 +29,9 @@ namespace MongoShop.BusinessDomain.Categories
             await _collection.InsertOneAsync(category);
         }
 
-        public async Task DeleteAsync(string id, Category category)
+        public Task DeleteAsync(string id, Category category)
         {
-            category.Status = false;
-            await _collection.ReplaceOneAsync(c => c.Id == id, category);
+            throw new NotImplementedException();
         }
 
         public async Task EditAsync(string id, Category category)
