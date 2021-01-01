@@ -41,6 +41,8 @@ namespace MongoShop
 
             CreateMap<Category, IndexCategoryViewModel>();
             CreateMap<Category, DetailCategoryViewModel>();
+            CreateMap<Category, EditCategoryViewModel>();
+            CreateMap<EditCategoryViewModel, Category>();
             CreateMap<CreateCategoryViewModel, Category>();
 
             #endregion

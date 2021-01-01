@@ -27,9 +27,9 @@ namespace MongoShop.Areas.Admin.Controllers
         {
             var categories = await _categoryServices.GetAllAsync();
 
-            var indexCategoryViewModel = _mapper.Map<List<IndexCategoryViewModel>>(categories);
+            var indexCategoryViewModels = _mapper.Map<List<IndexCategoryViewModel>>(categories);
 
-            return View(indexCategoryViewModel);
+            return View(indexCategoryViewModels);
         }
 
         [HttpGet]
@@ -53,41 +53,30 @@ namespace MongoShop.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Edit(string id)
-        //{
-        //    var category = await _categoryServices.GetByIdAsync(id);
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var category = await _categoryServices.GetByIdAsync(id);
 
+            var editCategoryViewModel = _mapper.Map<EditCategoryViewModel>(category);
 
-        //    var editCategoryViewModel = _mapper.Map<EditCategoryViewModel>(category);
+            return View(editCategoryViewModel);
+        }
 
-        //    var categories = await _categoryServices.GetAllAsync();
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, EditCategoryViewModel editCategoryViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return await Edit(id);
+            }
 
-        //    editCategoryViewModel.CategoryList = _mapper.Map<List<SelectListItem>>(categories);
+            var editedCategory = _mapper.Map<Category>(editCategoryViewModel);
 
-        //    return View(editCategoryViewModel);
-        //}
+            await _categoryServices.EditAsync(id, editedCategory);
 
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(string id, EditCategoryViewModel editCategoryViewModel)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return await Edit(id);
-        //    }
-
-        //    var editedCategory = _mapper.Map<Category>(editCategoryViewModel);
-
-        //    if (editCategoryViewModel.ImagesUpload != null)
-        //    {
-        //        List<string> imagePaths = await _fileUploadService.Upload(editCategoryViewModel.ImagesUpload);
-        //        editedCategory.Images.AddRange(imagePaths);
-        //    }
-
-        //    await _categoryServices.EditAsync(id, editedCategory);
-
-        //    return RedirectToAction(nameof(Index));
-        //}
+            return RedirectToAction(nameof(Index));
+        }
 
         [HttpGet]
         public async Task<IActionResult> Detail(string id)
