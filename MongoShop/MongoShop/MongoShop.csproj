@@ -5,11 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Admin\**" />
+    <Content Remove="Views\Admin\**" />
+    <EmbeddedResource Remove="Views\Admin\**" />
+    <None Remove="Views\Admin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MongoShop.BusinessDomain\MongoShop.BusinessDomain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Admin\" />
     <Folder Include="wwwroot\js\pages\dashboards\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>

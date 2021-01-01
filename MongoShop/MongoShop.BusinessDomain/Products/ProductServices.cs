@@ -46,6 +46,8 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>  
         public async Task EditAsync(string id, Product product)
         {
+            product.Id = id;
+            product.Status = true;
             await _collection.ReplaceOneAsync(c => c.Id == id, product);
         }
 
@@ -53,7 +55,6 @@ namespace MongoShop.BusinessDomain.Products
         public async Task<List<Product>> GetAllAsync()
         {
 
-            var projection = Builders<Product>.Projection.Include(p => p.Category);
             var resultOfJoin = _collection.Aggregate()
                 .Match(p => p.Status == true)
                 .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
@@ -66,15 +67,25 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>  
         public async Task<Product> GetByIdAsync(string id)
         {
-            var product = await _collection.FindAsync(c => c.Id == id && c.Status == true);
+            var product = _collection.Aggregate()
+                .Match(p => p.Id == id && p.Status == true)
+                .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
+                .Unwind("Category")
+                .As<Product>();
+
             return await product.SingleOrDefaultAsync();
         }
 
         /// <inheritdoc/>  
         public async Task<List<Product>> GetByNameAsync(string name)
         {
-            var list = await _collection.FindAsync(c => c.Name == name && c.Status == true);
-            return await list.ToListAsync();
+            var product = _collection.Aggregate()
+               .Match(p => p.Name == name && p.Status == true)
+               .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
+               .Unwind("Category")
+               .As<Product>();
+
+            return await product.ToListAsync();
         }
     }
 }
