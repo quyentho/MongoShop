@@ -45,11 +45,13 @@ namespace MongoShop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            var createProductViewModel = new CreateProductViewModel();
+
             List<Category> categories = await _categoryServices.GetAllAsync();
 
-            ViewData["Categories"] = _mapper.Map<List<CategoryViewModel>>(categories);
+            createProductViewModel.CategoryList = _mapper.Map<List<SelectListItem>>(categories);
 
-            return View();
+            return View(createProductViewModel);
         }
 
         [HttpPost]
@@ -60,17 +62,14 @@ namespace MongoShop.Areas.Admin.Controllers
                 return await Create();
             }
 
-            string categoryId = productViewModel.Category.Id;
-            var category = await _categoryServices.GetByIdAsync(categoryId);
-
             // upload image and get back the paths
-            List<string> imagePaths = await _fileUploadService.Upload(productViewModel.Images);
+            List<string> imagePaths = await _fileUploadService.Upload(productViewModel.ImagesUpload);
 
             var product = _mapper.Map<Product>(productViewModel);
 
             product.Images = imagePaths;
 
-            await _productServices.AddAsync(product, categoryId);
+            await _productServices.AddAsync(product);
 
             return RedirectToAction(nameof(Index));
         }
@@ -80,9 +79,10 @@ namespace MongoShop.Areas.Admin.Controllers
         {
             var product = await _productServices.GetByIdAsync(id);
             
-            var categories = await _categoryServices.GetAllAsync();
             
             var editProductViewModel = _mapper.Map<EditProductViewModel>(product);
+
+            var categories = await _categoryServices.GetAllAsync();
 
             editProductViewModel.CategoryList = _mapper.Map<List<SelectListItem>>(categories);
 

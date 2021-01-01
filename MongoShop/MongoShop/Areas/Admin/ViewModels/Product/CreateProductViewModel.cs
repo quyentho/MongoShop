@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.Services.FileUpload;
 using System;
@@ -10,11 +11,6 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 {
     public class CreateProductViewModel
     {
-        public CreateProductViewModel()
-        {
-            Category = new CategoryViewModel();
-        }
-
         public string Id { get; set; }
 
         [DisplayName("Product name")]
@@ -31,8 +27,12 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
         [Required]
         public string Size { get; set; }
 
-        public List<IFormFile> Images { get; set; }
+        public List<IFormFile> ImagesUpload { get; set; }
 
-        public CategoryViewModel Category { get; set; }
+        [Required(ErrorMessage = "Category is required")]
+        public string SelectedCategoryId { get; set; }
+
+        [DisplayName("Category")]
+        public List<SelectListItem> CategoryList { get; set; }
     }
 }
