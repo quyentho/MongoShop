@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MongoShop.Areas.Admin.ViewModels.Category
 {
-    public class IndexCategoryViewModel
+    public class DetailCategoryViewModel
     {
         public string Id { get; set; }
 

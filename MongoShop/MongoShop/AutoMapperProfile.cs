@@ -12,6 +12,7 @@ namespace MongoShop
     {
         public AutoMapperProfile()
         {
+            #region Product
             CreateMap<Product, CreateProductViewModel>();
 
             CreateMap<CreateProductViewModel, Product>()
@@ -31,15 +32,17 @@ namespace MongoShop
             CreateMap<EditProductViewModel, Product>()
                 .ForMember(dest=>dest.CategoryId, opt=>opt.MapFrom(src => src.SelectedCategoryId))
                 .ForMember(dest => dest.Images, opt => opt.Ignore());
+            #endregion
 
+            #region Category
             CreateMap<Category, SelectListItem>()
                 .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Name));
 
-           
-
             CreateMap<Category, IndexCategoryViewModel>();
-            CreateMap<IndexCategoryViewModel, Category>();
+            CreateMap<CreateCategoryViewModel, Category>();
+
+            #endregion
         }
     }
 }

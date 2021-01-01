@@ -42,7 +42,6 @@
                                 <td>@Html.DisplayFor(model => item.Name)</td>
                                 <td>
                                     <div class="btn-group float-right">
-                                        @* TODO: This should be changed.*@
                                         <a type="button" class="btn btn-default" href="@Url.Action("Detail","Category", new { id = item.Id})">Detail</a>
                                         <a type="button" class="btn btn-primary" href="@Url.Action("Edit","Category", new { id = item.Id})">Edit</a>
                                         <a type="button" class="btn btn-danger" href="@Url.Action("Delete","Category", new { id = item.Id})">Delete</a>
