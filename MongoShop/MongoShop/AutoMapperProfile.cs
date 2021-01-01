@@ -38,8 +38,8 @@ namespace MongoShop
 
            
 
-            CreateMap<Category, CategoryViewModel>();
-            CreateMap<CategoryViewModel, Category>();
+            CreateMap<Category, IndexCategoryViewModel>();
+            CreateMap<IndexCategoryViewModel, Category>();
         }
     }
 }
