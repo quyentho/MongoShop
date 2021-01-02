@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoShop.BusinessDomain.Carts;
 using MongoShop.Models;
 using MongoShop.Services.FileUpload;
 
@@ -12,31 +14,31 @@ namespace MongoShop.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly IFileUploadService _fileUploadService;
+        private readonly ICartServices _cartServices;
 
-
-        public HomeController(IFileUploadService fileUploadService)
+        public HomeController(ICartServices cartServices)
         {
-            _fileUploadService = fileUploadService;
+            this._cartServices = cartServices;
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(List<IFormFile> images)
         {
-            await _fileUploadService.Upload(images);
+          
 
-            ModelState.AddModelError(string.Empty, "images are uploaded");
             return View();
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var cartItems = await _cartServices.GetCartItemsByUserIdAsync("783c3082-3970-4428-ad53-d17382a2a1c8");
             return View();
         }
 
         public IActionResult Privacy()
         {
+            
             return View();
         }
 

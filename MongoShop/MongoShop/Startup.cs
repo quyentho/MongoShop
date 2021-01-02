@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MongoShop.BusinessDomain;
+using MongoShop.BusinessDomain.Carts;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
@@ -76,10 +77,12 @@ namespace MongoShop
             services.AddSingleton<IOrderServices,OrderServices>();
 
             services.AddSingleton<ICategoryServices, CategoryServices>();
+            services.AddSingleton<ICartServices, CartServices>();
 
             services.AddTransient<IFileUploadService, FileUploadService>();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

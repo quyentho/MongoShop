@@ -4,6 +4,7 @@ using AspNetCore.Identity.MongoDbCore.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDbGenericRepository.Attributes;
+using MongoShop.BusinessDomain.Carts;
 
 namespace MongoShop.BusinessDomain.Users
 {
@@ -30,11 +31,6 @@ namespace MongoShop.BusinessDomain.Users
         public List<Contacts> Contacts { get; set; }
 
         [BsonElement("cart")]
-        public Cart Cart { get; set; }
-    }
-
-    public class Cart
-    {
-        List<string> Products { get; set; }
+        public Cart Cart { get; set; } = new Cart();
     }
 }
