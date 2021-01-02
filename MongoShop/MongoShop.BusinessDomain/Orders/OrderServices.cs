@@ -79,15 +79,9 @@ namespace MongoShop.BusinessDomain.Orders
         }
 
         /// <inheritdoc/>
-        public Task DeleteAsync(string id, Order order)
+        public async Task UpdateInvoiceStatusAsync(string orderId, Order order)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc/>
-        public async Task EditAsync(string id, Order order)
-        {
-            await _collection.ReplaceOneAsync(c => c.Id == id, order);
+            await _collection.ReplaceOneAsync(c => c.Id == orderId, order);
         }
 
         ///<inheritdoc/>
@@ -103,6 +97,11 @@ namespace MongoShop.BusinessDomain.Orders
                 .Where(o => o.Invoice.Status.Equals(InvoiceStatus.Pending)).ToListAsync();
 
             return orders;
+        }
+
+        public async Task<Order> GetOrderByIdAsync(string id)
+        {
+            return await _collection.FindAsync(o => o.Id == id).GetAwaiter().GetResult().FirstOrDefaultAsync();
         }
     }
 }

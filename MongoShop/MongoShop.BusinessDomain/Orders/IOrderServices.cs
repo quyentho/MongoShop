@@ -22,20 +22,17 @@ namespace MongoShop.BusinessDomain.Orders
         Task AddAsync(Order order);
 
         /// <summary>
-        /// Update an Order
+        /// Update an Order. Use for update invoice status
         /// </summary>
         /// <param name="id"></param>
         /// <param name="order"></param>
         /// <returns></returns>
-        Task EditAsync(string id, Order order);
+        Task UpdateInvoiceStatusAsync(string id, Order order);
 
         /// <summary>
-        /// Delete Order??? Maybe No use
+        /// Get orders with invoice that has status 'Pending'
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="order"></param>
         /// <returns></returns>
-        Task DeleteAsync(string id, Order order);
         Task<List<Order>> GetOrdersWithUnpaidInvoiceAsync();
     }
 }
