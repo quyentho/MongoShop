@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MongoShop.BusinessDomain.Carts;
+using MongoShop.BusinessDomain.Wishlists;
 using MongoShop.Models;
 using MongoShop.Services.FileUpload;
 
@@ -14,11 +14,11 @@ namespace MongoShop.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly ICartServices _cartServices;
+        private readonly IWishlistServices _wishlistServices;
 
-        public HomeController(ICartServices cartServices)
+        public HomeController(IWishlistServices wishlistServices)
         {
-            this._cartServices = cartServices;
+            this._wishlistServices = wishlistServices;
         }
 
         [HttpPost]
@@ -32,7 +32,7 @@ namespace MongoShop.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var cartItems = await _cartServices.GetCartItemsByUserIdAsync("783c3082-3970-4428-ad53-d17382a2a1c8");
+            var wishlist =await _wishlistServices.GetWishlistItemsByUserIdAsync("783c3082-3970-4428-ad53-d17382a2a1c8");
             return View();
         }
 

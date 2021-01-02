@@ -3,19 +3,19 @@ using System.Threading.Tasks;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
 
-namespace MongoShop.BusinessDomain.Carts
+namespace MongoShop.BusinessDomain.Wishlists
 {
-    public class CartServices : ICartServices
+    public class WishlistServices : IWishlistServices
     {
         private readonly IUserServices _userServices;
 
-        public CartServices(IUserServices userServices)
+        public WishlistServices(IUserServices userServices)
         {
             _userServices = userServices;
         }
 
         /// <inheritdoc/>
-        public async Task<List<Product>> GetCartItemsByUserIdAsync(string userId)
+        public async Task<List<Product>> GetWishlistItemsByUserIdAsync(string userId)
         {
             var user = await _userServices.GetActiveUserByIdAsync(userId);
 
@@ -24,13 +24,13 @@ namespace MongoShop.BusinessDomain.Carts
                 throw new KeyNotFoundException("user is not exists");
             }
 
-            var cartItems = user.Cart.Products;
+            var wishlistItems = user.Wishlist.Products;
 
-            return cartItems;
+            return wishlistItems;
         }
 
         /// <inheritdoc/>     
-        public async Task UpdateCartAsync(string userId,Cart cart)
+        public async Task UpdateWishlistAsync(string userId,Wishlist wishlist)
         {
             var user = await _userServices.GetActiveUserByIdAsync(userId);
 
@@ -39,7 +39,7 @@ namespace MongoShop.BusinessDomain.Carts
                 throw new KeyNotFoundException("user is not exists");
             }
 
-            user.Cart = cart;
+            user.Wishlist = wishlist;
 
             await _userServices.UpdateUserAsync(userId, user);
         }

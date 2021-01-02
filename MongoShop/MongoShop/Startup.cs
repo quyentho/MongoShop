@@ -16,6 +16,7 @@ using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
+using MongoShop.BusinessDomain.Wishlists;
 using MongoShop.Services.FileUpload;
 
 namespace MongoShop
@@ -78,6 +79,7 @@ namespace MongoShop
 
             services.AddSingleton<ICategoryServices, CategoryServices>();
             services.AddSingleton<ICartServices, CartServices>();
+            services.AddSingleton<IWishlistServices, WishlistServices>();
 
             services.AddTransient<IFileUploadService, FileUploadService>();
 

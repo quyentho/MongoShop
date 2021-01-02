@@ -5,6 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDbGenericRepository.Attributes;
 using MongoShop.BusinessDomain.Carts;
+using MongoShop.BusinessDomain.Wishlists;
 
 namespace MongoShop.BusinessDomain.Users
 {
@@ -32,5 +33,8 @@ namespace MongoShop.BusinessDomain.Users
 
         [BsonElement("cart")]
         public Cart Cart { get; set; } = new Cart();
+
+        [BsonElement("wishlist")]
+        public Wishlist Wishlist { get; set; } = new Wishlist();
     }
 }
