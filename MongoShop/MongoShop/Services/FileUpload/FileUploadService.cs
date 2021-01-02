@@ -40,12 +40,16 @@ namespace MongoShop.Services.FileUpload
 
                     path = path.Replace(Path.GetExtension(path), Path.GetExtension(file.FileName));
 
-                    filePaths.Add(path);
-
                     using (var stream = File.Create(path))
                     {
                         await file.CopyToAsync(stream);
                     }
+
+                    path = Path.GetFileName(path);
+                    path = "/uploads/" + path;
+                    filePaths.Add(path);
+
+                    
                 }
             }
 
