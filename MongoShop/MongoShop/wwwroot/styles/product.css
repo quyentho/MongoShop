@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS Document */
 
 /******************************
@@ -885,8 +885,7 @@ section
 {
 	margin-bottom: 0;
 }
-.product_quantity_container
-{
+.product_quantity_container {
 	margin-top: 43px;
 }
 .product_quantity_container span
