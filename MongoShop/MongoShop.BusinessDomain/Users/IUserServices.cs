@@ -6,24 +6,24 @@ namespace MongoShop.BusinessDomain.Users
     public interface IUserServices
     {
         /// <summary>
-        ///     Gets user by email.
+        ///     Gets user with status = true by email.
         /// </summary>
         /// <param name="email">email of the user.</param>
         /// <returns>User that match required email or null if not found.</returns>
-        Task<ApplicationUser> GetUserByEmailAsync(string email);
+        Task<ApplicationUser> GetActiveUserByEmailAsync(string email);
 
         /// <summary>
-        ///     Get user by id.
+        ///     Get user with status = true by id. Return null if not exist
         /// </summary>
         /// <param name="userId">Id of the user.</param>
         /// <returns>User that match required id or null if not found.</returns>
-        Task<ApplicationUser> GetUserByIdAsync(string userId);
+        Task<ApplicationUser> GetActiveUserByIdAsync(string userId);
 
         /// <summary>
         ///     Gets all active users.
         /// </summary>
         /// <returns>List Users</returns>
-        Task<List<ApplicationUser>> GetActiveUsersAsync();
+        Task<List<ApplicationUser>> GetAllActiveUsersAsync();
 
         /// <summary>
         /// Gets all users.
