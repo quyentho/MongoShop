@@ -80,6 +80,7 @@ namespace MongoShop
             services.AddSingleton<ICategoryServices, CategoryServices>();
             services.AddSingleton<ICartServices, CartServices>();
             services.AddSingleton<IWishlistServices, WishlistServices>();
+            services.AddSingleton<IOrderServices, OrderServices>();
 
             services.AddTransient<IFileUploadService, FileUploadService>();
 

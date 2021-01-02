@@ -14,7 +14,8 @@ namespace MongoShop.BusinessDomain.Orders
         Task<List<Order>> GetAllAsync();
 
         /// <summary>
-        /// Add a new Order
+        /// Add a new Order accompany with invoice and reduce the quantity if stock.
+        /// Throw exception if any product not have enough quantity instock.
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
@@ -35,5 +36,6 @@ namespace MongoShop.BusinessDomain.Orders
         /// <param name="order"></param>
         /// <returns></returns>
         Task DeleteAsync(string id, Order order);
+        Task<List<Order>> GetOrdersWithUnpaidInvoiceAsync();
     }
 }

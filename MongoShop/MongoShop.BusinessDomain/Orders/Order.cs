@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+using MongoShop.BusinessDomain.Users;
 
 namespace MongoShop.BusinessDomain.Orders
 {
@@ -12,18 +13,15 @@ namespace MongoShop.BusinessDomain.Orders
         public string Id { get; set; }
 
         [BsonElement("products")]
-        public List<string> Products { get; set; }
+        public List<OrderedProduct> OrderedProducts { get; set; }
 
-        [BsonElement("users")]
-        public List<string> Users { get; set; }
+        [BsonElement("user_id")]
+        public string UserId { get; set; }
 
         [BsonElement("grand_total")]
         public double Total { get; set; }
 
         [BsonElement("invoice")]
         public Invoice Invoice { get; set; }
-
     }
-
-   
 }
