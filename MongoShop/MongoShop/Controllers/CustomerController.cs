@@ -41,6 +41,7 @@ namespace MongoShop.Controllers
             return View(indexProductViewModel.Take(3));
         }
 
+        [HttpGet]
         public async Task<IActionResult> Category()
         {
             var products = await _productServices.GetAllAsync();
@@ -59,6 +60,24 @@ namespace MongoShop.Controllers
             var detailProductViewModel = _mapper.Map<DetailProductViewModel>(product);
 
             return View(detailProductViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Category(string[] tags, float? price_min, float? price_max)
+        {
+            var products = await _productServices.GetAllAsync();
+            var indexProductViewModel = _mapper.Map<List<IndexProductViewModel>>(products);
+            var result = indexProductViewModel.Where(m=>m.Price > price_min && m.Price<price_max);
+            if(tags.Length == 1)
+            {
+                return View(result.Where(m => m.Category == tags[0]));
+            }
+            else if(tags.Length == 2)
+            {
+                return View(result.Where(m => m.Category == tags[0] || m.Category == tags[1]));
+            }
+
+            return View(result);
         }
 
         public IActionResult Cart()

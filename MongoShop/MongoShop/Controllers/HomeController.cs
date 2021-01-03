@@ -32,7 +32,7 @@ namespace MongoShop.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var wishlist =await _wishlistServices.GetWishlistItemsByUserIdAsync("783c3082-3970-4428-ad53-d17382a2a1c8");
+            //var wishlist =await _wishlistServices.GetWishlistItemsByUserIdAsync("783c3082-3970-4428-ad53-d17382a2a1c8");
             return View();
         }
 

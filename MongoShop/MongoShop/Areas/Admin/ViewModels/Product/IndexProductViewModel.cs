@@ -24,5 +24,6 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
         public string Category { get; set; }
 
         public List<string> Images { get; set; }
+
     }
 }

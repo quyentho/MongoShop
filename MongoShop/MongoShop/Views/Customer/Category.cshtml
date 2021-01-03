@@ -10,62 +10,73 @@
         <!-- row -->
         <div class="row">
             <!-- ASIDE -->
-            <!--<div id="aside" class="col-md-3">-->
-                <!-- aside Widget -->
-                <!--<div class="aside">
-                    <h3 class="aside-title">Categories</h3>
-                    <div class="checkbox-filter">
+            <form id="aside" class="col-md-3" method="post" asp-controller="Customer" asp-action="Category">
+                    <div class="aside">
+                        <h3 class="aside-title">Categories</h3>
+                        <div class="checkbox-filter">
 
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="category-1">
-                            <label for="category-1">
-                                <span></span>
-                                Laptops
-                                <small>(120)</small>
-                            </label>
-                        </div>
+                            <div class="input-checkbox">
+                                <input type="checkbox" name="tags" value="Type 1" id="category-1">
+                                <label for="category-1">
+                                    <span></span>
+                                    Type 1
+                                </label>
+                            </div>
 
+                            <div class="input-checkbox">
+                                <input type="checkbox" name="tags" value ="Type 2" id="category-2">
+                                <label for="category-2">
+                                    <span></span>
+                                    Type 2
+                                </label>
+                            </div>
 
-                    </div>
-                </div>-->
-                <!-- /aside Widget -->
-                <!-- aside Widget -->
-                <!--<div class="aside">
-                    <h3 class="aside-title">Price</h3>
-                    <div class="price-filter">
-                        <div id="price-slider"></div>
-                        <div class="input-number price-min">
-                            <input id="price-min" type="number">
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
-                        </div>
-                        <span>-</span>
-                        <div class="input-number price-max">
-                            <input id="price-max" type="number">
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
+                            <div class="input-checkbox">
+                                <input type="checkbox" name="tags" value ="Type 3" id="category-3">
+                                <label for="category-3">
+                                    <span></span>
+                                    Type 3
+                                </label>
+                            </div>
+
                         </div>
                     </div>
-                </div>-->
-                <!-- /aside Widget -->
-                <!-- aside Widget -->
-                <!--<div class="aside">
-                    <h3 class="aside-title">Brand</h3>
-                    <div class="checkbox-filter">
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="brand-1">
-                            <label for="brand-1">
-                                <span></span>
-                                SAMSUNG
-                                <small>(578)</small>
-                            </label>
+                    <div class="aside">
+                        <h3 class="aside-title">Price</h3>
+                        <div class="price-filter">
+                            <div id="price-slider"></div>
+                            <div class="input-number price-min">
+                                <input id="price-min" type="number" name="price_min">
+                                <span class="qty-up">+</span>
+                                <span class="qty-down">-</span>
+                            </div>
+                            <span>-</span>
+                            <div class="input-number price-max">
+                                <input id="price-max" type="number" name="price_max" >
+                                <span class="qty-up">+</span>
+                                <span class="qty-down">-</span>
+                            </div>
                         </div>
                     </div>
-                </div>-->
-                <!-- /aside Widget -->
-
-            <!--</div>-->
+                    @*<div class="aside">
+                        <h3 class="aside-title">Brand</h3>
+                        <div class="checkbox-filter">
+                            <div class="input-checkbox">
+                                <input type="checkbox" id="brand-1">
+                                <label for="brand-1">
+                                    <span></span>
+                                    SAMSUNG
+                                    <small>(578)</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>*@
+                    <input type="submit" value="Submit" class="cart_button" />
+            </form>
             <!-- /ASIDE -->
+
+
+
             <!-- STORE -->
             <div id="store" class="col-md-9">
                 <!-- store top filter -->
@@ -101,18 +112,25 @@
                         <div class="col-md-4 col-xs-6">
                             <div class="product">
                                 <div class="product-img">
-                                    <img src=@item.Images[0] alt="">
-                                    @*<div class="product-label">
-                                        <span class="sale">-30%</span>
-                                        <span class="new">NEW</span>
-                                    </div>*@
+                                    @try
+                                    {
+                                        <img src=@item.Images[0] alt="">
+                                    }
+                                    catch
+                                    {
+                                        <img alt="Not available" />
+                                    }
+                                @*<div class="product-label">
+                                    <span class="sale">-30%</span>
+                                    <span class="new">NEW</span>
+                                </div>*@
                                 </div>
                                 <div class="product-body">
                                     <p class="product-category">@Html.DisplayFor(model => item.Category)</p>
                                     <h3 class="product-name"><a href="#">@Html.DisplayFor(model => item.Name)</a></h3>
                                     <h4 class="product-price">@String.Format("{0:c}", item.Price) @*<del class="product-old-price">$990.00</del>*@</h4>
                                     <div class="product-btns">
-                                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                                        @*<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>*@
                                         @*<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>*@
                                         <button class="quick-view"><img src="~/img/61-512.webp" style="width:40%;"><span class="tooltipp">quick view</span></button>
                                     </div>
