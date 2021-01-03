@@ -121,6 +121,8 @@ namespace MongoShop
 
             app.UseAuthorization();
 
+            app.UseSession();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute(
@@ -129,7 +131,7 @@ namespace MongoShop
                     pattern: "Admin/{controller=product}/{action=index}/{id?}"
                     );
 
-                endpoints.MapControllerRoute("default_route", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default_route", "{controller=Customer}/{action=Index}/{id?}");
             });
         }
     }

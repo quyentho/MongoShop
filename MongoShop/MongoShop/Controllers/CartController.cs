@@ -11,9 +11,9 @@ namespace MongoShop.Controllers
 {
     public class CartController : Controller
     {
+        [HttpPost]
         public IActionResult AddToCart(string productId)
         {
-
             List<string> lstShoppingCart = HttpContext.Session.Get<List<string>>("ssShoppingCart");
             if (lstShoppingCart == null)
             {
@@ -21,7 +21,7 @@ namespace MongoShop.Controllers
             }
             lstShoppingCart.Add(productId);
             HttpContext.Session.Set("ssShoppingCart", lstShoppingCart);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Customer");
         }
     }
 }
