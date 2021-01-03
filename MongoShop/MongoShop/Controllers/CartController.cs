@@ -116,29 +116,17 @@ namespace MongoShop.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveFromCartAsync(string productId)
         {
-            List<string> listShoppingCart = HttpContext.Session.Get<List<string>>("ssShoppingCart");
 
-            if (listShoppingCart != null)
-            {
-                if (listShoppingCart.Contains(productId))
-                {
-                    listShoppingCart.Remove(productId);
+            string userId = GetCurrentLoggedInUserId();
 
-                    // set session back after remove
-                    HttpContext.Session.Set("ssShoppingCart", listShoppingCart);
+            // get cart from db to collect cart id.
+            Cart cartFromDb = await _cartServices.GetCartByUserIdAsync(userId);
 
-                    string userId = GetCurrentLoggedInUserId();
+            var productToRemove = cartFromDb.Products.Find(p => p.Product.Id == productId);
+            
+            cartFromDb.Products.Remove(productToRemove);
 
-                    // get cart from db to collect cart id.
-                    Cart cartFromDb = await _cartServices.GetCartByUserIdAsync(userId);
-
-                    Cart cartFromSession = await GetCartFromSession();
-
-                    cartFromSession.Id = cartFromDb.Id;
-
-                    await _cartServices.UpdateCartAsync(userId, cartFromSession);
-                }
-            }
+            await _cartServices.UpdateCartAsync(userId, cartFromDb);
 
             return RedirectToAction(nameof(Index));
         }
