@@ -17,4 +17,9 @@ namespace MongoShop.BusinessDomain.Orders
         public const string Pending = "Pending";
         public const string Cancel = "Cancel";
     }
+
+    public static class PaymentMethod
+    {
+        public const string ShipCod = "Ship COD";
+    }
 }

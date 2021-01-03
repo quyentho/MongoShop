@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
 
@@ -15,7 +16,7 @@ namespace MongoShop.BusinessDomain.Carts
         }
 
         /// <inheritdoc/>
-        public async Task<List<Product>> GetCartItemsByUserIdAsync(string userId)
+        public async Task<List<OrderedProduct>> GetCartItemsByUserIdAsync(string userId)
         {
             var user = await _userServices.GetActiveUserByIdAsync(userId);
 

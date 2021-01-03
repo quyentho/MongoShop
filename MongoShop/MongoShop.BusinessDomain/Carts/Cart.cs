@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 
 namespace MongoShop.BusinessDomain.Carts
@@ -11,12 +12,14 @@ namespace MongoShop.BusinessDomain.Carts
         public Cart()
         {
             Id = ObjectId.GenerateNewId().ToString();
-            Products = new List<Product>(); 
+            Products = new List<OrderedProduct>(); 
         }
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        public List<Product> Products { get; set; }
+        public List<OrderedProduct> Products { get; set; }
+
+        public double Total { get; set; }
     }
 }
