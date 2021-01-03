@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.Services.FileUpload;
-using MongoShop.Areas.Admin.ViewModels.Product;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
+using MongoShop.Models.Customer;
 
 namespace MongoShop.Controllers
 {
@@ -36,7 +33,7 @@ namespace MongoShop.Controllers
         {
             var products = await _productServices.GetAllAsync();
 
-            var indexProductViewModel = _mapper.Map<List<IndexProductViewModel>>(products);
+            var indexProductViewModel = _mapper.Map<List<IndexViewModel>>(products);
 
             return View(indexProductViewModel.Take(3));
         }
@@ -46,21 +43,21 @@ namespace MongoShop.Controllers
         {
             var products = await _productServices.GetAllAsync();
 
-            var indexProductViewModel = _mapper.Map<List<IndexProductViewModel>>(products);
+            var indexProductViewModel = _mapper.Map<List<IndexViewModel>>(products);
 
             return View(indexProductViewModel);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ProductDetail(string id)
-        {
-            var product = await _productServices.GetByIdAsync(id);
+        //[HttpGet]
+        //public async Task<IActionResult> ProductDetail(string id)
+        //{
+        //    var product = await _productServices.GetByIdAsync(id);
 
 
-            var detailProductViewModel = _mapper.Map<DetailProductViewModel>(product);
+        //    var detailProductViewModel = _mapper.Map<DetailProductViewModel>(product);
 
-            return View(detailProductViewModel);
-        }
+        //    return View(detailProductViewModel);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> Category(string[] tags, float? price_min, float? price_max)

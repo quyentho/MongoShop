@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Manage Categorys";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+
+@using MongoShop.Areas.Admin.ViewModels.Order
+@model List<IndexOrderViewModel>
+<div class="content">
+    <div class="container-fluid">
+
+        <section class="content">
+            <!-- Default box -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Orders</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped orders">
+                        <thead>
+                            <tr>
+                                <th style="width: 1%">
+                                    #
+                                </th>
+                                <th style="width: 20%">
+                                    User Id
+                                </th>
+
+
+                                <th style="width: 8%" class="text-center">
+                                    Status
+                                </th>
+                                <th style="width: 20%">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ 
+                                int orderCount = 0;
+                            } 
+                            @foreach (IndexOrderViewModel order in Model)
+                            {
+                                orderCount++;
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(m=> orderCount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(m => order.UserId)
+                                    </td>
+                                    <td class="order-state text-center">
+                                        <span class="badge badge-success">@Html.DisplayFor(m => order.InvoiceStatus)</span>
+                                    </td>
+
+                                    <td class="order-actions text-right">
+                                        @*<a class="btn btn-info btn-sm" href="@Url.Action("Detail", "Order", new { id = order.Id})">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Detail
+                                        </a>*@
+                                        <a class="btn btn-primary btn-sm" href="@Url.Action("Paid","Order", new { id = order.Id})">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            Paid
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" href="@Url.Action("Cancel","Order", new { id = order.Id})">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Cancel
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+        </section>
+    </div><!-- /.container-fluid -->
+</div>
