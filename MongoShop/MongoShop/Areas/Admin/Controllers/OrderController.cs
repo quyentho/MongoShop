@@ -21,11 +21,35 @@ namespace MongoShop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var orders = await _orderServices.GetAllAsync();
+            var orders = await _orderServices.GetOrdersWithUnpaidInvoiceAsync();
 
             var indexOrderViewModels = _mapper.Map<List<IndexOrderViewModel>>(orders);
 
             return View(indexOrderViewModels);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Paid(string id)
+        {
+            var order = await _orderServices.GetOrderByIdAsync(id);
+
+            order.Invoice.Status = InvoiceStatus.Paid;
+
+            await _orderServices.UpdateInvoiceStatusAsync(id, order);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Cancel(string id)
+        {
+            var order = await _orderServices.GetOrderByIdAsync(id);
+
+            order.Invoice.Status = InvoiceStatus.Cancel;
+
+            await _orderServices.UpdateInvoiceStatusAsync(id, order);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

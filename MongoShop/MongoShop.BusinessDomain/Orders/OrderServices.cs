@@ -90,6 +90,7 @@ namespace MongoShop.BusinessDomain.Orders
             return await orders.ToListAsync();
         }
 
+        ///<inheritdoc/>
         public async Task<List<Order>> GetOrdersWithUnpaidInvoiceAsync()
         {
             var orders = await _collection.AsQueryable()
@@ -97,7 +98,7 @@ namespace MongoShop.BusinessDomain.Orders
 
             return orders;
         }
-
+        ///<inheritdoc/>
         public async Task<Order> GetOrderByIdAsync(string id)
         {
             return await _collection.FindAsync(o => o.Id == id).GetAwaiter().GetResult().FirstOrDefaultAsync();

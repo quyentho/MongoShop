@@ -34,5 +34,12 @@ namespace MongoShop.BusinessDomain.Orders
         /// </summary>
         /// <returns></returns>
         Task<List<Order>> GetOrdersWithUnpaidInvoiceAsync();
+
+        /// <summary>
+        /// Get order by order id.
+        /// </summary>
+        /// <param name="id">Order id</param>
+        /// <returns></returns>
+        Task<Order> GetOrderByIdAsync(string id);
     }
 }
