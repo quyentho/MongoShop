@@ -36,5 +36,6 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 
         [DisplayName("Category")]
         public List<SelectListItem> CategoryList { get; set; }
+
     }
 }
