@@ -25,9 +25,9 @@
                     <div class="product_price">@String.Format("{0:c}", item.Price)</div>
                 </div>
                 <div class="product_options">
-                    <form method="post">
-                        <div class="product_buy product_option"><input type="image" src="~/img/shopping-bag-white.svg" alt="Submit" asp-action="AddToCart" asp-controller="Cart" asp-route-productId="@item.Id"></div>
-                        <div class="product_fav product_option">Add To wishlist</div>
+                    <form asp-action="AddToCart" asp-controller="Cart" method="post">
+                        <div style="white-space:nowrap;text-align:center" class="product_buy product_option"><span style="display:inline-block"><input type="image" src="/img/shopping-bag-white.svg" alt="Submit" asp-action="AddToCart" asp-controller="Cart" asp-route-productId="@item.Id" stye="width:100%"><span></span></span></div>
+                        <div class="product_fav product_option">+</div>
                     </form>
                 </div>
             </div>

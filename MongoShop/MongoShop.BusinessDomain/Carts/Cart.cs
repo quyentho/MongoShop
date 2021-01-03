@@ -12,7 +12,8 @@ namespace MongoShop.BusinessDomain.Carts
         public Cart()
         {
             Id = ObjectId.GenerateNewId().ToString();
-            Products = new List<OrderedProduct>(); 
+            Products = new List<OrderedProduct>();
+            Total = 0;
         }
 
         [BsonRepresentation(BsonType.ObjectId)]

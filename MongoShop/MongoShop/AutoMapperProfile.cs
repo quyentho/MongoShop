@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.Areas.Admin.ViewModels.Order;
 using MongoShop.Areas.Admin.ViewModels.Product;
+using MongoShop.BusinessDomain.Carts;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
+using MongoShop.Models.Cart;
 using MongoShop.Models.Customer;
 
 namespace MongoShop
@@ -55,6 +57,11 @@ namespace MongoShop
 
             #region Order
             CreateMap<Order, IndexOrderViewModel>();
+            #endregion
+
+            #region Cart
+            CreateMap<Cart, CartIndexViewModel>();
+
             #endregion
         }
     }
