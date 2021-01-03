@@ -17,7 +17,6 @@ namespace MongoShop.BusinessDomain.Orders
         private const string CollectionName = "order";
         private readonly IProductServices _productServices;
 
-
         public OrderServices(IDatabaseSetting databaseSetting, IProductServices productServices)
         {
             _databaseSetting = databaseSetting;
