@@ -19,6 +19,7 @@ namespace MongoShop
         {
             #region Product
             CreateMap<Product, CreateProductViewModel>();
+           
 
             CreateMap<CreateProductViewModel, Product>()
                .ForMember(dest => dest.Images, opt => opt.Ignore())
@@ -33,6 +34,9 @@ namespace MongoShop
 
             CreateMap<Product, DetailProductViewModel>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+            
+            CreateMap<Product, CustomerProductDetailViewModel>()
+               .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
 
             CreateMap<Product, EditProductViewModel>()
                 .ForMember(dest => dest.SelectedCategoryId, opt => opt.MapFrom(src => src.Category.Id));

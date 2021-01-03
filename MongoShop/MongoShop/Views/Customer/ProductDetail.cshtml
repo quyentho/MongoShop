@@ -1,9 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
 }
-@using MongoShop.Areas.Admin.ViewModels.Product;
-@using MongoShop.Areas.Admin.ViewModels.Category;
-@model DetailProductViewModel
+@using MongoShop.Models.Customer;
+@model CustomerProductDetailViewModel
 <!-- Product -->
 
 <div class="product">
@@ -24,11 +23,27 @@
             <!-- Product Image -->
             <div class="col-lg-7">
                 <div class="product_image">
-                    <div class="product_image_large"><img src=@Html.DisplayFor(model => model.Images[0]) alt=""></div>
+                    @try
+                    {
+                        <div class="product_image_large"><img src=@Html.DisplayFor(model => model.Images[0]) alt=""></div>
+
+                    }
+                    catch (Exception)
+                    {
+                        <img alt="None" />
+                    }
                     <div class="product_image_thumbnails d-flex flex-row align-items-start justify-content-start">
                         @for (int i = 0; i <= 3; i++)
                         {
-                            <div class="product_image_thumbnail" style="background-image:url(@Html.DisplayFor(model => model.Images[i]))" data-image=@Html.DisplayFor(model => model.Images[i])></div>
+                            @try
+                            {
+                                <div class="product_image_thumbnail" style="background-image:url(@Html.DisplayFor(model => model.Images[i]))" data-image=@Html.DisplayFor(model => model.Images[i])></div>
+
+                            }
+                            catch (Exception)
+                            {
+                                <img alt="None" />
+                            }
                         }
                     </div>
                 </div>
@@ -129,7 +144,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="button cart_button"><a href="#">add to cart</a></div>
+                        <div class="button cart_button">add to cart</div>
                     </div>
                 </div>
             </div>
@@ -203,5 +218,14 @@
             </div>
         </div>-->
     </div>
-
 </div>
+
+<script src="~/js/jquery.min.js"></script>
+<script type="text/javascript">
+    $(".button.cart_button").click(function () {
+        $.post("/Cart/AddToCart", { productId: "@Model.Id" })
+            .done(function (data) {
+                alert("Data Loaded: " + data);
+            });
+    });
+</script>

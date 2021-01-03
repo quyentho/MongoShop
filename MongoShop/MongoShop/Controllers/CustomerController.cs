@@ -47,16 +47,16 @@ namespace MongoShop.Controllers
             return View(indexProductViewModel);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> ProductDetail(string id)
-        //{
-        //    var product = await _productServices.GetByIdAsync(id);
+        [HttpGet]
+        public async Task<IActionResult> ProductDetail(string id)
+        {
+            var product = await _productServices.GetByIdAsync(id);
 
 
-        //    var detailProductViewModel = _mapper.Map<DetailProductViewModel>(product);
+            var customerProductDetailViewModel = _mapper.Map<CustomerProductDetailViewModel>(product);
 
-        //    return View(detailProductViewModel);
-        //}
+            return View(customerProductDetailViewModel);
+        }
 
         public IActionResult Cart()
         {
