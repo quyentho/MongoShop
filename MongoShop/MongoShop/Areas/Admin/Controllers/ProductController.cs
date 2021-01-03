@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;

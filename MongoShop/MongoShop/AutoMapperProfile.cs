@@ -7,6 +7,7 @@ using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
+using MongoShop.Models.Customer;
 
 namespace MongoShop
 {
@@ -22,7 +23,7 @@ namespace MongoShop
                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(scr => scr.SelectedCategoryId))
                .ForMember(dest => dest.Category, opt => opt.Ignore());
 
-            CreateMap<Product, IndexProductViewModel>()
+            CreateMap<Product, Areas.Admin.ViewModels.Product.IndexProductViewModel>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
 
             CreateMap<Product, DetailProductViewModel>()

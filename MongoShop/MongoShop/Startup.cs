@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -69,6 +70,15 @@ namespace MongoShop
                     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
                 }
             };
+
+            services.AddMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+            });
+            services.AddMvc();
+
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
 
             services.AddSingleton<IProductServices, ProductServices>();
@@ -85,6 +95,9 @@ namespace MongoShop
             services.AddTransient<IFileUploadService, FileUploadService>();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
+           
+            
+
 
         }
 
