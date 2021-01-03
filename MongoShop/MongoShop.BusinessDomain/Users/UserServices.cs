@@ -26,11 +26,11 @@ namespace MongoShop.BusinessDomain.Users
         /// <inheritdoc/>
         public async Task DeleteUserAsync(string userId)
         {
-            var user = await GetUserByIdAsync(userId);
+            var user = await GetActiveUserByIdAsync(userId);
 
             if (user is null)
             {
-                throw new ArgumentOutOfRangeException(userId, "User not exists.");
+                throw new KeyNotFoundException("User not exists.");
             }
 
             user.Status = false;
@@ -39,7 +39,7 @@ namespace MongoShop.BusinessDomain.Users
         }
 
         /// <inheritdoc/>
-        public async Task<List<ApplicationUser>> GetActiveUsersAsync()
+        public async Task<List<ApplicationUser>> GetAllActiveUsersAsync()
         {
             var users = await _collection.FindAsync(u => u.Status == true);
 
@@ -47,20 +47,21 @@ namespace MongoShop.BusinessDomain.Users
         }
 
         /// <inheritdoc/>
-        public async Task<ApplicationUser> GetUserByEmailAsync(string email)
+        public async Task<ApplicationUser> GetActiveUserByEmailAsync(string email)
         {
-            var users = await _collection.FindAsync(u => u.Email.Equals(email));
+            var users = await _collection.FindAsync(u => u.Email.Equals(email) && u.Status == true);
 
             return users.SingleOrDefault();
         }
 
         /// <inheritdoc/>
-        public async Task<ApplicationUser> GetUserByIdAsync(string userId)
+        public async Task<ApplicationUser> GetActiveUserByIdAsync(string userId)
         {
             var id = Guid.Parse(userId);
-            var users = await _collection.FindAsync(u => u.Id == id);
+            
+            var user = await _collection.FindAsync(u => u.Id == id && u.Status == true);
 
-            return users.SingleOrDefault();
+            return user.SingleOrDefault();
         }
 
         /// <inheritdoc/>
@@ -73,9 +74,16 @@ namespace MongoShop.BusinessDomain.Users
         /// <inheritdoc/>
         public async Task UpdateUserAsync(string userId, ApplicationUser newUser)
         {
-            var user = await GetUserByIdAsync(userId);
+            var user = await GetActiveUserByIdAsync(userId);
 
-            await _collection.ReplaceOneAsync(u => u.Id == user.Id, user);
+            if (user is null)
+            {
+                throw new KeyNotFoundException("User not exists");
+            }
+
+            newUser.Id = Guid.Parse(userId);
+
+            await _collection.ReplaceOneAsync(u => u.Id == user.Id, newUser);
         }
     }
 }
