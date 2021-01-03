@@ -1,4 +1,9 @@
-﻿<header class="header">
+﻿@using Microsoft.AspNetCore.Http;
+@using MongoShop.Extensions;
+@using System.Collections.Generic;
+@inject IHttpContextAccessor HttpContextAccessor
+
+<header class="header">
     <div class="header_inner d-flex flex-row align-items-center justify-content-start">
         <div class="logo"><a href="#">Wish</a></div>
         <nav class="main_nav">
@@ -21,10 +26,20 @@
                 <!-- Cart -->
                 <a href="@Url.Action("Index","Cart")">
                     <div class="cart">
-                       <img src="~/img/shopping-bag.svg" alt="">
+                        <img src="~/img/shopping-bag.svg" alt="">
                         <div class="cart_num_container">
                             <div class="cart_num_inner">
-                                <div class="cart_num">1</div>
+                                @if (HttpContextAccessor.HttpContext.Session.Get<List<string>>("ssShoppingCart") != null)
+                                {
+                                    
+                                    var count = HttpContextAccessor.HttpContext.Session.Get<List<string>>("ssShoppingCart").Count().ToString();
+                                    <div class="cart_num">@count</div>
+                                }
+                                else
+                                {
+                                    <div class="cart_num">0</div>
+                                }
+
                             </div>
                         </div>
                     </div>

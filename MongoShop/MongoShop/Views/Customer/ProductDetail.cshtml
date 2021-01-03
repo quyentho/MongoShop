@@ -223,9 +223,6 @@
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
     $(".button.cart_button").click(function () {
-        $.post("/Cart/AddToCart", { productId: "@Model.Id" })
-            .done(function (data) {
-                alert("Data Loaded: " + data);
-            });
+        $.post("/Cart/AddToCart", { productId: "@Model.Id" });
     });
 </script>

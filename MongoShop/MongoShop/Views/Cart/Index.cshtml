@@ -19,6 +19,7 @@
                         <div class="cart_bar_title_name">Product</div>
                         <div class="cart_bar_title_content ml-auto">
                             <div class="cart_bar_title_content_inner d-flex flex-row align-items-center justify-content-end">
+                                <div class="cart_bar_title_quantity">Size</div>
                                 <div class="cart_bar_title_price">Price</div>
                                 <div class="cart_bar_title_quantity">Quantity</div>
                                 <div class="cart_bar_title_total">Total</div>
@@ -36,7 +37,7 @@
                             {
                                 <li class=" cart_product d-flex flex-md-row flex-column align-items-md-center align-items-start justify-content-start">
                                     <!-- Product Image -->
-                                    @try
+                                    @*@try
                                     {
                                         <div class="cart_product_image"><img src="@item.Product.Images[0]"></div>
                                     }
@@ -44,12 +45,14 @@
                                     {
 
                                         <div class="cart_product_image"><img alt="No Image"></div>
-                                    }
+                                    }*@
 
                                     <!-- Product Name -->
-                                    <div class="cart_product_name"><a href="@Url.Action("ProductDetail","Customer")">@Html.DisplayFor(i => item.Product.Name)</a></div>
+                                    <div class="cart_product_name"><a href="@Url.Action("ProductDetail","Customer", new { id = item.Product.Id})">@Html.DisplayFor(i => item.Product.Name)</a></div>
                                     <div class="cart_product_info ml-auto">
                                         <div class="cart_product_info_inner d-flex flex-row align-items-center justify-content-md-end justify-content-start">
+                                            
+                                            <div class="cart_product_price">@Html.DisplayFor(i => item.Product.Size)</div>
 
                                             <!-- Product Price -->
                                             <div class="cart_product_price">@Html.DisplayFor(i => item.Product.Price)</div>
