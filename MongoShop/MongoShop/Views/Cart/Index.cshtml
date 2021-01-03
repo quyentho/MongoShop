@@ -34,49 +34,45 @@
                         <ul>
                             @foreach (var item in Model.Products)
                             {
-                            <li class=" cart_product d-flex flex-md-row flex-column align-items-md-center align-items-start justify-content-start">
-                                <!-- Product Image -->
-                                @try
-                                {
-                                    <div class="cart_product_image"><img src="@item.Product.Images[0]"></div>
-                                }
-                                catch (Exception)
-                                {
+                                <li class=" cart_product d-flex flex-md-row flex-column align-items-md-center align-items-start justify-content-start">
+                                    <!-- Product Image -->
+                                    @try
+                                    {
+                                        <div class="cart_product_image"><img src="@item.Product.Images[0]"></div>
+                                    }
+                                    catch (Exception)
+                                    {
 
-                                    <div class="cart_product_image"><img alt="No Image"></div>
-                                }
+                                        <div class="cart_product_image"><img alt="No Image"></div>
+                                    }
 
-                                <!-- Product Name -->
-                                <div class="cart_product_name"><a href="@Url.Action("ProductDetail","Customer")">@Html.DisplayFor(i => item.Product.Name)</a></div>
-                                <div class="cart_product_info ml-auto">
-                                    <div class="cart_product_info_inner d-flex flex-row align-items-center justify-content-md-end justify-content-start">
+                                    <!-- Product Name -->
+                                    <div class="cart_product_name"><a href="@Url.Action("ProductDetail","Customer")">@Html.DisplayFor(i => item.Product.Name)</a></div>
+                                    <div class="cart_product_info ml-auto">
+                                        <div class="cart_product_info_inner d-flex flex-row align-items-center justify-content-md-end justify-content-start">
 
-                                        <!-- Product Price -->
-                                        <div class="cart_product_price">@Html.DisplayFor(i => item.Product.Price)</div>
+                                            <!-- Product Price -->
+                                            <div class="cart_product_price">@Html.DisplayFor(i => item.Product.Price)</div>
 
-                                        <!-- Product Quantity -->
-                                        <div class="product_quantity_container" style="margin-top: 0px;">
-                                            <div class="product_quantity clearfix">
-                                                <input name="cartIndexViewModel.Products.OrderedQuantity" id="quantity_input" type="text" min="1" pattern="[0-9]*" value="@Html.DisplayFor(i => @item.OrderedQuantity)">
-                                                <div class="quantity_buttons">
-                                                    <div id="quantity_inc_button" class="quantity_inc quantity_control"><i class="fa fa-caret-up" aria-hidden="true"></i></div>
-                                                    <div id="quantity_dec_button" class="quantity_dec quantity_control"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+                                            <!-- Product Quantity -->
+                                            <div class="product_quantity_container" style="margin-top: 0px;">
+                                                <div class="product_quantity clearfix">
+                                                    <input name="cartIndexViewModel.Products.OrderedQuantity" class="quantity_input" type="number" min="1" value="@Html.DisplayFor(i => @item.OrderedQuantity)">
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <!-- Products Total Price -->
-                                        <div class="cart_product_total">$35.00</div>
+                                            <!-- Products Total Price -->
+                                            <div class="cart_product_total">$35.00</div>
 
-                                        <!-- Product Cart Trash Button -->
-                                        <div class="cart_product_button">
-                                            <form method="post">
-                                                <button asp-action="RemoveFromCart" asp-controller="Cart" asp-route-productId="@item.Product.Id" style="background-color: red; color:white" class="cart_product_remove">-</button>
-                                            </form>
+                                            <!-- Product Cart Trash Button -->
+                                            <div class="cart_product_button">
+                                                <form method="post">
+                                                    <button asp-action="RemoveFromCart" asp-controller="Cart" asp-route-productId="@item.Product.Id" style="background-color: red; color:white" class="cart_product_remove">-</button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
                             }
 
                         </ul>
@@ -97,12 +93,8 @@
                         <div class="cart_title">cart total</div>
                         <ul>
                             <li class="d-flex flex-row align-items-center justify-content-start">
-                                <div class="cart_total_title">Subtotal</div>
-                                <div class="cart_total_price ml-auto">$35.00</div>
-                            </li>
-                            <li class="d-flex flex-row align-items-center justify-content-start">
                                 <div class="cart_total_title">Total</div>
-                                <div class="cart_total_price ml-auto">$40.00</div>
+                                <div class="cart_total_price ml-auto">@Model.Total</div>
                             </li>
                         </ul>
                         <button class="cart_total_button">proceed to checkout</button>
@@ -113,3 +105,9 @@
     </div>
 </div>
 <script src="~/js/cart_custom.js"></script>
+<script>
+    @*var prices = @Html.Raw(Json.Serialize(@Model.Products.Select(p=>p.Product.Price).ToList()));
+    $(".quantity_input").on("change", function (e) {
+
+    });*@
+</script>
