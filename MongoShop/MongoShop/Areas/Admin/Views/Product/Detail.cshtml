@@ -41,12 +41,22 @@
                     <label class="form-control">@Html.DisplayFor(model => model.Size)</label>
                 </div>
             </div>
+
             <!-- /.card-body -->
         </div>
+     
         <!-- /.card -->
         <div class="col-12">
             <a href="@Url.Action("Index", "Product")" class="btn btn-secondary">Back to list</a>
             <a href="@Url.Action("Edit", "Product", new { id = Model.Id})" class="btn btn-primary float-right">Edit this product</a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card-body">
+            @foreach (var item in Model.Images)
+            {
+                <img src=@Html.DisplayFor(model => item) width="45%"/>
+            }
         </div>
     </div>
 </div>

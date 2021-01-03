@@ -53,6 +53,13 @@ namespace MongoShop
             #region Order
             CreateMap<Order, IndexOrderViewModel>();
             #endregion
+
+            #region Customer
+            CreateMap<Product, IndexViewModel>()
+                    .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));            ;
+            CreateMap<Product, DetailViewModel>()
+                    .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+            #endregion
         }
     }
 }

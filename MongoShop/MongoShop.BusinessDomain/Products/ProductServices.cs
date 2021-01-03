@@ -47,6 +47,8 @@ namespace MongoShop.BusinessDomain.Products
         {
             product.Id = id;
             product.Status = true;
+            product.UpdatedAt = DateTime.Now;
+
             await _collection.ReplaceOneAsync(c => c.Id == id, product);
         }
 

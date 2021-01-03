@@ -33,9 +33,7 @@ namespace MongoShop.Controllers
         [HttpGet]
         public async System.Threading.Tasks.Task<IActionResult> IndexAsync()
         {
-<<<<<<< HEAD
-            //var wishlist =await _wishlistServices.GetWishlistItemsByUserIdAsync("783c3082-3970-4428-ad53-d17382a2a1c8");
-=======
+
             var orders = new List<Order>()
             {
                 new Order()
@@ -58,7 +56,6 @@ namespace MongoShop.Controllers
 
             var ordersPending =await _orderServices.GetOrdersWithUnpaidInvoiceAsync();
             
->>>>>>> fb754acd8998610547950fd447ec754f4e07ef86
             return View();
         }
 
