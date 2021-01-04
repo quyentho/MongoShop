@@ -23,5 +23,14 @@ namespace MongoShop.BusinessDomain.Orders
 
         [BsonElement("invoice")]
         public Invoice Invoice { get; set; }
+
+        [BsonElement("address")]
+        public Address ShipAddress { get; set; }
+
+        [BsonElement("phone_number")]
+        public string PhoneNumber { get; set; }
+
+        [BsonElement("comment")]
+        public string Comment { get; set; }
     }
 }

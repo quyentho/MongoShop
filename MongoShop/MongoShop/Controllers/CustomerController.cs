@@ -53,10 +53,9 @@ namespace MongoShop.Controllers
         {
             var product = await _productServices.GetByIdAsync(id);
 
+            var customerProductDetailViewModel = _mapper.Map<CustomerProductDetailViewModel>(product);
 
-            var detailProductViewModel = _mapper.Map<DetailViewModel>(product);
-
-            return View(detailProductViewModel);
+            return View(customerProductDetailViewModel);
         }
 
         [HttpPost]
@@ -76,16 +75,5 @@ namespace MongoShop.Controllers
 
             return View(result);
         }
-
-        public IActionResult Cart()
-        {
-            return View();
-        }
-
-        public IActionResult Checkout()
-        {
-            return View();
-        }
-
     }
 }

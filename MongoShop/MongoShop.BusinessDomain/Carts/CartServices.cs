@@ -29,6 +29,21 @@ namespace MongoShop.BusinessDomain.Carts
 
             return cartItems;
         }
+        
+        /// <inheritdoc/>
+        public async Task<Cart> GetCartByUserIdAsync(string userId)
+        {
+            var user = await _userServices.GetActiveUserByIdAsync(userId);
+
+            if (user is null)
+            {
+                throw new KeyNotFoundException("user is not exists");
+            }
+
+            var cart = user.Cart;
+
+            return cart;
+        }
 
         /// <inheritdoc/>     
         public async Task UpdateCartAsync(string userId,Cart cart)
@@ -41,6 +56,20 @@ namespace MongoShop.BusinessDomain.Carts
             }
 
             user.Cart = cart;
+
+            await _userServices.UpdateUserAsync(userId, user);
+        }
+
+        public async Task ClearCart(string userId)
+        {
+            var user = await _userServices.GetActiveUserByIdAsync(userId);
+
+            if (user is null)
+            {
+                throw new KeyNotFoundException("user is not exists");
+            }
+
+            user.Cart = new Cart();
 
             await _userServices.UpdateUserAsync(userId, user);
         }
