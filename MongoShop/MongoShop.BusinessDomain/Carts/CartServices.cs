@@ -59,5 +59,19 @@ namespace MongoShop.BusinessDomain.Carts
 
             await _userServices.UpdateUserAsync(userId, user);
         }
+
+        public async Task ClearCart(string userId)
+        {
+            var user = await _userServices.GetActiveUserByIdAsync(userId);
+
+            if (user is null)
+            {
+                throw new KeyNotFoundException("user is not exists");
+            }
+
+            user.Cart = new Cart();
+
+            await _userServices.UpdateUserAsync(userId, user);
+        }
     }
 }

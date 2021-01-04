@@ -27,5 +27,6 @@ namespace MongoShop.BusinessDomain.Carts
         /// <param name="cart">cart to add.</param>
         /// <returns></returns>
         Task UpdateCartAsync(string userId, Cart cart);
+        Task ClearCart(string userId);
     }
 }

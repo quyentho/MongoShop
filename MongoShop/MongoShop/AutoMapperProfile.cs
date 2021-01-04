@@ -19,7 +19,8 @@ namespace MongoShop
         {
             #region Product
             CreateMap<Product, CreateProductViewModel>();
-           
+
+            CreateMap<CartIndexViewModel, CartCheckoutViewModel>();
 
             CreateMap<CreateProductViewModel, Product>()
                .ForMember(dest => dest.Images, opt => opt.Ignore())
@@ -61,10 +62,17 @@ namespace MongoShop
 
             #region Order
             CreateMap<Order, IndexOrderViewModel>();
+
+            CreateMap<CartCheckoutViewModel, Order>()
+               .ForPath(dest => dest.ShipAddress.Street, opt => opt.MapFrom(scr => scr.Street))
+               .ForPath(dest => dest.ShipAddress.Number, opt => opt.MapFrom(scr => scr.AddressNumber))
+               .ForPath(dest => dest.ShipAddress.City, opt => opt.MapFrom(scr => scr.City));
+
             #endregion
 
             #region Cart
             CreateMap<Cart, CartIndexViewModel>();
+            CreateMap<Cart, CartCheckoutViewModel>();
 
             #endregion
         }

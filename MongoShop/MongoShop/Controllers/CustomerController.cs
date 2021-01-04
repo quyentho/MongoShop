@@ -57,16 +57,7 @@ namespace MongoShop.Controllers
 
             return View(customerProductDetailViewModel);
         }
-
-        public IActionResult Cart()
-        {
-            return View();
-        }
-
-        public IActionResult Checkout()
-        {
-            return View();
-        }
+       
 
     }
 }

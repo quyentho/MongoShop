@@ -14,8 +14,8 @@ namespace MongoShop.BusinessDomain.Orders
     {
         private readonly IMongoCollection<Order> _collection;
         private readonly IDatabaseSetting _databaseSetting;
-        private const string CollectionName = "order";
         private readonly IProductServices _productServices;
+        private const string CollectionName = "order";
 
         public OrderServices(IDatabaseSetting databaseSetting, IProductServices productServices)
         {
@@ -36,7 +36,7 @@ namespace MongoShop.BusinessDomain.Orders
 
             CreateNewInvoice(order);
 
-            await _collection.InsertOneAsync(order);
+           await _collection.InsertOneAsync(order);
         }
 
         private static void CreateNewInvoice(Order order)
