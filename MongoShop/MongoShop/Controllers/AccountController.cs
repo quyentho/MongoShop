@@ -36,7 +36,7 @@ namespace MongoShop.Controllers
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
 
-            _ = string.IsNullOrEmpty(returnUrl) ? returnUrl = "/home/index" : returnUrl;
+            _ = string.IsNullOrEmpty(returnUrl) ? returnUrl = "/customer/index" : returnUrl;
 
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -79,7 +79,7 @@ namespace MongoShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
-            _ = string.IsNullOrEmpty(returnUrl) ? returnUrl = "/home/index" : returnUrl;
+            _ = string.IsNullOrEmpty(returnUrl) ? returnUrl = "/customer/index" : returnUrl;
 
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -115,7 +115,7 @@ namespace MongoShop.Controllers
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction("Index","Customer");
         }
 
     }

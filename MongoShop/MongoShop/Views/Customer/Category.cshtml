@@ -132,7 +132,7 @@
                                     <div class="product-btns">
                                         @*<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>*@
                                         @*<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>*@
-                                        <button class="quick-view"><img src="~/img/61-512.webp" style="width:40%;"><span class="tooltipp">quick view</span></button>
+                                        <button class="quick-view"><img src="~/img/61-512.webp" style="width:40%;"><a href=@Url.Action("ProductDetail", new { id = item.Id }) class="tooltipp">quick view</a></button>
                                     </div>
                                 </div>
                                 <div class="add-to-cart">
