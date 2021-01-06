@@ -50,6 +50,11 @@ namespace MongoShop.Controllers
                 cartFromDb = new Cart();
             }
 
+            if (cartFromDb.Products is null)
+            {
+                cartFromDb.Products = new List<OrderedProduct>();
+            }
+
             Cart cartFromSession = await GetCartFromSession();
 
             if (cartFromSession != null && cartFromSession.Products.Count > 0)
@@ -119,21 +124,6 @@ namespace MongoShop.Controllers
             return RedirectToAction("Index", "Customer");
         }
 
-        //public async Task<IActionResult> UpdateProductQuantityAsync(string productId, int quantity)
-        //{
-        //    string userId = GetCurrentLoggedInUserId();
-
-        //    Cart cartFromDb = await _cartServices.GetCartByUserIdAsync(userId);
-
-        //    var listProductInCart = await _cartServices.GetCartItemsByUserIdAsync(userId);
-
-        //    var product = listProductInCart.Where(p => p.Product.Id == productId).FirstOrDefault();
-        //    product.OrderedQuantity = quantity;
-
-        //    cartFromDb.Products.Update
-
-        //}
-
         [HttpPost]
         public async Task<IActionResult> RemoveFromCartAsync(string productId)
         {
@@ -153,7 +143,7 @@ namespace MongoShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CheckoutAsync([FromForm] CartIndexViewModel viewModel)
+        public async Task<IActionResult> Checkout([FromForm] CartIndexViewModel viewModel)
         {
             var cartCheckoutViewModel = _mapper.Map<CartCheckoutViewModel>(viewModel);
 
