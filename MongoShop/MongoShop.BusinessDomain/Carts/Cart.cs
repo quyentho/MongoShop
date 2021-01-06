@@ -12,14 +12,13 @@ namespace MongoShop.BusinessDomain.Carts
         public Cart()
         {
             Id = ObjectId.GenerateNewId().ToString();
-            Products = new List<OrderedProduct>();
             Total = 0;
         }
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        public List<OrderedProduct> Products { get; set; }
+        public List<OrderedProduct> Products { get; set; } = new List<OrderedProduct>();
 
         public double Total { get; set; }
     }
