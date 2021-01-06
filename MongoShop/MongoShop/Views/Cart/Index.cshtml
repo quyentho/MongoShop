@@ -4,7 +4,7 @@
 @using MongoShop.Models.Cart;
 @model CartIndexViewModel
 <!-- Home -->
-<form asp-action="Checkout" asp-controller="Cart" method="post" enctype="multipart/form-data">
+<form  method="post" enctype="multipart/form-data">
     <div class="super_container">
         <!-- Cart -->
         <div class="cart_container">
@@ -107,7 +107,7 @@
                                     <div class="cart_total_price ml-auto">@Model.Total</div>
                                 </li>
                             </ul>
-                            <button type="submit" class="cart_total_button">proceed to checkout</button>
+                            <button asp-action="Checkout" asp-controller="Cart" type="submit" class="cart_total_button">proceed to checkout</button>
                         </div>
                     </div>
                 </div>
