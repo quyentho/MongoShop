@@ -50,6 +50,11 @@ namespace MongoShop.Controllers
                 cartFromDb = new Cart();
             }
 
+            if (cartFromDb.Products is null)
+            {
+                cartFromDb.Products = new List<OrderedProduct>();
+            }
+
             Cart cartFromSession = await GetCartFromSession();
 
             if (cartFromSession != null && cartFromSession.Products.Count > 0)
