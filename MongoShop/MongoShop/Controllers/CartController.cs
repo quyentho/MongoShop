@@ -43,7 +43,7 @@ namespace MongoShop.Controllers
         {
             string userId = GetCurrentLoggedInUserId();
 
-            Cart cartFromDb = await _cartServices.GetCartByUserIdAsync(userId);
+            Cart cartFromDb = await _cartServices.GetByUserIdAsync(userId);
 
             if (cartFromDb is null)
             {
@@ -64,7 +64,7 @@ namespace MongoShop.Controllers
 
             CalculateTotalPrice(cartFromDb);
 
-            await _cartServices.UpdateCartAsync(userId, cartFromDb);
+            await _cartServices.AddOrUpdateAsync(userId, cartFromDb);
 
             // clear session
             HttpContext.Session.Clear();
@@ -131,13 +131,13 @@ namespace MongoShop.Controllers
             string userId = GetCurrentLoggedInUserId();
 
             // get cart from db to collect cart id.
-            Cart cartFromDb = await _cartServices.GetCartByUserIdAsync(userId);
+            Cart cartFromDb = await _cartServices.GetByUserIdAsync(userId);
 
             var productToRemove = cartFromDb.Products.Find(p => p.Product.Id == productId);
 
             cartFromDb.Products.Remove(productToRemove);
 
-            await _cartServices.UpdateCartAsync(userId, cartFromDb);
+            await _cartServices.AddOrUpdateAsync(userId, cartFromDb);
 
             return RedirectToAction(nameof(Index));
         }
@@ -148,12 +148,12 @@ namespace MongoShop.Controllers
             var cartCheckoutViewModel = _mapper.Map<CartCheckoutViewModel>(viewModel);
 
             string userId = GetCurrentLoggedInUserId();
-            Cart cart = await _cartServices.GetCartByUserIdAsync(userId);
+            Cart cart = await _cartServices.GetByUserIdAsync(userId);
 
             cart.Products = viewModel.Products;
 
             // update product order quantity.
-            await _cartServices.UpdateCartAsync(userId, cart);
+            await _cartServices.AddOrUpdateAsync(userId, cart);
 
             return View(cartCheckoutViewModel);
         }
@@ -170,12 +170,12 @@ namespace MongoShop.Controllers
                 string userId = GetCurrentLoggedInUserId();
                 order.UserId = userId;
 
-                var cartItems = await _cartServices.GetCartItemsByUserIdAsync(userId);
+                var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
                 order.OrderedProducts = cartItems;
 
                 // save order to database
                 await _orderServices.AddAsync(order);
-                await _cartServices.ClearCart(userId);
+                await _cartServices.ClearCartAsync(userId);
                 return RedirectToAction(nameof(Index));
             }
             catch (ArgumentOutOfRangeException ex)

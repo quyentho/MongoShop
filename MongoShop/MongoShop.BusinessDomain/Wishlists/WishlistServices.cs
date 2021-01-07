@@ -30,7 +30,7 @@ namespace MongoShop.BusinessDomain.Wishlists
         }
 
         /// <inheritdoc/>     
-        public async Task UpdateWishlistAsync(string userId,Wishlist wishlist)
+        public async Task AddOrUpdateAsync(string userId,Wishlist wishlist)
         {
             var user = await _userServices.GetActiveUserByIdAsync(userId);
 
@@ -42,6 +42,21 @@ namespace MongoShop.BusinessDomain.Wishlists
             user.Wishlist = wishlist;
 
             await _userServices.UpdateUserAsync(userId, user);
+        }
+
+        /// <inheritdoc/>
+        public async Task<Wishlist> GetByUserIdAsync(string userId)
+        {
+            var user = await _userServices.GetActiveUserByIdAsync(userId);
+
+            if (user is null)
+            {
+                throw new KeyNotFoundException("user is not exists");
+            }
+
+            var wishlist = user.Wishlist;
+
+            return wishlist;
         }
     }
 }
