@@ -8,8 +8,10 @@ using MongoShop.BusinessDomain.Carts;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
+using MongoShop.BusinessDomain.Wishlists;
 using MongoShop.Models.Cart;
 using MongoShop.Models.Customer;
+using MongoShop.Models.Wishlist;
 
 namespace MongoShop
 {
@@ -20,7 +22,6 @@ namespace MongoShop
             #region Product
             CreateMap<Product, CreateProductViewModel>();
 
-            CreateMap<CartIndexViewModel, CartCheckoutViewModel>();
 
             CreateMap<CreateProductViewModel, Product>()
                .ForMember(dest => dest.Images, opt => opt.Ignore())
@@ -73,7 +74,11 @@ namespace MongoShop
             #region Cart
             CreateMap<Cart, CartIndexViewModel>();
             CreateMap<Cart, CartCheckoutViewModel>();
+            CreateMap<CartIndexViewModel, CartCheckoutViewModel>();
+            #endregion
 
+            #region Wish list
+            CreateMap<Wishlist, WishlistIndexViewModel>();
             #endregion
 
             #region Customer

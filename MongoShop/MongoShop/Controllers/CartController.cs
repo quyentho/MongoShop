@@ -112,7 +112,7 @@ namespace MongoShop.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult AddToCart(string productId)
+        public IActionResult Add(string productId)
         {
             List<string> lstShoppingCart = HttpContext.Session.Get<List<string>>("ssShoppingCart");
             if (lstShoppingCart == null)
@@ -125,7 +125,7 @@ namespace MongoShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveFromCartAsync(string productId)
+        public async Task<IActionResult> Remove(string productId)
         {
 
             string userId = GetCurrentLoggedInUserId();

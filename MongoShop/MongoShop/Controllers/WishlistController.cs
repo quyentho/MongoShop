@@ -55,11 +55,6 @@ namespace MongoShop.Controllers
                 wishlistFromDb.Products = new List<Product>();
             }
 
-            await _wishlistServices.AddOrUpdateAsync(userId, wishlistFromDb);
-
-            // clear session
-            HttpContext.Session.Clear();
-
             var wishlistIndexViewModel = _mapper.Map<WishlistIndexViewModel>(wishlistFromDb);
 
             return View(wishlistIndexViewModel);
@@ -74,7 +69,7 @@ namespace MongoShop.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> AddToWishlistAsync(string productId)
+        public async Task<IActionResult> Add(string productId)
         {
             string userId = GetCurrentLoggedInUserId();
             Wishlist userWishlist = await _wishlistServices.GetByUserIdAsync(userId);
@@ -85,7 +80,7 @@ namespace MongoShop.Controllers
 
             var newProductWishlist = await _productServices.GetByIdAsync(productId);
 
-            if (!userWishlist.Products.Contains(newProductWishlist))
+            if (!userWishlist.Products.Any(p=>p.Id == newProductWishlist.Id))
             {
                 userWishlist.Products.Add(newProductWishlist);
 
@@ -96,7 +91,7 @@ namespace MongoShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveFromWishlistAsync(string productId)
+        public async Task<IActionResult> Remove(string productId)
         {
 
             string userId = GetCurrentLoggedInUserId();

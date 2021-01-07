@@ -25,22 +25,30 @@
                     <div class="product_price">@String.Format("{0:c}", item.Price)</div>
                 </div>
                 <div class="product_options">
-                    <div class="product_buy product_option" onclick="AddCartClick('@item.Id');"><img src="~/img/shopping-bag-white.svg" alt=""></div>
-                    <div class="product_fav product_option">+</div>
+                    <div class="product_buy product_option" onclick="AddToCart('@item.Id');"><img src="~/img/shopping-bag-white.svg" alt=""></div>
+                    <div onclick="AddToWishlist('@item.Id');" class="product_fav product_option">+</div>
                 </div>
             </div>
         </div>
     </div>
 
 }
+
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
-    function AddCartClick(productId) {
-        $.post("/Cart/AddToCart", { productId: productId })
+    function AddToCart(productId) {
+        $.post("@Url.Action("Add", "Cart")", { productId: productId })
             .done(function () {
                 alert("product added to your cart");
             });
     };
+    function AddToWishlist(productId) {
+        $.post("@Url.Action("Add","Wishlist")", { productId: productId })
+            .done(function () {
+                alert("product added to your wishlist");
+            });
+    };
+
 </script>
 
 

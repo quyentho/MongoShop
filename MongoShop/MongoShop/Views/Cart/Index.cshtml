@@ -77,7 +77,7 @@
 
                                                 <!-- Product Cart Trash Button -->
                                                 <div class="cart_product_button">
-                                                    <button type="button" onclick="RemoveFromCart('@Model.Products[i].Product.Id')" style="background-color: red; color:white" class="cart_product_remove">-</button>
+                                                    <button onclick="RemoveFromCart('@Model.Products[i].Product.Id');" class="cart_product_remove"><img src="~/img/trash.png" alt=""></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -123,7 +123,7 @@
     };
     function RemoveFromCart(productId) {
 
-        $.post("/Cart/RemoveFromCart", { productId: productId }).done(function (data) {
+        $.post("@Url.Action("Remove","Cart")", { productId: productId }).done(function (data) {
             location.reload(); // then reload the page.(3)
         });
     };
