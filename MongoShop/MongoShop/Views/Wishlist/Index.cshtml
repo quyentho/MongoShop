@@ -1,17 +1,17 @@
 ﻿@{
     Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
 }
-@using MongoShop.Models.Cart;
-@model CartIndexViewModel
+@using MongoShop.Models.Wishlist;
+@model WishlistIndexViewModel
 <!-- Home -->
-<form  method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
     <div class="super_container">
-        <!-- Cart -->
+        <!-- Wishlist -->
         <div class="cart_container">
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <div class="cart_title">your shopping cart</div>
+                        <div class="cart_title">your wish list</div>
                     </div>
                 </div>
                 <div class="row">
@@ -22,8 +22,7 @@
                                 <div class="cart_bar_title_content_inner d-flex flex-row align-items-center justify-content-end">
                                     <div class="cart_bar_title_quantity">Size</div>
                                     <div class="cart_bar_title_price">Price</div>
-                                    <div class="cart_bar_title_quantity">Quantity</div>
-                                    <div class="cart_bar_title_total">Total</div>
+                                    <div class="cart_bar_title_button"></div>
                                     <div class="cart_bar_title_button"></div>
                                 </div>
                             </div>
@@ -33,7 +32,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="cart_products">
-                            <input type="hidden" asp-for="@Model.Id"/>
+                            <input type="hidden" asp-for="@Model.Id" />
                             <ul>
                                 @for (int i = 0; i < Model.Products.Count; i++)
                                 {
@@ -51,33 +50,26 @@
                                             }*@
 
                                         <!-- Product Name -->
-                                        <input type="hidden" asp-for="@Model.Products[i].Product.Id" />
-                                        <input type="hidden" asp-for="@Model.Products[i].Product.Name" />
-                                        <div class="cart_product_name"><a href="@Url.Action("ProductDetail","Customer", new { id = Model.Products[i].Product.Id})">@Model.Products[i].Product.Name</a></div>
+                                        <input type="hidden" asp-for="@Model.Products[i].Id" />
+                                        <input type="hidden" asp-for="@Model.Products[i].Name" />
+                                        <div class="cart_product_name"><a href="@Url.Action("ProductDetail","Customer", new { id = Model.Products[i].Id})">@Model.Products[i].Name</a></div>
                                         <div class="cart_product_info ml-auto">
                                             <div class="cart_product_info_inner d-flex flex-row align-items-center justify-content-md-end justify-content-start">
-                                                <input type="hidden" asp-for="@Model.Products[i].Product.Size" />
+                                                <input type="hidden" asp-for="@Model.Products[i].Size" />
 
-                                                <div class="cart_product_price">@Model.Products[i].Product.Size</div>
+                                                <div class="cart_product_price">@Model.Products[i].Size</div>
 
                                                 <!-- Product Price -->
-                                                <input type="hidden" asp-for="@Model.Products[i].Product.Price" />
+                                                <input type="hidden" asp-for="@Model.Products[i].Price" />
 
-                                                <div class="cart_product_price">@Model.Products[i].Product.Price</div>
+                                                <div class="cart_product_price">@Model.Products[i].Price</div>
 
-                                                <!-- Product Quantity -->
-                                                <div class="product_quantity_container" style="margin-top: 0px;">
-                                                    <div class="product_quantity clearfix">
-                                                        <input class="quantity_input" type="number" min="1" asp-for="@Model.Products[i].OrderedQuantity">
+                                                <!-- Product Wishlist Trash Button -->
+                                                <div>
+                                                    <div style="display:inline-block;" class="product_buy product_option" onclick="AddToCart('@Model.Products[i].Id');"><img src="~/img/shopping-bag-white.svg" alt=""></div>
+                                                    <div style="display:inline-block;" class="cart_product_button">
+                                                        <button onclick="RemoveFromWishlist('@Model.Products[i].Id');" class="cart_product_remove"><img src="~/img/trash.png" alt=""></button>
                                                     </div>
-                                                </div>
-
-                                                <!-- Products Total Price -->
-                                                <div class="cart_product_total">$35.00</div>
-
-                                                <!-- Product Cart Trash Button -->
-                                                <div class="cart_product_button">
-                                                    <button onclick="RemoveFromCart('@Model.Products[i].Product.Id');" class="cart_product_remove"><img src="~/img/trash.png" alt=""></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -95,22 +87,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="row cart_extra">
-                    <!-- Cart Total -->
-                    <div class="col-lg-5 offset-lg-1">
-                        <div class="cart_total">
-                            <div class="cart_title">cart total</div>
-                            <ul>
-                                <li class="d-flex flex-row align-items-center justify-content-start">
-                                    <div class="cart_total_title">Total</div>
-                                    <input type="hidden" asp-for="@Model.Total" />
-                                    <div class="cart_total_price ml-auto">@Model.Total</div>
-                                </li>
-                            </ul>
-                            <button asp-action="Checkout" asp-controller="Cart" type="submit" class="cart_total_button">proceed to checkout</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -121,11 +97,17 @@
     function ContinueShopping() {
         document.location.href = '@Url.Action("Index", "Customer")';
     };
-    function RemoveFromCart(productId) {
+    function RemoveFromWishlist(productId) {
 
-        $.post("@Url.Action("Remove","Cart")", { productId: productId }).done(function (data) {
+        $.post("@Url.Action("Remove", "Wishlist")", { productId: productId }).done(function (data) {
             location.reload(); // then reload the page.(3)
         });
     };
 
+    function AddToCart(productId) {
+        $.post("@Url.Action("Add", "Cart")", { productId: productId })
+            .done(function () {
+                alert("product added to your cart");
+            });
+    };
 </script>

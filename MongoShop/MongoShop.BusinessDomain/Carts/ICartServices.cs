@@ -13,20 +13,26 @@ namespace MongoShop.BusinessDomain.Carts
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<Cart> GetCartByUserIdAsync(string userId);
+        Task<Cart> GetByUserIdAsync(string userId);
 
         /// <summary>
         /// Get all cart items of the user provided by userId and  user.Status = true.
         /// </summary>
         /// <returns></returns>
-        Task<List<OrderedProduct>> GetCartItemsByUserIdAsync(string userId);
+        Task<List<OrderedProduct>> GetItemsByUserIdAsync(string userId);
 
         /// <summary>
         /// Add a new cart
         /// </summary>
         /// <param name="cart">cart to add.</param>
         /// <returns></returns>
-        Task UpdateCartAsync(string userId, Cart cart);
-        Task ClearCart(string userId);
+        Task AddOrUpdateAsync(string userId, Cart cart);
+
+        /// <summary>
+        /// Clear all items in cart.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task ClearCartAsync(string userId);
     }
 }

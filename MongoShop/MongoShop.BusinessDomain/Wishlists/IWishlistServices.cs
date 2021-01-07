@@ -14,10 +14,18 @@ namespace MongoShop.BusinessDomain.Wishlists
         Task<List<Product>> GetWishlistItemsByUserIdAsync(string userId);
 
         /// <summary>
-        /// Add a new wishlist
+        /// Add or update wishlist
         /// </summary>
         /// <param name="wishlist">wishlist to add.</param>
         /// <returns></returns>
-        Task UpdateWishlistAsync(string userId, Wishlist wishlist);
+        Task AddOrUpdateAsync(string userId, Wishlist wishlist);
+
+        /// <summary>
+        /// Get wishlist by user id.
+        /// </summary>
+        /// <param name="userId">User id</param>
+        /// <returns></returns>
+        Task<Wishlist> GetByUserIdAsync(string userId);
+
     }
 }

@@ -16,7 +16,7 @@ namespace MongoShop.BusinessDomain.Carts
         }
 
         /// <inheritdoc/>
-        public async Task<List<OrderedProduct>> GetCartItemsByUserIdAsync(string userId)
+        public async Task<List<OrderedProduct>> GetItemsByUserIdAsync(string userId)
         {
             var user = await _userServices.GetActiveUserByIdAsync(userId);
 
@@ -31,7 +31,7 @@ namespace MongoShop.BusinessDomain.Carts
         }
         
         /// <inheritdoc/>
-        public async Task<Cart> GetCartByUserIdAsync(string userId)
+        public async Task<Cart> GetByUserIdAsync(string userId)
         {
             var user = await _userServices.GetActiveUserByIdAsync(userId);
 
@@ -46,7 +46,7 @@ namespace MongoShop.BusinessDomain.Carts
         }
 
         /// <inheritdoc/>     
-        public async Task UpdateCartAsync(string userId,Cart cart)
+        public async Task AddOrUpdateAsync(string userId,Cart cart)
         {
             var user = await _userServices.GetActiveUserByIdAsync(userId);
 
@@ -60,7 +60,8 @@ namespace MongoShop.BusinessDomain.Carts
             await _userServices.UpdateUserAsync(userId, user);
         }
 
-        public async Task ClearCart(string userId)
+        /// <inheritdoc/>     
+        public async Task ClearCartAsync(string userId)
         {
             var user = await _userServices.GetActiveUserByIdAsync(userId);
 
