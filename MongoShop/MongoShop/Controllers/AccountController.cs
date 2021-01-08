@@ -35,7 +35,6 @@ namespace MongoShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-
             _ = string.IsNullOrEmpty(returnUrl) ? returnUrl = "/customer/index" : returnUrl;
 
             ViewData["ReturnUrl"] = returnUrl;
@@ -54,14 +53,11 @@ namespace MongoShop.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Wrong email or password.");
                     return View(model);
                 }
-
-                
             }
-
-            // If we got this far, something failed, redisplay form
+            
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(model);
         }
@@ -117,6 +113,5 @@ namespace MongoShop.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index","Customer");
         }
-
     }
 }
