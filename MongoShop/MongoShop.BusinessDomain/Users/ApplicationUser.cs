@@ -25,11 +25,14 @@ namespace MongoShop.BusinessDomain.Users
         [BsonElement("name")]
         public string Name { get; set; }
 
+        [BsonElement("birthday")]
+        public DateTime BirthDay { get; set; }
+
         [BsonElement("status")]
         public bool Status { get; set; }
 
-        [BsonElement("contacts")]
-        public List<Contacts> Contacts { get; set; }
+        [BsonElement("contact")]
+        public Contact Contact { get; set; }
 
         [BsonElement("cart")]
         public Cart Cart { get; set; } = new Cart();

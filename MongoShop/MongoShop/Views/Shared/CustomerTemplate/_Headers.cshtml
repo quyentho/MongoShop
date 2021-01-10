@@ -31,7 +31,7 @@
                             <div class="cart_num_inner">
                                 @if (HttpContextAccessor.HttpContext.Session.Get<List<string>>("ssShoppingCart") != null)
                                 {
-                                    
+
                                     var count = HttpContextAccessor.HttpContext.Session.Get<List<string>>("ssShoppingCart").Count().ToString();
                                     <div class="cart_num">@count</div>
                                 }
@@ -56,7 +56,7 @@
                     </div>
                 </a>
                 <!-- Avatar -->
-                <a href="#">
+                <a href="@Url.Action("Profile","Account")">
                     <div class="avatar">
                         <img src="~/img/avatar.svg" alt="">
                     </div>

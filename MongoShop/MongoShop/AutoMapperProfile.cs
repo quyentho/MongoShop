@@ -8,7 +8,9 @@ using MongoShop.BusinessDomain.Carts;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
+using MongoShop.BusinessDomain.Users;
 using MongoShop.BusinessDomain.Wishlists;
+using MongoShop.Models.Account;
 using MongoShop.Models.Cart;
 using MongoShop.Models.Customer;
 using MongoShop.Models.Wishlist;
@@ -36,7 +38,7 @@ namespace MongoShop
 
             CreateMap<Product, DetailProductViewModel>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
-            
+
             CreateMap<Product, CustomerProductDetailViewModel>()
                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
 
@@ -44,8 +46,13 @@ namespace MongoShop
                 .ForMember(dest => dest.SelectedCategoryId, opt => opt.MapFrom(src => src.Category.Id));
 
             CreateMap<EditProductViewModel, Product>()
-                .ForMember(dest=>dest.CategoryId, opt=>opt.MapFrom(src => src.SelectedCategoryId))
+                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.SelectedCategoryId))
                 .ForMember(dest => dest.Images, opt => opt.Ignore());
+
+            CreateMap<Product, IndexViewModel>()
+                   .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name)); ;
+            CreateMap<Product, DetailViewModel>()
+                    .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
             #endregion
 
             #region Category
@@ -81,11 +88,18 @@ namespace MongoShop
             CreateMap<Wishlist, WishlistIndexViewModel>();
             #endregion
 
-            #region Customer
-            CreateMap<Product, IndexViewModel>()
-                    .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));            ;
-            CreateMap<Product, DetailViewModel>()
-                    .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+            #region User
+            CreateMap<ApplicationUser, AccountProfileViewModel>()
+                 .ForMember(dest => dest.AddressNumber, opt => opt.MapFrom(src => src.Contact.Address.Number))
+                 .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Contact.Address.Street))
+                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Contact.Address.City))
+                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Contact.PhoneNumber));
+
+            CreateMap<AccountProfileViewModel, ApplicationUser>(MemberList.Source)
+                 .ForPath(dest => dest.Contact.Address.Number, opt => opt.MapFrom(src => src.AddressNumber))
+                 .ForPath(dest => dest.Contact.Address.Street, opt => opt.MapFrom(src => src.Street))
+                 .ForPath(dest => dest.Contact.Address.City, opt => opt.MapFrom(src => src.City))
+                 .ForPath(dest => dest.Contact.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber));
             #endregion
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,17 +14,19 @@ namespace MongoShop.Controllers
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IMapper _mapper;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            this._mapper = mapper;
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -31,11 +34,9 @@ namespace MongoShop.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-
             _ = string.IsNullOrEmpty(returnUrl) ? returnUrl = "/customer/index" : returnUrl;
 
             ViewData["ReturnUrl"] = returnUrl;
@@ -58,7 +59,7 @@ namespace MongoShop.Controllers
                     return View(model);
                 }
 
-                
+
             }
 
             // If we got this far, something failed, redisplay form
@@ -67,7 +68,6 @@ namespace MongoShop.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -75,7 +75,6 @@ namespace MongoShop.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
@@ -112,11 +111,42 @@ namespace MongoShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index","Customer");
+            return RedirectToAction("Index", "Customer");
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(GetCurrentUserId());
+
+            AccountProfileViewModel profileViewModel = _mapper.Map<AccountProfileViewModel>(user);
+            return View(profileViewModel);
+        }
+
+        private string GetCurrentUserId()
+        {
+            return _userManager.GetUserId(HttpContext.User);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Profile(AccountProfileViewModel profileViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(profileViewModel.Email);
+
+                _mapper.Map(profileViewModel, user);
+                
+                await _userManager.UpdateAsync(user);
+            }
+
+            return View(profileViewModel);
+        }
     }
 }
