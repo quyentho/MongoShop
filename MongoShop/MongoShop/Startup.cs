@@ -85,7 +85,7 @@ namespace MongoShop
 
             services.AddSingleton<IUserServices, UserServices>();
 
-            services.AddSingleton<IOrderServices,OrderServices>();
+            services.AddSingleton<IOrderServices, OrderServices>();
 
             services.AddSingleton<ICategoryServices, CategoryServices>();
             services.AddSingleton<ICartServices, CartServices>();
@@ -95,10 +95,11 @@ namespace MongoShop
             services.AddTransient<IFileUploadService, FileUploadService>();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
-           
-            
 
-
+            services
+                .AddFluentEmail("defaultsender@test.test")
+                .AddRazorRenderer()
+                .AddSmtpSender("localhost", 25);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

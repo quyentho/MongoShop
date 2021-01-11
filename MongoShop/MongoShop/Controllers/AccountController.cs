@@ -1,6 +1,8 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentEmail.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,15 +17,18 @@ namespace MongoShop.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
+        private readonly IFluentEmail _emailSender;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IMapper mapper)
+            IMapper mapper,
+            IFluentEmail emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             this._mapper = mapper;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -49,7 +54,7 @@ namespace MongoShop.Controllers
                 {
                     return LocalRedirect(returnUrl);
                 }
-                if (result.IsLockedOut)
+                else if (result.IsLockedOut)
                 {
                     return View("Lockout");
                 }
@@ -58,7 +63,8 @@ namespace MongoShop.Controllers
                     ModelState.AddModelError(string.Empty, "Wrong email or password.");
                     return View(model);
                 }
-            
+            }
+
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(model);
         }
@@ -138,11 +144,109 @@ namespace MongoShop.Controllers
                 var user = await _userManager.FindByEmailAsync(profileViewModel.Email);
 
                 _mapper.Map(profileViewModel, user);
-                
+
                 await _userManager.UpdateAsync(user);
             }
 
             return View(profileViewModel);
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/ForgotPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    return View("ForgotPasswordConfirmation");
+                }
+
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                await _emailSender.To(model.Email).Subject("Reset Password")
+                    .Body("Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>")
+                    .SendAsync();
+                return View("ForgotPasswordConfirmation");
+            }
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Renders after sending email for user who wants to reset password.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Renders page for user to input information needed to reset password.
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string code = null)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid attempt to reset password.");
+            return View();
+        }
+
+
+        /// <summary>
+        /// Renders confirmation after reset password
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using FluentEmail.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -16,30 +18,14 @@ namespace MongoShop.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly IUserServices userServices;
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<ApplicationRole> roleManager;
-
-        public HomeController(IUserServices userServices, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
-        {
-            this.userServices = userServices;
-            this.userManager = userManager;
-            this.roleManager = roleManager;
-        }
-
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index([FromServices] IFluentEmail email)
         {
-            ApplicationUser user = new ApplicationUser()
-            {
-                Email = "admin@admin.com",
-                UserName = "admin@admin.com",
-                Name = "admin"
-            };
-            
-           var result = userManager.CreateAsync(user,"123456").GetAwaiter().GetResult() ;
-
-           var result2 = userManager.AddToRoleAsync(user, UserRole.Admin).GetAwaiter().GetResult();
+            await email
+                .To("test@test.test")
+                .Subject("test email subject")
+                .Body("This is the email body")
+                .SendAsync();
 
             return View();
         }
