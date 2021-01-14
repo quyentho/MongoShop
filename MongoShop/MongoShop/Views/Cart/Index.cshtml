@@ -63,7 +63,7 @@
                                                 <!-- Product Price -->
                                                 <input type="hidden" asp-for="@Model.Products[i].Product.Price" />
 
-                                                <div class="cart_product_price">@Model.Products[i].Product.Price</div>
+                                                <div class="cart_product_price price_value">@Model.Products[i].Product.Price</div>
 
                                                 <!-- Product Quantity -->
                                                 <div class="product_quantity_container" style="margin-top: 0px;">
@@ -73,7 +73,7 @@
                                                 </div>
 
                                                 <!-- Products Total Price -->
-                                                <div class="cart_product_total">$35.00</div>
+                                                <div class="cart_product_total">@Model.Products[i].Product.Price</div>
 
                                                 <!-- Product Cart Trash Button -->
                                                 <div class="cart_product_button">
@@ -117,6 +117,18 @@
 <script src="~/js/jquery.min.js"></script>
 <script src="~/js/cart_custom.js"></script>
 <script>
+    var quantity_array = $(".quantity_input")
+    var prices = $('.price_value');
+    var totals = $('.cart_product_total');
+    $(".quantity_input").change(function () {
+        for (var i = 0; i < quantity_array.length; i++) {
+            totals[i].innerHTML = parseInt($(".quantity_input")[i].value) * parseInt($('.price_value')[i].innerHTML);
+        }
+        var sum = 0;
+        totals.toArray().forEach((x) => sum += parseInt(x.innerHTML))
+        $('.cart_total_price').html(sum);
+    });
+
     function ContinueShopping() {
         document.location.href = '@Url.Action("Index", "Customer")';
     };
