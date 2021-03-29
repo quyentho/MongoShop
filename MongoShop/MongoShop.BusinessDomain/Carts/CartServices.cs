@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoShop.BusinessDomain.Orders;
-using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
 
 namespace MongoShop.BusinessDomain.Carts

@@ -29,6 +29,5 @@ namespace MongoShop.Models.Account
         
         [DisplayName("Phone number")]
         public string PhoneNumber { get; set; }
-
     }
 }

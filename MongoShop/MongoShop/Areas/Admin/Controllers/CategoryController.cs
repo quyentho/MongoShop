@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.BusinessDomain.Categories;
-using MongoShop.Services.FileUpload;
 
 namespace MongoShop.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
     [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
     public class CategoryController : Controller
     {
         private readonly ICategoryServices _categoryServices;
@@ -31,6 +30,7 @@ namespace MongoShop.Areas.Admin.Controllers
 
             var indexCategoryViewModels = _mapper.Map<List<IndexCategoryViewModel>>(categories);
 
+            //return Ok()
             return View(indexCategoryViewModels);
         }
 
