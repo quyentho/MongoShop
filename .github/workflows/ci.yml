@@ -26,6 +26,6 @@ jobs:
       run: dotnet clean ./MongoShop/MongoShop.sln --configuration Release && dotnet nuget locals all --clear
     - name: Build
       run: dotnet build --configuration Release
-      working-directory: .\MongoShop
+      
       
    
