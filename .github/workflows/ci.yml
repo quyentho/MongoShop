@@ -26,5 +26,5 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-      working-directory: MongoShop
+      working-directory: .\MongoShop
    
