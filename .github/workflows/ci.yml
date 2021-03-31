@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build project on ubuntu and windows
+    name: Build project on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}    
     strategy:
       matrix:
@@ -22,11 +22,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-    - name: Restore dependencies
-      run: dotnet restore
-      working-directory: .\MongoShop
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build
       working-directory: .\MongoShop
       
    
