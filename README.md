@@ -1,2 +1,2 @@
 # MongoShop
-Test github action
+Test github actions
