@@ -24,7 +24,9 @@ jobs:
         dotnet-version: 3.1.x
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: .\MongoShop
     - name: Build
       run: dotnet build --no-restore
+      working-directory: .\MongoShop
       
    
