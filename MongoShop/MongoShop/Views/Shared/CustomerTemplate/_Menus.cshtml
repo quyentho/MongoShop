@@ -1,0 +1,34 @@
+﻿@using MongoShop.BusinessDomain.Users;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+<div class="menu d-flex flex-column align-items-end justify-content-start text-right menu_mm trans_400">
+    <div class="menu_close_container"><div class="menu_close"><div></div><div></div></div></div>
+    <div class="logo menu_mm"><a href="#">Wish</a></div>
+    <div class="search">
+        <form action="#">
+            <input type="search" class="search_input menu_mm" required="required">
+            <button type="submit" id="search_button_menu" class="search_button menu_mm"><img class="menu_mm" src="~/img/magnifying-glass.svg" alt=""></button>
+        </form>
+    </div>
+    <nav class="menu_nav">
+        <ul class="menu_mm">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li class="menu_mm"><a href="@Url.Action("Profile", "Users")"> @User.Identity.Name</a></li>
+                <form method="post" asp-controller="Account" asp-action="Logout" class="menu_mm"><button type="submit">Logout</button></form>
+            }
+            else
+            {
+                <li class="menu_mm"><a href="@Url.Action("Register", "Account")">Register</a></li>
+                <li class="menu_mm"><a href="@Url.Action("Login","Account")">Login</a></li>
+
+            }
+            @*<li class="menu_mm"><a href="#">accessories</a></li>
+        <li class="menu_mm"><a href="#">lingerie</a></li>
+        <li class="menu_mm"><a href="#">contact</a></li>*@
+        </ul>
+    </nav>
+</div>

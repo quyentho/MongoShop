@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
+}
+
+@using MongoShop.Models.Customer;
+@model IEnumerable<IndexViewModel>
+
+@foreach (var item in Model)
+{
+    <div class="col-lg-4 product_col">
+        <div class="product">
+            <div class="product_image">
+                @try
+                {
+                    <img src=@item.Images[0] alt="">
+                }
+                catch (Exception)
+                {
+                    <img alt="Not available">
+                }
+            </div>
+            <div class="product_content clearfix">
+                <div class="product_info">
+                    <div class="product_name"><a href=@Url.Action("ProductDetail", new { id = item.Id })>@Html.DisplayFor(model => item.Name)</a></div>
+                    <div class="product_price">@String.Format("{0:c}", item.Price)</div>
+                </div>
+                <div class="product_options">
+                    <div class="product_buy product_option" onclick="AddToCart('@item.Id');"><img src="~/img/shopping-bag-white.svg" alt=""></div>
+                    <div onclick="AddToWishlist('@item.Id');" class="product_fav product_option">+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script src="~/js/jquery.min.js"></script>
+<script type="text/javascript">
+    function AddToCart(productId) {
+        $.post("@Url.Action("Add", "Cart")", { productId: productId })
+            .done(function () {
+                alert("product added to your cart");
+            });
+    };
+    function AddToWishlist(productId) {
+        $.post("@Url.Action("Add","Wishlist")", { productId: productId })
+            .done(function () {
+                alert("product added to your wishlist");
+            });
+    };
+
+</script>
+
+
+

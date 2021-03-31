@@ -1,0 +1,113 @@
+﻿@{
+    Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
+}
+@using MongoShop.Models.Wishlist;
+@model WishlistIndexViewModel
+<!-- Home -->
+<form method="post" enctype="multipart/form-data">
+    <div class="super_container">
+        <!-- Wishlist -->
+        <div class="cart_container">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="cart_title">your wish list</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="cart_bar d-flex flex-row align-items-center justify-content-start">
+                            <div class="cart_bar_title_name">Product</div>
+                            <div class="cart_bar_title_content ml-auto">
+                                <div class="cart_bar_title_content_inner d-flex flex-row align-items-center justify-content-end">
+                                    <div class="cart_bar_title_quantity">Size</div>
+                                    <div class="cart_bar_title_price">Price</div>
+                                    <div class="cart_bar_title_button"></div>
+                                    <div class="cart_bar_title_button"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="cart_products">
+                            <input type="hidden" asp-for="@Model.Id" />
+                            <ul>
+                                @for (int i = 0; i < Model.Products.Count; i++)
+                                {
+
+                                    <li class=" cart_product d-flex flex-md-row flex-column align-items-md-center align-items-start justify-content-start">
+                                        <!-- Product Image -->
+                                        @*@try
+                                            {
+                                                <div class="cart_product_image"><img src="@item.Product.Images[0]"></div>
+                                            }
+                                            catch (Exception)
+                                            {
+
+                                                <div class="cart_product_image"><img alt="No Image"></div>
+                                            }*@
+
+                                        <!-- Product Name -->
+                                        <input type="hidden" asp-for="@Model.Products[i].Id" />
+                                        <input type="hidden" asp-for="@Model.Products[i].Name" />
+                                        <div class="cart_product_name"><a href="@Url.Action("ProductDetail","Customer", new { id = Model.Products[i].Id})">@Model.Products[i].Name</a></div>
+                                        <div class="cart_product_info ml-auto">
+                                            <div class="cart_product_info_inner d-flex flex-row align-items-center justify-content-md-end justify-content-start">
+                                                <input type="hidden" asp-for="@Model.Products[i].Size" />
+
+                                                <div class="cart_product_price">@Model.Products[i].Size</div>
+
+                                                <!-- Product Price -->
+                                                <input type="hidden" asp-for="@Model.Products[i].Price" />
+
+                                                <div class="cart_product_price">@Model.Products[i].Price</div>
+
+                                                <!-- Product Wishlist Trash Button -->
+                                                <div>
+                                                    <div style="display:inline-block;" class="product_buy product_option" onclick="AddToCart('@Model.Products[i].Id');"><img src="~/img/shopping-bag-white.svg" alt=""></div>
+                                                    <div style="display:inline-block;" class="cart_product_button">
+                                                        <button onclick="RemoveFromWishlist('@Model.Products[i].Id');" class="cart_product_remove"><img src="~/img/trash.png" alt=""></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="cart_control_bar d-flex flex-md-row flex-column align-items-start justify-content-start">
+                            <button onclick="ContinueShopping()" type="button" class="button_update cart_button_2 ml-md-auto">continue shopping</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/cart_custom.js"></script>
+<script>
+    function ContinueShopping() {
+        document.location.href = '@Url.Action("Index", "Customer")';
+    };
+    function RemoveFromWishlist(productId) {
+
+        $.post("@Url.Action("Remove", "Wishlist")", { productId: productId }).done(function (data) {
+            location.reload(); // then reload the page.(3)
+        });
+    };
+
+    function AddToCart(productId) {
+        $.post("@Url.Action("Add", "Cart")", { productId: productId })
+            .done(function () {
+                alert("product added to your cart");
+            });
+    };
+</script>
