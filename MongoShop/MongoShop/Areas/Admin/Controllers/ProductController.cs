@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
-using MongoShop.Services.FileUpload;
+using MongoShop.Infrastructure.Services.FileUpload;
 
 namespace MongoShop.Areas.Admin.Controllers
 {

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-namespace MongoShop.Extensions
+
+namespace MongoShop.Infrastructure.Extensions
 {
 
     public static class SessionExtensions

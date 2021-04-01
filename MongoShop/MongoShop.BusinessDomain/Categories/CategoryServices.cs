@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoShop.Infrastructure.Helpers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,14 +9,16 @@ namespace MongoShop.BusinessDomain.Categories
     public class CategoryServices : ICategoryServices
     {
         private readonly IMongoCollection<Category> _collection;
-        private const string CollectionName = "category";
+        private readonly string _collectionName;
 
         public CategoryServices(IMongoClient mongoClient, IOptions<DatabaseSetting> settings)
         {
+            _collectionName = MongoDbHelper.GetCollectionName(this.GetType().Name);
+
             var database =
             mongoClient.GetDatabase(settings.Value.DatabaseName);
-
-            _collection = database.GetCollection<Category>(CollectionName);
+       
+            _collection = database.GetCollection<Category>(_collectionName);
         }
 
         public async Task AddAsync(Category category)

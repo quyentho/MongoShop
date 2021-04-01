@@ -1,11 +1,10 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
-namespace MongoShop.Services.FileUpload
+namespace MongoShop.Infrastructure.Services.FileUpload
 {
     public class FileUploadService : IFileUploadService
     {
@@ -49,7 +48,7 @@ namespace MongoShop.Services.FileUpload
                     path = "/uploads/" + path;
                     filePaths.Add(path);
 
-                    
+
                 }
             }
 

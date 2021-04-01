@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MongoShop.Areas.Admin.ViewModels.Category;
-using MongoShop.Services.FileUpload;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

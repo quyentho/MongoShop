@@ -5,20 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoShop.Infrastructure.Helpers;
 
 namespace MongoShop.BusinessDomain.Users
 {
     public class UserServices : IUserServices
     {
         private readonly IMongoCollection<ApplicationUser> _collection;
-        private const string CollectionName = "user";
+        private readonly string _collectionName;
 
         public UserServices(IMongoClient mongoClient, IOptions<DatabaseSetting> settings)
         {
+            _collectionName = MongoDbHelper.GetCollectionName(this.GetType().Name);
+
             var database =
             mongoClient.GetDatabase(settings.Value.DatabaseName);
 
-            _collection = database.GetCollection<ApplicationUser>(CollectionName);
+            _collection = database.GetCollection<ApplicationUser>(_collectionName);
         }
 
         /// <inheritdoc/>

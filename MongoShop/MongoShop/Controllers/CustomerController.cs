@@ -5,8 +5,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
-using MongoShop.Services.FileUpload;
 using MongoShop.Models.Customer;
+using MongoShop.Infrastructure.Services.FileUpload;
 
 namespace MongoShop.Controllers
 {

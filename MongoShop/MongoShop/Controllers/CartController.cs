@@ -12,7 +12,7 @@ using MongoShop.BusinessDomain.Carts;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
-using MongoShop.Extensions;
+using MongoShop.Infrastructure.Extensions;
 using MongoShop.Models.Cart;
 
 namespace MongoShop.Controllers

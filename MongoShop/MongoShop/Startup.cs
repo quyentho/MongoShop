@@ -6,11 +6,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+
 using MongoDB.Driver;
 using MongoShop.BusinessDomain;
 using MongoShop.BusinessDomain.Carts;
@@ -19,7 +19,7 @@ using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
 using MongoShop.BusinessDomain.Wishlists;
-using MongoShop.Services.FileUpload;
+using MongoShop.Infrastructure.Services.FileUpload;
 
 namespace MongoShop
 {

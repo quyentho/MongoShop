@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace MongoShop.Services.FileUpload
+namespace MongoShop.Infrastructure.Services.FileUpload
 {
     public interface IFileUploadService
     {

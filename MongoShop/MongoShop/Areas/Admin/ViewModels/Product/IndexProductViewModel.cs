@@ -1,9 +1,5 @@
-﻿using MongoShop.Areas.Admin.ViewModels.Category;
-using MongoShop.Services.FileUpload;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace MongoShop.Areas.Admin.ViewModels.Product
 {

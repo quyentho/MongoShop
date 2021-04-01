@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["MongoShop/MongoShop.csproj", "MongoShop/"]
 COPY ["MongoShop.BusinessDomain/MongoShop.BusinessDomain.csproj", "MongoShop.BusinessDomain/"]
-RUN dotnet clean ./MongoShop/MongoShop.sln --configuration Release && dotnet nuget locals all --clear
+
 RUN dotnet restore "MongoShop/MongoShop.csproj"
 COPY . .
 WORKDIR "/src/MongoShop"

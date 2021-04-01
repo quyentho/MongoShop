@@ -6,21 +6,23 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoShop.BusinessDomain.Categories;
+using MongoShop.Infrastructure.Helpers;
 
 namespace MongoShop.BusinessDomain.Products
 {
     public class ProductServices : IProductServices
     {
         private readonly IMongoCollection<Product> _collection;
-        private readonly ICategoryServices _categoryServices;
-        private const string CollectionName = "product";
+        private readonly string _collectionName;
 
         public ProductServices(IMongoClient mongoClient, IOptions<DatabaseSetting> settings)
         {
+            _collectionName = MongoDbHelper.GetCollectionName(this.GetType().Name);
+
             var database =
             mongoClient.GetDatabase(settings.Value.DatabaseName);
 
-            _collection = database.GetCollection<Product>(CollectionName);
+            _collection = database.GetCollection<Product>(_collectionName);
         }
 
         /// <inheritdoc/>     

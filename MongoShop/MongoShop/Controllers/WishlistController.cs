@@ -12,7 +12,6 @@ using MongoShop.BusinessDomain.Wishlists;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
-using MongoShop.Extensions;
 using MongoShop.Models.Wishlist;
 
 namespace MongoShop.Controllers
