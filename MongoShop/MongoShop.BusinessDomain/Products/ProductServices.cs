@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoShop.BusinessDomain.Categories;
@@ -15,12 +16,10 @@ namespace MongoShop.BusinessDomain.Products
         private readonly ICategoryServices _categoryServices;
         private const string CollectionName = "product";
 
-        public ProductServices(IDatabaseSetting databaseSetting, ICategoryServices categoryServices)
+        public ProductServices(IMongoClient mongoClient, IOptions<DatabaseSetting> settings)
         {
-            _databaseSetting = databaseSetting;
-            this._categoryServices = categoryServices;
-            var client = new MongoClient(_databaseSetting.ConnectionString);
-            var database = client.GetDatabase(_databaseSetting.DatabaseName);
+            var database =
+            mongoClient.GetDatabase(settings.Value.DatabaseName);
 
             _collection = database.GetCollection<Product>(CollectionName);
         }

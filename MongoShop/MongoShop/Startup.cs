@@ -37,8 +37,6 @@ namespace MongoShop
         {
             services.AddControllersWithViews();
 
-            // requires using Microsoft.Extensions.Options
-
             services.AddOptions();
 
             services.Configure<DatabaseSetting>(
@@ -48,9 +46,6 @@ namespace MongoShop
             {
                 return new MongoClient(Configuration["DatabaseSetting:ConnectionString"]);
             });
-
-            services.AddSingleton<IDatabaseSetting>(sp =>
-                sp.GetRequiredService<IOptions<DatabaseSetting>>().Value);
 
             services.AddScoped<IUserConfirmation<ApplicationUser>, UserConfirmation>();
 
@@ -103,7 +98,7 @@ namespace MongoShop
             services.AddScoped<IWishlistServices, WishlistServices>();
             services.AddScoped<IOrderServices, OrderServices>();
 
-            services.AddTransient<IFileUploadService, FileUploadService>();
+            services.AddScoped<IFileUploadService, FileUploadService>();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
 

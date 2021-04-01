@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
@@ -17,12 +18,10 @@ namespace MongoShop.BusinessDomain.Orders
         private readonly IProductServices _productServices;
         private const string CollectionName = "order";
 
-        public OrderServices(IDatabaseSetting databaseSetting, IProductServices productServices)
+        public OrderServices(IMongoClient mongoClient, IOptions<DatabaseSetting> settings)
         {
-            _databaseSetting = databaseSetting;
-            this._productServices = productServices;
-            var client = new MongoClient(_databaseSetting.ConnectionString);
-            var database = client.GetDatabase(_databaseSetting.DatabaseName);
+            var database =
+            mongoClient.GetDatabase(settings.Value.DatabaseName);
 
             _collection = database.GetCollection<Order>(CollectionName);
         }
