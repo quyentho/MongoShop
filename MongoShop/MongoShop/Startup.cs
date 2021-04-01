@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoShop.BusinessDomain;
 using MongoShop.BusinessDomain.Carts;
 using MongoShop.BusinessDomain.Categories;
@@ -37,8 +38,16 @@ namespace MongoShop
             services.AddControllersWithViews();
 
             // requires using Microsoft.Extensions.Options
+
+            services.AddOptions();
+
             services.Configure<DatabaseSetting>(
                   Configuration.GetSection(nameof(DatabaseSetting)));
+
+            services.AddSingleton<IMongoClient, MongoClient>((serviceProvider) =>
+            {
+                return new MongoClient(Configuration["DatabaseSetting:ConnectionString"]);
+            });
 
             services.AddSingleton<IDatabaseSetting>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSetting>>().Value);
@@ -72,25 +81,27 @@ namespace MongoShop
             };
 
             services.AddMemoryCache();
+           
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.HttpOnly = true;
             });
+            
             services.AddMvc();
 
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
 
-            services.AddSingleton<IProductServices, ProductServices>();
+            services.AddScoped<IProductServices, ProductServices>();
 
-            services.AddSingleton<IUserServices, UserServices>();
+            services.AddScoped<IUserServices, UserServices>();
 
-            services.AddSingleton<IOrderServices, OrderServices>();
+            services.AddScoped<IOrderServices, OrderServices>();
 
-            services.AddSingleton<ICategoryServices, CategoryServices>();
-            services.AddSingleton<ICartServices, CartServices>();
-            services.AddSingleton<IWishlistServices, WishlistServices>();
-            services.AddSingleton<IOrderServices, OrderServices>();
+            services.AddScoped<ICategoryServices, CategoryServices>();
+            services.AddScoped<ICartServices, CartServices>();
+            services.AddScoped<IWishlistServices, WishlistServices>();
+            services.AddScoped<IOrderServices, OrderServices>();
 
             services.AddTransient<IFileUploadService, FileUploadService>();
 

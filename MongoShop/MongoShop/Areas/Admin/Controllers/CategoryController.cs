@@ -11,8 +11,6 @@ namespace MongoShop.Areas.Admin.Controllers
 
     [Area("Admin")]
     [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
     public class CategoryController : Controller
     {
         private readonly ICategoryServices _categoryServices;
@@ -30,7 +28,6 @@ namespace MongoShop.Areas.Admin.Controllers
 
             var indexCategoryViewModels = _mapper.Map<List<IndexCategoryViewModel>>(categories);
 
-            //return Ok()
             return View(indexCategoryViewModels);
         }
 

@@ -1,7 +1,6 @@
-﻿using MongoDB.Driver;
-using System;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MongoShop.BusinessDomain.Categories
@@ -9,15 +8,12 @@ namespace MongoShop.BusinessDomain.Categories
     public class CategoryServices : ICategoryServices
     {
         private readonly IMongoCollection<Category> _collection;
-        private readonly IDatabaseSetting _databaseSetting;
         private const string CollectionName = "category";
 
-        public CategoryServices(IDatabaseSetting databaseSetting)
+        public CategoryServices(IMongoClient mongoClient, IOptions<DatabaseSetting> settings)
         {
-            _databaseSetting = databaseSetting;
-
-            var client = new MongoClient(_databaseSetting.ConnectionString);
-            var database = client.GetDatabase(_databaseSetting.DatabaseName);
+            var database =
+            mongoClient.GetDatabase(settings.Value.DatabaseName);
 
             _collection = database.GetCollection<Category>(CollectionName);
         }
@@ -43,7 +39,7 @@ namespace MongoShop.BusinessDomain.Categories
 
         public async Task<List<Category>> GetAllAsync()
         {
-            var list = await _collection.FindAsync(c =>c.Status == true);
+            var list = await _collection.FindAsync(c => c.Status == true);
             return await list.ToListAsync();
         }
 
