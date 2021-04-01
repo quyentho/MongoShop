@@ -12,7 +12,6 @@ namespace MongoShop.BusinessDomain.Products
     public class ProductServices : IProductServices
     {
         private readonly IMongoCollection<Product> _collection;
-        private readonly IDatabaseSetting _databaseSetting;
         private readonly ICategoryServices _categoryServices;
         private const string CollectionName = "product";
 

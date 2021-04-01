@@ -11,7 +11,6 @@ namespace MongoShop.BusinessDomain.Users
     public class UserServices : IUserServices
     {
         private readonly IMongoCollection<ApplicationUser> _collection;
-        private readonly IDatabaseSetting _databaseSetting;
         private const string CollectionName = "user";
 
         public UserServices(IMongoClient mongoClient, IOptions<DatabaseSetting> settings)
