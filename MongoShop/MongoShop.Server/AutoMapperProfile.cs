@@ -48,7 +48,7 @@ namespace MongoShop.Server
                 .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Name));
 
-            CreateMap<Category, IndexCategoryViewModel>();
+            CreateMap<Category, CategoryViewModel>();
             CreateMap<Category, DetailCategoryViewModel>();
             CreateMap<Category, EditCategoryViewModel>();
             CreateMap<EditCategoryViewModel, Category>();

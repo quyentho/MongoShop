@@ -16,6 +16,7 @@ using MongoShop.BusinessDomain.Users;
 using MongoShop.BusinessDomain.Wishlists;
 using MongoShop.Infrastructure.Services.FileUpload;
 using System;
+using System.IO;
 using System.Reflection;
 
 namespace MongoShop.Server
@@ -34,7 +35,13 @@ namespace MongoShop.Server
         {
             services.AddControllers();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
 
             services.AddOptions();

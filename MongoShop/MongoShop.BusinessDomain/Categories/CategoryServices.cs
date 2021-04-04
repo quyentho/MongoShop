@@ -23,11 +23,13 @@ namespace MongoShop.BusinessDomain.Categories
         }
 
         ///<inheritdoc/>
-        public async Task AddAsync(Category category)
+        public async Task<Category> AddAsync(Category category)
         {
             category.Status = true;
 
             await _collection.InsertOneAsync(category);
+
+            return category;
         }
 
         ///<inheritdoc/>

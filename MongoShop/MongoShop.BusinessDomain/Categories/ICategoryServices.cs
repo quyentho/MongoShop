@@ -8,7 +8,7 @@ namespace MongoShop.BusinessDomain.Categories
     public interface ICategoryServices
     {
         /// <summary>
-        /// Gets all categories from database.
+        /// Gets all active categories from database.
         /// </summary>
         /// <returns>List of categories.</returns>
         Task<List<Category>> GetAllAsync();
@@ -17,8 +17,8 @@ namespace MongoShop.BusinessDomain.Categories
         /// Adds new category.
         /// </summary>
         /// <param name="category">New Category.</param>
-        /// <returns>No return.</returns>
-        Task AddAsync(Category category);
+        /// <returns>Newly created category.</returns>
+        Task<Category> AddAsync(Category category);
 
         /// <summary>
         /// Edit existing category.Throw <exception cref="InvalidOperationException"> if category id not found.
@@ -34,6 +34,12 @@ namespace MongoShop.BusinessDomain.Categories
         /// <param name="id">Category id.</param>
         /// <returns>Nothing.</returns>
         Task DeleteAsync(string id);
+
+        /// <summary>
+        /// Gets active category by Id.
+        /// </summary>
+        /// <param name="id">Category id.</param>
+        /// <returns>Category if found, null if not found.</returns>
         Task<Category> GetByIdAsync(string id);
     }
 }
