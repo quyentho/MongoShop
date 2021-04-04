@@ -29,7 +29,7 @@ namespace MongoShop.Server.Controllers
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Get))]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<List<CategoryViewModel>>> GetAll()
         {
 
             try
@@ -59,7 +59,7 @@ namespace MongoShop.Server.Controllers
         [HttpGet("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult<DetailCategoryViewModel>> GetById([Required, StringLength(24,MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id)
+        public async Task<ActionResult<CategoryViewModel>> GetById([Required, StringLength(24,MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id)
         {
 
             try
@@ -71,7 +71,7 @@ namespace MongoShop.Server.Controllers
                     return NotFound();
                 }
 
-                var detailCategoryViewmodel = _mapper.Map<DetailCategoryViewModel>(category);
+                var detailCategoryViewmodel = _mapper.Map<CategoryViewModel>(category);
 
                 return Ok(detailCategoryViewmodel);
             }
@@ -98,7 +98,9 @@ namespace MongoShop.Server.Controllers
 
                 category = await _categoryServices.AddAsync(category);
 
-                return CreatedAtAction(nameof(GetById), new { id = category.Id }, category);
+                var createdCategory = _mapper.Map<CategoryViewModel>(category);
+
+                return CreatedAtAction(nameof(GetById), new { id = category.Id }, createdCategory);
             }
             catch (Exception)
             {
@@ -146,7 +148,7 @@ namespace MongoShop.Server.Controllers
         [HttpPut("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Update))]
-        public async Task<ActionResult<Category>> Update([Required, StringLength(24,MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id, EditCategoryViewModel category)
+        public async Task<IActionResult> Update([Required, StringLength(24,MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id, EditCategoryViewModel category)
         {
             try
             {
