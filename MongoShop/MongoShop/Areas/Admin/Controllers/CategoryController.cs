@@ -98,7 +98,7 @@ namespace MongoShop.Areas.Admin.Controllers
                 return await Index();
             }
 
-            await _categoryServices.DeleteAsync(id, category);
+            await _categoryServices.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }
