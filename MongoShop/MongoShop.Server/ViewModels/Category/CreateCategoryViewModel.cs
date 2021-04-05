@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MongoShop.Server.ViewModels
+namespace MongoShop.Server.ViewModels.Category
 {
-    public class EditCategoryViewModel
+    public class CreateCategoryViewModel
     {
-        [Required]
-        public string Id { get; set; }
-
         [Required]
         [DisplayName("Category name")]
         public string Name { get; set; }

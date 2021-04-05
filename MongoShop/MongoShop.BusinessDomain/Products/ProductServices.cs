@@ -26,13 +26,14 @@ namespace MongoShop.BusinessDomain.Products
         }
 
         /// <inheritdoc/>     
-        public async Task AddAsync(Product product)
+        public async Task<Product> AddAsync(Product product)
         {
             product.Status = true;
             product.CreatedAt = DateTime.Now;
             product.UpdatedAt = product.CreatedAt;
 
             await _collection.InsertOneAsync(product);
+            return product;
         }
 
         /// <inheritdoc/>  

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoShop.BusinessDomain.Categories;
-using MongoShop.Server.ViewModels;
+using MongoShop.Server.ViewModels.Category;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -40,9 +40,9 @@ namespace MongoShop.Server.Controllers
                     return NotFound("There is no category available");
                 }
 
-                var indexCategoryViewModels = _mapper.Map<List<CategoryViewModel>>(categories);
+                var categoryViewModels = _mapper.Map<List<CategoryViewModel>>(categories);
 
-                return Ok(indexCategoryViewModels);
+                return Ok(categoryViewModels);
             }
             catch (Exception)
             {

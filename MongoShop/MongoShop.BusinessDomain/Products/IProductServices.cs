@@ -46,7 +46,7 @@ namespace MongoShop.BusinessDomain.Products
         /// Add a new product
         /// </summary>
         /// <param name="product">product to add.</param>
-        /// <returns></returns>
-        Task AddAsync(Product product);
+        /// <returns>Created Product.</returns>
+        Task<Product> AddAsync(Product product);
     }
 }
