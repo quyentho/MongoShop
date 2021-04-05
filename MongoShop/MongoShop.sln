@@ -10,8 +10,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoShop.UI", "MongoShop.UI\MongoShop.UI.csproj", "{56AEBB3B-DBD1-43D4-AA88-145707D31A68}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoShop.Server", "MongoShop.Server\MongoShop.Server.csproj", "{2E24BEA4-CDBF-4076-AE57-A6E8E33350D2}"
+<<<<<<< HEAD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoShop.Infrastructure", "MongoShop.Infrastructure\MongoShop.Infrastructure.csproj", "{FD36C2E9-415C-43A7-9792-EE83BCC55D0B}"
+=======
+>>>>>>> feature/Admin_UI
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
