@@ -23,7 +23,7 @@ namespace MongoShop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var orders = await _orderServices.GetOrdersWithUnpaidInvoiceAsync();
+            var orders = await _orderServices.GetPendingOrderAsync();
 
             var indexOrderViewModels = _mapper.Map<List<IndexOrderViewModel>>(orders);
 
@@ -33,7 +33,7 @@ namespace MongoShop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Paid(string id)
         {
-            var order = await _orderServices.GetOrderByIdAsync(id);
+            var order = await _orderServices.GetByIdAsync(id);
 
             order.Invoice.Status = InvoiceStatus.Paid;
 
@@ -45,7 +45,7 @@ namespace MongoShop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Cancel(string id)
         {
-            var order = await _orderServices.GetOrderByIdAsync(id);
+            var order = await _orderServices.GetByIdAsync(id);
 
             order.Invoice.Status = InvoiceStatus.Cancel;
 
