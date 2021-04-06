@@ -15,6 +15,7 @@ using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
 using MongoShop.BusinessDomain.Wishlists;
 using MongoShop.Infrastructure.Services.FileUpload;
+using Serilog;
 using System;
 using System.IO;
 using System.Reflection;
@@ -114,6 +115,8 @@ namespace MongoShop.Server
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSerilogRequestLogging();
 
             app.UseSwagger();
 
