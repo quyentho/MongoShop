@@ -16,11 +16,7 @@ namespace MongoShop.Infrastructure.Services.FileUpload
             _webHostEnvironment = webHostEnvironment;
         }
 
-        /// <summary>
-        /// Upload images to wwwroot/uploads folder with new random file name.
-        /// </summary>
-        /// <param name="imagesUpload">List of file to upload.</param>
-        /// <returns>List of file paths.</returns>
+        /// 
         public async Task<List<string>> Upload(List<IFormFile> imagesUpload)
         {
             if (imagesUpload is null)
@@ -33,9 +29,19 @@ namespace MongoShop.Infrastructure.Services.FileUpload
             {
                 if (file.Length > 0)
                 {
-
                     // get the file path with new random file name.
-                    var path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", Path.GetRandomFileName());
+                    string path;
+                    if (_webHostEnvironment.WebRootPath != null) //this is web mvc project.
+                    {
+                        
+                        var folderPath = Directory.CreateDirectory(Path.Combine(_webHostEnvironment.WebRootPath, "uploads"));
+                        path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", Path.GetRandomFileName());
+                    }
+                    else //this is web api project.
+                    {
+                        var folderPath = Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "uploads"));
+                        path = Path.Combine(folderPath.FullName, Path.GetRandomFileName());
+                    }
 
                     path = path.Replace(Path.GetExtension(path), Path.GetExtension(file.FileName));
 
@@ -47,8 +53,6 @@ namespace MongoShop.Infrastructure.Services.FileUpload
                     path = Path.GetFileName(path);
                     path = "/uploads/" + path;
                     filePaths.Add(path);
-
-
                 }
             }
 

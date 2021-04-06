@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
-using MongoShop.Server.ViewModels;
+using MongoShop.BusinessDomain.Products;
+using MongoShop.Server.ViewModels.Category;
 
 namespace MongoShop.Server
 {
@@ -10,46 +12,22 @@ namespace MongoShop.Server
         public AutoMapperProfile()
         {
             #region Product
-            //CreateMap<Product, CreateProductViewModel>();
+            CreateMap<Product, CreateProductViewModel>();
 
 
-            //CreateMap<CreateProductViewModel, Product>()
-            //   .ForMember(dest => dest.Images, opt => opt.Ignore())
-            //   .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(scr => scr.SelectedCategoryId))
-            //   .ForMember(dest => dest.Category, opt => opt.Ignore());
+            CreateMap<CreateProductViewModel, Product>()
+               .ForMember(dest => dest.Images, opt => opt.Ignore());
 
-            //CreateMap<Product, IndexProductViewModel>()
-            //    .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<Product, ProductViewModel>();
 
-            //CreateMap<Product, IndexViewModel>()
-            //    .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<Product, EditProductViewModel>();
 
-            //CreateMap<Product, DetailProductViewModel>()
-            //    .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
-
-            //CreateMap<Product, CustomerProductDetailViewModel>()
-            //   .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
-
-            //CreateMap<Product, EditProductViewModel>()
-            //    .ForMember(dest => dest.SelectedCategoryId, opt => opt.MapFrom(src => src.Category.Id));
-
-            //CreateMap<EditProductViewModel, Product>()
-            //    .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.SelectedCategoryId))
-            //    .ForMember(dest => dest.Images, opt => opt.Ignore());
-
-            //CreateMap<Product, IndexViewModel>()
-            //       .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name)); ;
-            //CreateMap<Product, DetailViewModel>()
-            //        .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<EditProductViewModel, Product>()
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src=>src.OldImagePaths));
             #endregion
 
             #region Category
-            CreateMap<Category, SelectListItem>()
-                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Name));
-
-            CreateMap<Category, CategoryViewModel>();
-            CreateMap<Category, DetailCategoryViewModel>();
+            CreateMap<Category, CategoryViewModel>().ReverseMap();
             CreateMap<Category, EditCategoryViewModel>();
             CreateMap<EditCategoryViewModel, Category>();
             CreateMap<CreateCategoryViewModel, Category>();
