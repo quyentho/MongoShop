@@ -23,11 +23,7 @@ namespace MongoShop.Server
             CreateMap<Product, EditProductViewModel>();
 
             CreateMap<EditProductViewModel, Product>()
-                .ForMember(dest => dest.Images, opt => opt.Ignore());
-
-
-
-
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src=>src.OldImagePaths));
             #endregion
 
             #region Category
