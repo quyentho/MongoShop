@@ -27,7 +27,6 @@ namespace MongoShop
 
             CreateMap<CreateProductViewModel, Product>()
                .ForMember(dest => dest.Images, opt => opt.Ignore())
-               .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(scr => scr.SelectedCategoryId))
                .ForMember(dest => dest.Category, opt => opt.Ignore());
 
             CreateMap<Product, IndexProductViewModel>()
@@ -46,7 +45,6 @@ namespace MongoShop
                 .ForMember(dest => dest.SelectedCategoryId, opt => opt.MapFrom(src => src.Category.Id));
 
             CreateMap<EditProductViewModel, Product>()
-                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.SelectedCategoryId))
                 .ForMember(dest => dest.Images, opt => opt.Ignore());
 
             CreateMap<Product, IndexViewModel>()
