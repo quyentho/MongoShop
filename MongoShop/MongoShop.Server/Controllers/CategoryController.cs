@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.Server.ViewModels.Category;
 using System;
@@ -14,12 +15,14 @@ namespace MongoShop.Server.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
+        private readonly ILogger<CategoryController> _logger;
         private readonly ICategoryServices _categoryServices;
         private readonly IMapper _mapper;
-        public CategoryController(ICategoryServices categoryServices, IMapper mapper)
+        public CategoryController(ICategoryServices categoryServices, IMapper mapper, ILogger<CategoryController> logger)
         {
             _categoryServices = categoryServices;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>
@@ -37,6 +40,8 @@ namespace MongoShop.Server.Controllers
                 var categories = await _categoryServices.GetAllAsync();
                 if (categories is null)
                 {
+                    _logger.LogInformation("There is no category available");
+
                     return NotFound("There is no category available");
                 }
 
@@ -44,8 +49,10 @@ namespace MongoShop.Server.Controllers
 
                 return Ok(categoryViewModels);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error when getting all categories.");
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error retrieving data from the database");
             }
@@ -59,7 +66,7 @@ namespace MongoShop.Server.Controllers
         [HttpGet("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult<CategoryViewModel>> GetById([Required, StringLength(24,MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id)
+        public async Task<ActionResult<CategoryViewModel>> GetById([Required, StringLength(24, MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id)
         {
 
             try
@@ -68,7 +75,9 @@ namespace MongoShop.Server.Controllers
 
                 if (category is null)
                 {
-                    return NotFound();
+                    _logger.LogInformation("Category with Id = {id} not found", id);
+
+                    return NotFound($"Category with Id = {id} not found");
                 }
 
                 var detailCategoryViewmodel = _mapper.Map<CategoryViewModel>(category);
@@ -77,6 +86,8 @@ namespace MongoShop.Server.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error when get category id: {id}.", id);
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error retrieving data from the database");
             }
@@ -102,8 +113,11 @@ namespace MongoShop.Server.Controllers
 
                 return CreatedAtAction(nameof(GetById), new { id = category.Id }, createdCategory);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error when create product.");
+
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                    "Error when attempt to create category");
             }
@@ -117,7 +131,7 @@ namespace MongoShop.Server.Controllers
         [HttpDelete("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Delete))]
-        public async Task<ActionResult> Delete([Required, StringLength(24,MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id)
+        public async Task<ActionResult> Delete([Required, StringLength(24, MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id)
         {
             try
             {
@@ -125,6 +139,8 @@ namespace MongoShop.Server.Controllers
 
                 if (categoryToDelete == null)
                 {
+                    _logger.LogInformation("Category with Id = {id} not found", id);
+
                     return NotFound($"Category with Id = {id} not found");
                 }
 
@@ -132,8 +148,10 @@ namespace MongoShop.Server.Controllers
 
                 return Ok($"Category with Id = {id} deleted");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error when delete product.");
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error deleting data");
             }
@@ -148,17 +166,23 @@ namespace MongoShop.Server.Controllers
         [HttpPut("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Update))]
-        public async Task<IActionResult> Update([Required, StringLength(24,MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id, EditCategoryViewModel category)
+        public async Task<IActionResult> Update([Required, StringLength(24, MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id, EditCategoryViewModel category)
         {
             try
             {
                 if (id != category.Id)
+                {
+                    _logger.LogInformation("category ID: {cID} mismatch with param id: {id}", category.Id, id);
                     return BadRequest("Category ID mismatch");
+                }
 
                 var categoryFromDb = await _categoryServices.GetByIdAsync(id);
 
                 if (categoryFromDb == null)
+                {
+                    _logger.LogInformation("Category with Id = {id} not found", id);
                     return NotFound($"Category with Id = {id} not found");
+                }
 
                 var editedCategory = _mapper.Map<Category>(category);
 
@@ -166,8 +190,10 @@ namespace MongoShop.Server.Controllers
 
                 return NoContent();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error when update product.");
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error updating data");
             }

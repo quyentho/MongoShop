@@ -53,8 +53,6 @@ namespace MongoShop.Infrastructure.Services.FileUpload
                     path = Path.GetFileName(path);
                     path = "/uploads/" + path;
                     filePaths.Add(path);
-
-
                 }
             }
 

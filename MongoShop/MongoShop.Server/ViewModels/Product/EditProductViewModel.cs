@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using MongoShop.Server.ViewModels.Category;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 
         public List<IFormFile> ImagesUpload { get; set; }
 
-        public string Category { get; set; }
+        public CategoryViewModel Category { get; set; }
 
     }
 }

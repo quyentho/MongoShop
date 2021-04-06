@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MongoShop.Server.ViewModels.Category;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace MongoShop.Areas.Admin.ViewModels.Product
@@ -17,7 +18,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 
         public string Size { get; set; }
 
-        public string Category { get; set; }
+        public CategoryViewModel Category { get; set; }
 
         public List<string> Images { get; set; }
 

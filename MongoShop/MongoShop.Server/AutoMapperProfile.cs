@@ -16,23 +16,22 @@ namespace MongoShop.Server
 
 
             CreateMap<CreateProductViewModel, Product>()
-               .ForMember(dest => dest.Images, opt => opt.Ignore())
-               .ForMember(dest => dest.Category, opt => opt.Ignore());
+               .ForMember(dest => dest.Images, opt => opt.Ignore());
 
-            CreateMap<Product, ProductViewModel>()
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<Product, ProductViewModel>();
 
-            CreateMap<Product, EditProductViewModel>()
-               .ForMember(dest => dest.Category, opt => opt.Ignore());
+            CreateMap<Product, EditProductViewModel>();
+
+            CreateMap<EditProductViewModel, Product>()
+                .ForMember(dest => dest.Images, opt => opt.Ignore());
+
+
+
 
             #endregion
 
             #region Category
-            CreateMap<Category, SelectListItem>()
-                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Name));
-
-            CreateMap<Category, CategoryViewModel>();
+            CreateMap<Category, CategoryViewModel>().ReverseMap();
             CreateMap<Category, EditCategoryViewModel>();
             CreateMap<EditCategoryViewModel, Category>();
             CreateMap<CreateCategoryViewModel, Category>();

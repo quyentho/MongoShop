@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoShop.BusinessDomain.Categories;
 using MongoShop.Infrastructure.Helpers;
 
 namespace MongoShop.BusinessDomain.Products
@@ -57,37 +54,23 @@ namespace MongoShop.BusinessDomain.Products
         public async Task<List<Product>> GetAllAsync()
         {
 
-            var resultOfJoin = _collection.Aggregate()
-                .Match(p => p.Status == true)
-                .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
-                .Unwind("Category")
-                .As<Product>();
-
-            return await resultOfJoin.ToListAsync();
+            var list = await _collection.FindAsync(c => c.Status == true);
+            return await list.ToListAsync();
         }
 
         /// <inheritdoc/>  
         public async Task<Product> GetByIdAsync(string id)
         {
-            var product = _collection.Aggregate()
-                .Match(p => p.Id == id && p.Status == true)
-                .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
-                .Unwind("Category")
-                .As<Product>();
-
+            var product = await _collection.FindAsync(c => c.Id == id && c.Status == true);
             return await product.SingleOrDefaultAsync();
         }
 
         /// <inheritdoc/>  
         public async Task<List<Product>> GetByNameAsync(string name)
         {
-            var product = _collection.Aggregate()
-               .Match(p => p.Name == name && p.Status == true)
-               .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
-               .Unwind("Category")
-               .As<Product>();
+            var products = await _collection.FindAsync(p => p.Name == name && p.Status == true);
 
-            return await product.ToListAsync();
+            return await products.ToListAsync();
         }
     }
 }

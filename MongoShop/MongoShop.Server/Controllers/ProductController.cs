@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
@@ -21,16 +22,19 @@ namespace MongoShop.Server.Controllers
         private readonly ICategoryServices _categoryServices;
         private readonly IMapper _mapper;
         private readonly IFileUploadService _fileUploadService;
+        private readonly ILogger<ProductController> _logger;
 
         public ProductController(IProductServices productServices,
             IMapper mapper,
             ICategoryServices categoryServices,
-            IFileUploadService fileUploadService)
+            IFileUploadService fileUploadService,
+            ILogger<ProductController> logger)
         {
             _productServices = productServices;
             _mapper = mapper;
             _categoryServices = categoryServices;
             _fileUploadService = fileUploadService;
+            this._logger = logger;
         }
 
         /// <summary>
@@ -47,6 +51,8 @@ namespace MongoShop.Server.Controllers
                 var products = await _productServices.GetAllAsync();
                 if (products is null)
                 {
+                    _logger.LogInformation("There is no product available");
+
                     return NotFound("There is no product available");
                 }
 
@@ -54,8 +60,9 @@ namespace MongoShop.Server.Controllers
 
                 return Ok(productViewModels);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error when getting all products.");
 
                 return StatusCode(StatusCodes.Status500InternalServerError,
                         "Error retrieving data from the database");
@@ -70,7 +77,7 @@ namespace MongoShop.Server.Controllers
         [HttpPost]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                     nameof(DefaultApiConventions.Post))]
-        public async Task<IActionResult> Create([FromForm]CreateProductViewModel productViewModel)
+        public async Task<IActionResult> Create([FromForm] CreateProductViewModel productViewModel)
         {
             try
             {
@@ -88,6 +95,9 @@ namespace MongoShop.Server.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error when create product.");
+
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                   "Server error occurred when create product");
             }
@@ -102,24 +112,38 @@ namespace MongoShop.Server.Controllers
         [HttpPut]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                     nameof(DefaultApiConventions.Put))]
-        public async Task<IActionResult> Edit(string id,[FromForm] EditProductViewModel editProductViewModel)
+        public async Task<IActionResult> Edit(string id, [FromForm] EditProductViewModel editProductViewModel)
         {
-            if (id != editProductViewModel.Id)
+            try
             {
-                return BadRequest();
+                if (id != editProductViewModel.Id)
+                {
+                    _logger.LogInformation("product ID: {cID} mismatch with param id: {id}", editProductViewModel.Id, id);
+                    return BadRequest("Category ID mismatch");
+                }
+
+                var editedProduct = _mapper.Map<Product>(editProductViewModel);
+
+                if (editProductViewModel.ImagesUpload != null)
+                {
+                    _logger.LogInformation("Upload images:");
+
+                    List<string> imagePaths = await _fileUploadService.Upload(editProductViewModel.ImagesUpload);
+                    editedProduct.Images.AddRange(imagePaths);
+                }
+
+                await _productServices.EditAsync(id, editedProduct);
+
+                return NoContent();
             }
-
-            var editedProduct = _mapper.Map<Product>(editProductViewModel);
-
-            if (editProductViewModel.ImagesUpload != null)
+            catch (Exception ex)
             {
-                List<string> imagePaths = await _fileUploadService.Upload(editProductViewModel.ImagesUpload);
-                editedProduct.Images.AddRange(imagePaths);
+                _logger.LogError(ex, "Error when update product.");
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error updating data");
             }
-
-            await _productServices.EditAsync(id, editedProduct);
-
-            return NoContent();
+            
         }
 
         /// <summary>
@@ -137,6 +161,8 @@ namespace MongoShop.Server.Controllers
                 var product = await _productServices.GetByIdAsync(id);
                 if (product is null)
                 {
+                    _logger.LogInformation("There is no product with id: {id}", id);
+
                     return NotFound($"There is no product with id: {id}");
                 }
 
@@ -144,8 +170,10 @@ namespace MongoShop.Server.Controllers
 
                 return Ok(productViewmodel);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error when get product id: {id}.",id);
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                   "Error retrieving data from the database");
             }
@@ -167,19 +195,21 @@ namespace MongoShop.Server.Controllers
 
                 if (product is null)
                 {
+                    _logger.LogInformation("There is no product with id: {id}", id);
+
                     return BadRequest($"Product with id: {id} not found.");
                 }
 
                 await _productServices.DeleteAsync(id, product);
-                return Ok("Product deleted successfully");
+                return Ok($"Product with id: {id} deleted successfully");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error when delete product.");
+
                 return StatusCode(StatusCodes.Status500InternalServerError,
                  "Error retrieving data from the database");
             }
-
-         
         }
     }
 }
