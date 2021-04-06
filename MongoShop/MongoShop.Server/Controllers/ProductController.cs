@@ -49,7 +49,7 @@ namespace MongoShop.Server.Controllers
             try
             {
                 var products = await _productServices.GetAllAsync();
-                if (products is null)
+                if (products is null || products.Count == 0)
                 {
                     _logger.LogInformation("There is no product available");
 

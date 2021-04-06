@@ -33,13 +33,13 @@ namespace MongoShop.BusinessDomain.Orders
         /// Get orders with invoice that has status 'Pending'
         /// </summary>
         /// <returns></returns>
-        Task<List<Order>> GetOrdersWithUnpaidInvoiceAsync();
+        Task<List<Order>> GetPendingOrderAsync();
 
         /// <summary>
         /// Get order by order id.
         /// </summary>
         /// <param name="id">Order id</param>
         /// <returns></returns>
-        Task<Order> GetOrderByIdAsync(string id);
+        Task<Order> GetByIdAsync(string id);
     }
 }

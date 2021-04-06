@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
+using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.Server.ViewModels.Category;
+using MongoShop.Server.ViewModels.Order;
 
 namespace MongoShop.Server
 {
@@ -35,7 +37,7 @@ namespace MongoShop.Server
             #endregion
 
             #region Order
-            //CreateMap<Order, IndexOrderViewModel>();
+            CreateMap<Order, OrderViewModel>();
 
             //CreateMap<CartCheckoutViewModel, Order>()
             //   .ForPath(dest => dest.ShipAddress.Street, opt => opt.MapFrom(scr => scr.Street))

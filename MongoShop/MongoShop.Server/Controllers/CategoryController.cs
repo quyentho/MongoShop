@@ -38,7 +38,7 @@ namespace MongoShop.Server.Controllers
             try
             {
                 var categories = await _categoryServices.GetAllAsync();
-                if (categories is null)
+                if (categories is null || categories.Count == 0)
                 {
                     _logger.LogInformation("There is no category available");
 
