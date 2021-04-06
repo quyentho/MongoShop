@@ -9,6 +9,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 {
     public class EditProductViewModel
     {
+        [Required]
         public string Id { get; set; }
 
         [DisplayName("Product name")]
@@ -26,6 +27,8 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 
         [Required]
         public string Size { get; set; }
+
+        public List<String> OldImagePaths { get; set; }
 
         public List<IFormFile> ImagesUpload { get; set; }
 
