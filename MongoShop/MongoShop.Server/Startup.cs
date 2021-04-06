@@ -100,6 +100,13 @@ namespace MongoShop.Server
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
 
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddHttpClient<IProductServices, ProductServices>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:27017/");
+            });
+
             services
                 .AddFluentEmail("defaultsender@test.test")
                 .AddRazorRenderer()
