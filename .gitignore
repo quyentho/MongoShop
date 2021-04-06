@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 # Ignore uploads folder
 MongoShop/MongoShop/wwwroot/uploads/*
+MongoShop/MongoShop.Server/uploads/*
