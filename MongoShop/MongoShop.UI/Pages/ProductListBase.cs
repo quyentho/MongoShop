@@ -8,7 +8,7 @@ namespace MongoShop.UI.Pages
 {
     public class ProductListBase : ComponentBase
     {
-        [Inject]
-        public IProductServices 
+        //[Inject]
+        //public IProductServices 
     }
 }
