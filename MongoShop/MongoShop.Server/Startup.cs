@@ -44,7 +44,6 @@ namespace MongoShop.Server
                 c.IncludeXmlComments(xmlPath);
             });
 
-
             services.AddOptions();
 
             services.Configure<DatabaseSetting>(
@@ -86,6 +85,7 @@ namespace MongoShop.Server
 
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
 
+            #region Business Service Dependencies
             services.AddScoped<IProductServices, ProductServices>();
 
             services.AddScoped<IUserServices, UserServices>();
@@ -96,6 +96,7 @@ namespace MongoShop.Server
             services.AddScoped<ICartServices, CartServices>();
             services.AddScoped<IWishlistServices, WishlistServices>();
             services.AddScoped<IOrderServices, OrderServices>();
+            #endregion
 
             services.AddScoped<IFileUploadService, FileUploadService>();
 
@@ -103,15 +104,10 @@ namespace MongoShop.Server
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddHttpClient<IProductServices, ProductServices>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:27017/");
-            });
 
-            services
-                .AddFluentEmail("defaultsender@test.test")
-                .AddRazorRenderer()
-                .AddSmtpSender("localhost", 25);
+            services.AddFluentEmail("defaultsender@test.test")
+                    .AddRazorRenderer()
+                    .AddSmtpSender("localhost", 25);
 
         }
 

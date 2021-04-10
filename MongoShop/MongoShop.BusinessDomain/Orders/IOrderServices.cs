@@ -14,12 +14,12 @@ namespace MongoShop.BusinessDomain.Orders
         Task<List<Order>> GetAllAsync();
 
         /// <summary>
-        /// Add a new Order accompany with invoice and reduce the quantity if stock.
-        /// Throw exception if any product not have enough quantity instock.
+        /// Add a new Order accompany with invoice and reduce the quantity in stock.
+        /// Throw exception if any product not have enough quantity in stock.
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
-        Task AddAsync(Order order);
+        Task<Order> AddAsync(Order order);
 
         /// <summary>
         /// Update an Order. Use for update invoice status

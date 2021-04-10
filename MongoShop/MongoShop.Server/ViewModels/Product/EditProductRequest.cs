@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MongoShop.Areas.Admin.ViewModels.Product
 {
-    public class EditProductViewModel
+    public class EditProductRequest
     {
         [Required]
         public string Id { get; set; }

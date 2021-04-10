@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MongoShop.Areas.Admin.ViewModels.Product
 {
-    public class CreateProductViewModel
+    public class CreateProductRequest
     {
         [DisplayName("Product name")]
         [Required]
@@ -25,6 +25,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 
         public List<IFormFile> ImagesUpload { get; set; }
 
+        [Required]
         public CategoryViewModel Category { get; set; }
     }
 }

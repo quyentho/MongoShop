@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Orders;
@@ -14,36 +13,38 @@ namespace MongoShop.Server
         public AutoMapperProfile()
         {
             #region Product
-            CreateMap<Product, CreateProductViewModel>();
+            CreateMap<Product, CreateProductRequest>();
 
+            
 
-            CreateMap<CreateProductViewModel, Product>()
+            CreateMap<CreateProductRequest, Product>()
                .ForMember(dest => dest.Images, opt => opt.Ignore());
 
             CreateMap<Product, ProductViewModel>();
 
-            CreateMap<Product, EditProductViewModel>();
+            CreateMap<Product, EditProductRequest>();
 
-            CreateMap<EditProductViewModel, Product>()
+            CreateMap<EditProductRequest, Product>()
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src=>src.OldImagePaths));
             #endregion
 
             #region Category
             CreateMap<Category, CategoryViewModel>().ReverseMap();
-            CreateMap<Category, EditCategoryViewModel>();
-            CreateMap<EditCategoryViewModel, Category>();
-            CreateMap<CreateCategoryViewModel, Category>();
+            CreateMap<Category, EditCategoryRequest>();
+            CreateMap<EditCategoryRequest, Category>();
+            CreateMap<CreateCategoryRequest, Category>();
 
             #endregion
 
             #region Order
             CreateMap<Order, OrderViewModel>();
 
-            //CreateMap<CartCheckoutViewModel, Order>()
-            //   .ForPath(dest => dest.ShipAddress.Street, opt => opt.MapFrom(scr => scr.Street))
-            //   .ForPath(dest => dest.ShipAddress.Number, opt => opt.MapFrom(scr => scr.AddressNumber))
-            //   .ForPath(dest => dest.ShipAddress.City, opt => opt.MapFrom(scr => scr.City));
+            CreateMap<OrderedProduct, OrderedProductViewModel>();
 
+            CreateMap<CreateOrderRequest, Order > ();
+
+            CreateMap<CreateOrderedProductRequest, OrderedProduct> ()
+                .ForMember(dest=>dest.Product, opt=>opt.Ignore());
             #endregion
 
             #region Cart

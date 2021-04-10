@@ -72,20 +72,20 @@ namespace MongoShop.Server.Controllers
         /// <summary>
         /// Create new product.
         /// </summary>
-        /// <param name="productViewModel">Product info.</param>
+        /// <param name="createProductRequest">Product info.</param>
         /// <returns>201 created.</returns>
         [HttpPost]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                     nameof(DefaultApiConventions.Post))]
-        public async Task<IActionResult> Create([FromForm] CreateProductViewModel productViewModel)
+        public async Task<IActionResult> Create([FromForm] CreateProductRequest createProductRequest)
         {
             try
             {
 
                 // upload image and get back the paths
-                List<string> imagePaths = await _fileUploadService.Upload(productViewModel.ImagesUpload);
+                List<string> imagePaths = await _fileUploadService.Upload(createProductRequest.ImagesUpload);
 
-                var product = _mapper.Map<Product>(productViewModel);
+                var product = _mapper.Map<Product>(createProductRequest);
 
                 product.Images = imagePaths;
 
@@ -107,28 +107,28 @@ namespace MongoShop.Server.Controllers
         /// Updates a product.
         /// </summary>
         /// <param name="id">product id.</param>
-        /// <param name="editProductViewModel">Updated product.</param>
+        /// <param name="editProductRequest">Updated product.</param>
         /// <returns>204 No content.</returns>
         [HttpPut]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                     nameof(DefaultApiConventions.Put))]
-        public async Task<IActionResult> Edit(string id, [FromForm] EditProductViewModel editProductViewModel)
+        public async Task<IActionResult> Edit(string id, [FromForm] EditProductRequest editProductRequest)
         {
             try
             {
-                if (id != editProductViewModel.Id)
+                if (id != editProductRequest.Id)
                 {
-                    _logger.LogInformation("product ID: {cID} mismatch with param id: {id}", editProductViewModel.Id, id);
+                    _logger.LogInformation("product ID: {cID} mismatch with param id: {id}", editProductRequest.Id, id);
                     return BadRequest("Category ID mismatch");
                 }
 
-                var editedProduct = _mapper.Map<Product>(editProductViewModel);
+                var editedProduct = _mapper.Map<Product>(editProductRequest);
 
-                if (editProductViewModel.ImagesUpload != null)
+                if (editProductRequest.ImagesUpload != null)
                 {
                     _logger.LogInformation("Upload images:");
 
-                    List<string> imagePaths = await _fileUploadService.Upload(editProductViewModel.ImagesUpload);
+                    List<string> imagePaths = await _fileUploadService.Upload(editProductRequest.ImagesUpload);
                     editedProduct.Images.AddRange(imagePaths);
                 }
 

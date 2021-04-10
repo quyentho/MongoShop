@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoShop.BusinessDomain.Orders;
+using MongoShop.BusinessDomain.Products;
 using MongoShop.Server.ViewModels.Order;
 using System;
 using System.Collections.Generic;
@@ -16,14 +17,63 @@ namespace MongoShop.Server.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderServices _orderServices;
+        private readonly IProductServices _productServices;
         private readonly IMapper _mapper;
         private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IMapper mapper, IOrderServices orderServices, ILogger<OrderController> logger)
+        public OrderController(IMapper mapper, 
+            IOrderServices orderServices, 
+            IProductServices productServices,
+            ILogger<OrderController> logger)
         {
             _mapper = mapper;
             _orderServices = orderServices;
+            this._productServices = productServices;
             _logger = logger;
+        }
+
+        /// <summary>
+        /// Create new order.
+        /// </summary>
+        /// <param name="newOrder">New Order.</param>
+        /// <returns>Status code 201 if created successfully.</returns>
+        [HttpPost]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                     nameof(DefaultApiConventions.Post))]
+        public async Task<IActionResult> Create(CreateOrderRequest newOrder)
+        {
+            try
+            {
+                var order = _mapper.Map<Order>(newOrder);
+
+                await AttachProductInfosToOrder(newOrder, order);
+
+                order = await _orderServices.AddAsync(order);
+
+                var createdOrder = _mapper.Map<OrderViewModel>(order);
+
+                return CreatedAtAction(nameof(GetById), new { id = order.Id }, createdOrder);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error when create product.");
+
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   "Error when attempt to create order");
+            }
+        }
+
+        private async Task AttachProductInfosToOrder(CreateOrderRequest newOrder, Order order)
+        {
+            for (int i = 0; i < newOrder.OrderedProducts.Count; i++)
+            {
+                string productId = newOrder.OrderedProducts[i].ProductId;
+
+                var product = await _productServices.GetByIdAsync(productId);
+
+                order.OrderedProducts[i].Product = product;
+            }
         }
 
         /// <summary>

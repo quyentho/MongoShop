@@ -101,7 +101,7 @@ namespace MongoShop.Server.Controllers
         [HttpPost]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Post))]
-        public async Task<IActionResult> Create(CreateCategoryViewModel newCategory)
+        public async Task<IActionResult> Create(CreateCategoryRequest newCategory)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace MongoShop.Server.Controllers
         [HttpPut("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Update))]
-        public async Task<IActionResult> Update([Required, StringLength(24, MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id, EditCategoryViewModel category)
+        public async Task<IActionResult> Update([Required, StringLength(24, MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id, EditCategoryRequest category)
         {
             try
             {

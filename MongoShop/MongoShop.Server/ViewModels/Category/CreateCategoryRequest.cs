@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MongoShop.Server.ViewModels.Category
 {
-    public class CreateCategoryViewModel
+    public class CreateCategoryRequest
     {
         [Required]
         [DisplayName("Category name")]

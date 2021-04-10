@@ -29,7 +29,7 @@ namespace MongoShop.BusinessDomain.Orders
         }
 
         /// <inheritdoc/>
-        public async Task AddAsync(Order order)
+        public async Task<Order> AddAsync(Order order)
         {
             await CheckProductQuantityInStockBeforeAdd(order);
 
@@ -37,7 +37,9 @@ namespace MongoShop.BusinessDomain.Orders
 
             CreateNewInvoice(order);
 
-           await _collection.InsertOneAsync(order);
+            await _collection.InsertOneAsync(order);
+
+            return order;
         }
 
         private static void CreateNewInvoice(Order order)
