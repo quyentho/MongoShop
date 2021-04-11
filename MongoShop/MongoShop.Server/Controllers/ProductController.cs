@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.Infrastructure.Services.FileUpload;
+using MongoShop.SharedModels.Product;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -44,6 +45,7 @@ namespace MongoShop.Server.Controllers
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Get))]
+        [EnableCors("Policy1")]
         public async Task<IActionResult> GetAll()
         {
             try

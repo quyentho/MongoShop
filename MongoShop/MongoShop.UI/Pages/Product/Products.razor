@@ -1,0 +1,55 @@
+﻿@page "/"
+@inherits ProductsBase
+<h3>Products</h3>
+@if (Products is null)
+{
+    <h3>Loading...</h3>
+}
+else
+{
+
+    <div class="card-body">
+        <table class="table table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Date registered</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Products)
+                {
+                    <tr>
+                        <td>@product.Id</td>
+                        <td>@product.Name</td>
+                        <td>@product.Price</td>
+                        <td>@product.Size</td>
+                        <td>@product.StockQuantity</td>
+                        <td>
+                            <div class="d-lg-table-row">
+                                <div class="btn-group-sm" role="group" aria-label="Basic example">
+                                    <button class="btn btn-outline-primary" type="button">Edit</button>
+                                    <button class="btn btn-outline-info" type="button">View</button>
+                                    <button class="btn btn-outline-danger" type="button">Delete</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </div>
+}

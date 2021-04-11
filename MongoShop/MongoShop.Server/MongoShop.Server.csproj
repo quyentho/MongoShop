@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MongoShop.BusinessDomain\MongoShop.BusinessDomain.csproj" />
+    <ProjectReference Include="..\MongoShop.SharedModels\MongoShop.SharedModels.csproj" />
   </ItemGroup>
 
 

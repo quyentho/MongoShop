@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MongoShop.Server.ViewModels.Category
+namespace MongoShop.SharedModels.Category
 {
     public class CategoryViewModel
     {

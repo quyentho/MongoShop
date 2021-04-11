@@ -109,6 +109,15 @@ namespace MongoShop.Server
                     .AddRazorRenderer()
                     .AddSmtpSender("localhost", 25);
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Policy1",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                    });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -132,6 +141,8 @@ namespace MongoShop.Server
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

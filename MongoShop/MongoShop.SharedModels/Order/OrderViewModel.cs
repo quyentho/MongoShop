@@ -1,8 +1,7 @@
-﻿using MongoShop.BusinessDomain.Users;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace MongoShop.Server.ViewModels.Order
+namespace MongoShop.SharedModels.Order
 {
     public class OrderViewModel
     {
@@ -22,7 +21,7 @@ namespace MongoShop.Server.ViewModels.Order
         [DisplayName("Status")]
         public string InvoiceStatus { get; set; }
 
-        public Address ShipAddress { get; set; }
+        public AddressViewModel ShipAddress { get; set; }
 
         [DisplayName("Phone number")]
         public string PhoneNumber { get; set; }

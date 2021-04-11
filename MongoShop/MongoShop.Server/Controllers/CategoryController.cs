@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoShop.BusinessDomain.Categories;
-using MongoShop.Server.ViewModels.Category;
+using MongoShop.SharedModels.Category;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

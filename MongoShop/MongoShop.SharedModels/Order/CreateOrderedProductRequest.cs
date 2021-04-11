@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MongoShop.Server.ViewModels.Order
+namespace MongoShop.SharedModels.Order
 {
     public class CreateOrderedProductRequest
     {

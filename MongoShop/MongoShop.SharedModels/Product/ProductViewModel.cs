@@ -1,8 +1,8 @@
-﻿using MongoShop.Server.ViewModels.Category;
+﻿using MongoShop.SharedModels.Category;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace MongoShop.Areas.Admin.ViewModels.Product
+namespace MongoShop.SharedModels.Product
 {
     public class ProductViewModel
     {

@@ -1,6 +1,6 @@
-﻿using MongoShop.Areas.Admin.ViewModels.Product;
+﻿using MongoShop.SharedModels.Product;
 
-namespace MongoShop.Server.ViewModels.Order
+namespace MongoShop.SharedModels.Order
 {
     public class OrderedProductViewModel
     {

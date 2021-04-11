@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
-using MongoShop.Server.ViewModels.Order;
+using MongoShop.SharedModels.Order;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

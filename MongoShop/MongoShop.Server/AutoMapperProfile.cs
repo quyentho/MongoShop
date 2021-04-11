@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
-using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
-using MongoShop.Server.ViewModels.Category;
-using MongoShop.Server.ViewModels.Order;
+using MongoShop.SharedModels.Category;
+using MongoShop.SharedModels.Order;
+using MongoShop.SharedModels.Category;
+using MongoShop.BusinessDomain.Users;
+using MongoShop.SharedModels.Product;
 
 namespace MongoShop.Server
 {
@@ -45,6 +47,8 @@ namespace MongoShop.Server
 
             CreateMap<CreateOrderedProductRequest, OrderedProduct> ()
                 .ForMember(dest=>dest.Product, opt=>opt.Ignore());
+
+            CreateMap<AddressViewModel, Address>().ReverseMap();
             #endregion
 
             #region Cart
