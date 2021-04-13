@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/products"
 @inherits ProductsBase
 <h3>Products</h3>
 @if (Products is null)
@@ -12,11 +13,11 @@ else
         <table class="table table-responsive-sm">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Name</th>
-                    <th>Date registered</th>
-                    <th>Role</th>
-                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Size</th>
+                    <th>Stock Quantity</th>
+                    <th>Category</th>
                     <th></th>
                 </tr>
             </thead>
@@ -24,17 +25,17 @@ else
                 @foreach (var product in Products)
                 {
                     <tr>
-                        <td>@product.Id</td>
                         <td>@product.Name</td>
                         <td>@product.Price</td>
                         <td>@product.Size</td>
                         <td>@product.StockQuantity</td>
+                        <td>@product.Category?.Name</td>
                         <td>
                             <div class="d-lg-table-row">
                                 <div class="btn-group-sm" role="group" aria-label="Basic example">
-                                    <button class="btn btn-outline-primary" type="button">Edit</button>
-                                    <button class="btn btn-outline-info" type="button">View</button>
-                                    <button class="btn btn-outline-danger" type="button">Delete</button>
+                                    <a href="Product/Edit/@product.Id" class="btn btn-outline-primary" type="button">Edit</a>
+                                    <a href="Product/Detail/@product.Id" class="btn btn-outline-info" type="button">View</a>
+                                    <a href="Product/Delete/@product.Id" class="btn btn-outline-danger" type="button">Delete</a>
                                 </div>
                             </div>
                         </td>

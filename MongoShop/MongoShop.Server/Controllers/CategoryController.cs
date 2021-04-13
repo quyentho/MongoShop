@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,7 @@ namespace MongoShop.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [EnableCors("Policy1")]
     public class CategoryController : ControllerBase
     {
         private readonly ILogger<CategoryController> _logger;

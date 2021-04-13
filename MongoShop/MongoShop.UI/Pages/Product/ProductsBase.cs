@@ -3,8 +3,8 @@ using MongoShop.SharedModels.Product;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.Net.Http.Json;
+using Newtonsoft.Json;
 
 namespace MongoShop.UI.Pages.Product
 {
@@ -16,8 +16,9 @@ namespace MongoShop.UI.Pages.Product
         public IEnumerable<ProductViewModel> Products { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Products = await HttpClient.GetFromJsonAsync<List<ProductViewModel>>("api/Product/GetAll");
+            var response = await HttpClient.GetFromJsonAsync<List<ProductViewModel>>("api/Product/GetAll");
+
+            Products = response;
         }
     }
-
 }

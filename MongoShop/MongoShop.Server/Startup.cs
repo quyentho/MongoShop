@@ -115,6 +115,8 @@ namespace MongoShop.Server
                     builder =>
                     {
                         builder.AllowAnyOrigin();
+                        builder.AllowAnyMethod();
+                        builder.AllowAnyHeader();
                     });
             });
 

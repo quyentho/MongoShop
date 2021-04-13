@@ -17,6 +17,7 @@ namespace MongoShop.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [EnableCors("Policy1")]
     public class ProductController : ControllerBase
     {
         private readonly IProductServices _productServices;
@@ -79,6 +80,7 @@ namespace MongoShop.Server.Controllers
         [HttpPost]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                     nameof(DefaultApiConventions.Post))]
+        [EnableCors("Policy1")]
         public async Task<IActionResult> Create([FromForm] CreateProductRequest createProductRequest)
         {
             try
@@ -111,9 +113,10 @@ namespace MongoShop.Server.Controllers
         /// <param name="id">product id.</param>
         /// <param name="editProductRequest">Updated product.</param>
         /// <returns>204 No content.</returns>
-        [HttpPut]
+        [HttpPut("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                     nameof(DefaultApiConventions.Put))]
+        [EnableCors("Policy1")]
         public async Task<IActionResult> Edit(string id, [FromForm] EditProductRequest editProductRequest)
         {
             try
@@ -145,7 +148,7 @@ namespace MongoShop.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error updating data");
             }
-            
+
         }
 
         /// <summary>
@@ -153,9 +156,10 @@ namespace MongoShop.Server.Controllers
         /// </summary>
         /// <param name="id">Product id.</param>
         /// <returns>Product found.</returns>
-        [HttpGet]
+        [HttpGet("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Get))]
+        [EnableCors("Policy1")]
         public async Task<ActionResult<ProductViewModel>> GetById([Required, StringLength(24, MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id)
         {
             try
@@ -174,7 +178,7 @@ namespace MongoShop.Server.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error when get product id: {id}.",id);
+                _logger.LogError(ex, "Error when get product id: {id}.", id);
 
                 return StatusCode(StatusCodes.Status500InternalServerError,
                   "Error retrieving data from the database");
@@ -189,6 +193,7 @@ namespace MongoShop.Server.Controllers
         [HttpDelete]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Delete))]
+        [EnableCors("Policy1")]
         public async Task<IActionResult> Delete(string id)
         {
             try
