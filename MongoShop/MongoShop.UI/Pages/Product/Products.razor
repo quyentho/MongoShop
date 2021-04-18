@@ -8,49 +8,48 @@
 }
 else
 {
-
     <div class="card-body">
-        <table class="table table-responsive-sm">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Size</th>
-                    <th>Stock Quantity</th>
-                    <th>Category</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var product in Products)
-                {
+            <table class="table table-responsive-sm">
+                <thead>
                     <tr>
-                        <td>@product.Name</td>
-                        <td>@product.Price</td>
-                        <td>@product.Size</td>
-                        <td>@product.StockQuantity</td>
-                        <td>@product.Category?.Name</td>
-                        <td>
-                            <div class="d-lg-table-row">
-                                <div class="btn-group-sm" role="group" aria-label="Basic example">
-                                    <a href="Product/Edit/@product.Id" class="btn btn-outline-primary" type="button">Edit</a>
-                                    <a href="Product/Detail/@product.Id" class="btn btn-outline-info" type="button">View</a>
-                                    <a href="Product/Delete/@product.Id" class="btn btn-outline-danger" type="button">Delete</a>
-                                </div>
-                            </div>
-                        </td>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Size</th>
+                        <th>Stock Quantity</th>
+                        <th>Category</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var product in Products)
+                    {
+                        <tr>
+                            <td>@product.Name</td>
+                            <td>@product.Price</td>
+                            <td>@product.Size</td>
+                            <td>@product.StockQuantity</td>
+                            <td>@product.Category?.Name</td>
+                            <td>
+                                <div class="d-lg-table-row">
+                                    <div class="btn-group-sm" role="group" aria-label="Basic example">
+                                        <a href="Product/Edit/@product.Id" class="btn btn-outline-primary" type="button">Edit</a>
+                                        <a href="Product/Detail/@product.Id" class="btn btn-outline-info" type="button">View</a>
+                                        <a href="Product/Delete/@product.Id" class="btn btn-outline-danger" type="button">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-    </div>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </div>
 }

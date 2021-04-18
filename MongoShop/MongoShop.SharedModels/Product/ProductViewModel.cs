@@ -1,14 +1,17 @@
 ﻿using MongoShop.SharedModels.Category;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace MongoShop.SharedModels.Product
 {
     public class ProductViewModel
     {
+        [Required]
         public string Id { get; set; }
 
         [DisplayName("Product name")]
+        [Required]
         public string Name { get; set; }
 
         public double Price { get; set; }
@@ -20,7 +23,7 @@ namespace MongoShop.SharedModels.Product
 
         public CategoryViewModel Category { get; set; }
 
-        public List<string> Images { get; set; }
+        //public List<string> Images { get; set; }
 
     }
 }

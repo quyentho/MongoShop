@@ -17,7 +17,7 @@ namespace MongoShop.Server
             #region Product
             CreateMap<Product, CreateProductRequest>();
 
-            
+
 
             CreateMap<CreateProductRequest, Product>()
                .ForMember(dest => dest.Images, opt => opt.Ignore());
@@ -26,8 +26,10 @@ namespace MongoShop.Server
 
             CreateMap<Product, EditProductRequest>();
 
+            CreateMap<ProductViewModel, EditProductRequest>();
+
             CreateMap<EditProductRequest, Product>()
-                .ForMember(dest => dest.Images, opt => opt.MapFrom(src=>src.OldImagePaths));
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.OldImagePaths));
             #endregion
 
             #region Category
@@ -43,10 +45,10 @@ namespace MongoShop.Server
 
             CreateMap<OrderedProduct, OrderedProductViewModel>();
 
-            CreateMap<CreateOrderRequest, Order > ();
+            CreateMap<CreateOrderRequest, Order>();
 
-            CreateMap<CreateOrderedProductRequest, OrderedProduct> ()
-                .ForMember(dest=>dest.Product, opt=>opt.Ignore());
+            CreateMap<CreateOrderedProductRequest, OrderedProduct>()
+                .ForMember(dest => dest.Product, opt => opt.Ignore());
 
             CreateMap<AddressViewModel, Address>().ReverseMap();
             #endregion

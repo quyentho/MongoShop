@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Components;
 using MongoShop.SharedModels.Category;
 using MongoShop.SharedModels.Product;
 using System.Collections.Generic;
@@ -19,19 +20,23 @@ namespace MongoShop.UI.Pages.Product
         [Inject]
         public NavigationManager NavigationManager { get; set; }
         public IEnumerable<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
-        public ProductViewModel Product { get; set; }
+        public EditProductRequest Product { get; set; }
 
+        [Inject]
+        public IMapper Mapper { get; set; }
         public CategoryViewModel SelectedCategory { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             Categories = await HttpClient.GetFromJsonAsync<List<CategoryViewModel>>("api/Category/GetAll");
-            Product = await HttpClient.GetFromJsonAsync<ProductViewModel>($"api/Product/GetById/{Id}");
+            var productViewModel = await HttpClient.GetFromJsonAsync<ProductViewModel>($"api/Product/GetById/{Id}");
+
+            Mapper.Map(productViewModel, Product);
         }
 
         public async Task HandleValidSubmit()
         {
-            var response = await HttpClient.PutAsJsonAsync<ProductViewModel>($"api/Product/Edit/{Id}" ,Product);
+            var response = await HttpClient.PutAsJsonAsync<EditProductRequest>($"api/Product/Edit/{Id}" ,Product);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {

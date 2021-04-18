@@ -11,78 +11,79 @@
             }
             else
             {
-                <EditForm Model="@Product" class="form-horizontal" OnValidSubmit="@HandleValidSubmit">
-                    <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="text-input">Product Name</label>
-                        <div class="col-md-9">
-                            <InputText @bind-Value="@Product.Name" class="form-control" id="text-input" type="text" name="text-input" />
-                        </div>
+        <EditForm Model="@Product" class="form-horizontal" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary/>
+            <div class="form-group row">
+                <div class="col-md-9">
+                    <InputText @bind-Value="@Product.Id" class="form-control" id="text-input" type="hidden" name="text-input" />
+                    <ValidationMessage For="() => Product.Id" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="text-input">Product Name</label>
+                <div class="col-md-9">
+                    <InputText @bind-Value="@Product.Name" class="form-control" id="text-input" type="text" name="text-input" />
+                    <ValidationMessage For="() => Product.Name" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="text-input">Product Price</label>
+                <div class="input-group col-md-9">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="text-input">Product Price</label>
-                        <div class="input-group col-md-9">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <InputNumber type="text" @bind-Value="Product.Price" class="form-control" aria-label="Amount (to the nearest dollar)" />
-                            <div class="input-group-append">
-                                <span class="input-group-text">VNĐ</span>
-                            </div>
-                        </div>
+                    <InputNumber type="text" @bind-Value="Product.Price" class="form-control" aria-label="Amount (to the nearest dollar)" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">VNĐ</span>
                     </div>
+                </div>
+            </div>
 
-                    <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="text-input">Stock Quantity</label>
-                        <div class="col-md-9">
-                            <InputNumber class="form-control" @bind-Value="Product.StockQuantity" id="text-input" type="text" name="text-input" placeholder="Enter Quantity" />
-                        </div>
-                    </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="text-input">Stock Quantity</label>
+                <div class="col-md-9">
+                    <InputNumber class="form-control" @bind-Value="Product.StockQuantity" id="text-input" type="text" name="text-input" placeholder="Enter Quantity" />
+                </div>
+            </div>
 
-                    <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="select1">Size</label>
-                        <div class="col-md-9">
-                            <InputSelect @bind-Value="@Product.Size" class="form-control" id="select1" name="select1">
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                                <option value="XXL">XXL</option>
-                            </InputSelect>
-                        </div>
-                    </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="select1">Size</label>
+                <div class="col-md-9">
+                    <InputSelect @bind-Value="@Product.Size" class="form-control" id="select1" name="select1">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </InputSelect>
+                </div>
+            </div>
 
-                    <div class="form-group row">
-                        <label class="col-md-3 col-form-label" for="select2">Category</label>
-                        <div class="col-md-9">
-                            <InputSelect @bind-Value="SelectedCategory" class="form-control" id="select2" name="select2">
-                                @if (Categories != null)
-                                    {
-                                    @foreach (var category in Categories)
-                                        {
-                                        <option value="@category.Id">@category.Name</option>
-                                        }
-                                    }
-                                    else
-                                    {
-                                    <option value="0">Load Categories...</option>
-                                    }
-                            </InputSelect>
-                        </div>
-                    </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="select2">Category</label>
+                <div class="col-md-9">
+                    <InputSelect @bind-Value="SelectedCategory" class="form-control" id="select2" name="select2">
+                        @if (Categories != null)
+                            {
+                            @foreach (var category in Categories)
+                                {
+                                <option value="@category.Id">@category.Name</option>
+                                }
+                            }
+                            else
+                            {
+                            <option value="0">Load Categories...</option>
+                            }
+                    </InputSelect>
+                </div>
+            </div>
 
-                    @*<div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="file-multiple-input">Image Upload</label>
-                            <div class="col-md-9">
-                                <input type="file" @bind="" class="form-control" multiple="multiple" accept="image/*">
-                            </div>
-                        </div>*@
-
-                    <div class="form-group form-action">
-                        <button type="submit" class="btn btn-outline-success">Submit</button>
-                        <button class="btn btn-outline-secondary">Cancel</button>
-                    </div>
-                </EditForm>
-
+            <div class="form-group form-action">
+                <button type="submit" class="btn btn-outline-success">Submit</button>
+                <button class="btn btn-outline-secondary">Cancel</button>
+            </div>
+        </EditForm>
             }
         </div>
     </div>
