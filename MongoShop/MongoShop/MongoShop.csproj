@@ -23,6 +23,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Custom\fonts\ElegantIcons.svg" />
+    <None Include="wwwroot\Custom\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\Custom\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\Custom\fonts\themify.svg" />
+    <None Include="wwwroot\Custom\js\bootstrap.min.js" />
+    <None Include="wwwroot\Custom\js\imagesloaded.pkgd.min.js" />
+    <None Include="wwwroot\Custom\js\jquery-3.3.1.min.js" />
+    <None Include="wwwroot\Custom\js\jquery-ui.min.js" />
+    <None Include="wwwroot\Custom\js\jquery.countdown.min.js" />
+    <None Include="wwwroot\Custom\js\jquery.dd.min.js" />
+    <None Include="wwwroot\Custom\js\jquery.nice-select.min.js" />
+    <None Include="wwwroot\Custom\js\jquery.slicknav.js" />
+    <None Include="wwwroot\Custom\js\jquery.zoom.min.js" />
+    <None Include="wwwroot\Custom\js\main.js" />
+    <None Include="wwwroot\Custom\js\owl.carousel.min.js" />
     <None Include="wwwroot\js\adminlte.js" />
     <None Include="wwwroot\js\adminlte.js.map" />
     <None Include="wwwroot\js\adminlte.min.js" />
