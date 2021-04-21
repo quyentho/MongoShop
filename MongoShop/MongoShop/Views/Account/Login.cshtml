@@ -27,7 +27,7 @@
         <div class="card">
             <div class="card-body login-card-body">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <form asp-controller="Account" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+                <form asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
                     <div class="input-group mb-3">
                         <input type="email" asp-for="Email" class="form-control" placeholder="Email">
                         <div class="input-group-append">
@@ -35,7 +35,7 @@
                                 <span class="fas fa-envelope"></span>
                             </div>
                         </div>
-                        <br/>
+                        <br />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="input-group mb-3">
@@ -45,7 +45,7 @@
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
-                        <br/>
+                        <br />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="row">
@@ -64,23 +64,24 @@
                         <!-- /.col -->
                     </div>
                 </form>
-
-                <div class="social-auth-links text-center mb-3">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-                    </a>
-                </div>
+                <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                    <div class="social-auth-links text-center mb-3">
+                        <p>- OR -</p>
+                        <button type="submit" name="provider" value="Facebook" class="btn btn-block btn-primary">
+                            <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+                        </button>
+                        <button type="submit" name="provider" value="Google" class="btn btn-block btn-danger">
+                            <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+                        </button>
+                    </div>
+                </form>>
                 <!-- /.social-auth-links -->
 
                 <p class="mb-1">
                     <a asp-controller="Account" asp-action="ForgotPassword">I forgot my password</a>
                 </p>
                 <p class="mb-0">
-                    <a asp-controller="Account" asp-action="Register"  class="text-center">Register a new membership</a>
+                    @Html.ActionLink("Register a new membership", "Register", "Account", new { returnUrl = @Model.ReturnUrl })
                 </p>
             </div>
             <!-- /.login-card-body -->

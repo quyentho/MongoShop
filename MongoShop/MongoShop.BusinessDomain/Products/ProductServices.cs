@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoShop.Infrastructure.Helpers;
 
@@ -49,7 +51,7 @@ namespace MongoShop.BusinessDomain.Products
 
             await _collection.ReplaceOneAsync(c => c.Id == id, product);
         }
-
+     
         /// <inheritdoc/>  
         public async Task<List<Product>> GetAllAsync()
         {
@@ -66,11 +68,13 @@ namespace MongoShop.BusinessDomain.Products
         }
 
         /// <inheritdoc/>  
-        public async Task<List<Product>> GetByNameAsync(string name)
+        public async Task<List<Product>> GetByNameAsync(string productName)
         {
-            var products = await _collection.FindAsync(p => p.Name == name && p.Status == true);
+            productName =  Regex.Escape(productName);
 
-            return await products.ToListAsync();
+            var filter = Builders<Product>.Filter.Regex("name", new BsonRegularExpression(productName, "i"));
+
+            return await _collection.Find(filter).ToListAsync();
         }
     }
 }

@@ -18,10 +18,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+            @Html.ActionLink("Register","Register","Account",new { returnUrl = @ViewData["returnUrl"].ToString() })
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+            @Html.ActionLink("Login", "Login", "Account", new { returnUrl = @ViewData["returnUrl"].ToString() })
         </li>
     }
 </ul>

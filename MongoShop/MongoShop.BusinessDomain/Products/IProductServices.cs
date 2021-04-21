@@ -28,18 +28,18 @@ namespace MongoShop.BusinessDomain.Products
         Task DeleteAsync(string id, Product product);
 
         /// <summary>
-        /// Get all products by ID with status = true
+        /// Get product by ID with status = true
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         Task<Product> GetByIdAsync(string id);
 
         /// <summary>
-        /// Get all Product by Name with status = true
+        /// Get all products contain the name with status = true
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        Task<List<Product>> GetByNameAsync(string name);
+        Task<List<Product>> GetByNameAsync(string productName);
 
 
         /// <summary>

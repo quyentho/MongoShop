@@ -3,9 +3,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentEmail.Core;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MongoShop.BusinessDomain.Users;
 using MongoShop.Models.Account;
 
@@ -13,7 +15,7 @@ namespace MongoShop.Controllers
 {
     public class AccountController : Controller
     {
-
+        private readonly ILogger<AccountController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
@@ -23,54 +25,56 @@ namespace MongoShop.Controllers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IMapper mapper,
-            IFluentEmail emailSender)
+            IFluentEmail emailSender,
+            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             this._mapper = mapper;
             _emailSender = emailSender;
+            _logger = logger;
         }
 
         [HttpGet]
-        public IActionResult Login(string returnUrl = null)
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            returnUrl ??= Url.Action("Index", "Customer");
+
+            var model = new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+            return View(model);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            _ = string.IsNullOrEmpty(returnUrl) ? returnUrl = "/customer/index" : returnUrl;
-
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
+                Microsoft.AspNetCore.Identity.SignInResult loginResult
+                    = await _signInManager.PasswordSignInAsync(model.Email,model.Password,isPersistent:false,lockoutOnFailure:true);
 
-                if (result.Succeeded)
+                if (loginResult == Microsoft.AspNetCore.Identity.SignInResult.Success)
                 {
-                    return LocalRedirect(returnUrl);
+                    if (!string.IsNullOrEmpty(model.ReturnUrl))
+                    {
+                        return LocalRedirect(model.ReturnUrl);
+                    }
+
+                    return RedirectToAction("Index", "Home");
                 }
-                else if (result.IsLockedOut)
-                {
-                    return View("Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Wrong email or password.");
-                    return View(model);
-                }
+                ModelState.AddModelError(string.Empty, "Wrong email or password!");
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, "Invalid login attempt");
+
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult Register(string returnUrl = "/customer/index")
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -78,10 +82,8 @@ namespace MongoShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = "/customer/index")
         {
-            _ = string.IsNullOrEmpty(returnUrl) ? returnUrl = "/customer/index" : returnUrl;
-
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -106,6 +108,8 @@ namespace MongoShop.Controllers
                     ModelState.AddModelError(string.Empty, error.Description.ToString());
                 }
             }
+
+            ModelState.AddModelError(string.Empty, "Failed to register");
 
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -248,5 +252,107 @@ namespace MongoShop.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallBack", "Account", new { returnUrl = returnUrl });
+
+            AuthenticationProperties properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return new ChallengeResult(provider, properties);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExternalLoginCallBack(string returnUrl = null, string remoteError = null)
+        {
+            returnUrl ??= Url.Action("Index", "Customer");
+
+            var loginViewModel = new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+
+            if (remoteError != null)
+            {
+                _logger.LogInformation("Error from external provider: {remoteError}", remoteError);
+                ModelState.AddModelError(string.Empty, "Login failed");
+
+                return View("Login", loginViewModel);
+            }
+
+            ExternalLoginResponse loginResponse = await GetExternalLoginResponseAsync(loginViewModel);
+
+            if (loginResponse.ResponseStatus == ExternalLoginResponseStatus.Error)
+            {
+                _logger.LogInformation("Failed to use external login: {message}", loginResponse.Message);
+                ModelState.AddModelError(string.Empty, "Login failed");
+                return View("Login", loginViewModel);
+            }
+
+            _logger.LogInformation("External login successfully, redirect to {returnUrl}", returnUrl);
+
+            return LocalRedirect(returnUrl);
+        }
+
+        private async Task<ExternalLoginResponse> GetExternalLoginResponseAsync(LoginViewModel loginViewModel)
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info is null)
+            {
+                return new ExternalLoginResponse
+                {
+                    ResponseStatus = ExternalLoginResponseStatus.Error,
+                    Message = "Error loading external login information"
+                };
+            }
+
+            var signInResult =
+                await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
+            if (signInResult.Succeeded)
+            {
+                return new ExternalLoginResponse
+                {
+                    ResponseStatus = ExternalLoginResponseStatus.Success,
+                    Message = "Login successfully"
+                };
+            }
+
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+            if (email == null)
+            {
+                return new ExternalLoginResponse
+                {
+                    ResponseStatus = ExternalLoginResponseStatus.Error,
+                    Message = $"Email Claim not received from {info.LoginProvider}"
+                };
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user is null)
+            {
+                user = new ApplicationUser
+                {
+                    UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                    Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                };
+
+                await _userManager.CreateAsync(user);
+
+                var claim = new Claim(ClaimTypes.Email, email);
+                await _userManager.AddClaimAsync(user, claim);
+            }
+
+            await _userManager.AddLoginAsync(user, info);
+            await _signInManager.SignInAsync(user, false);
+
+            return new ExternalLoginResponse
+            {
+                ResponseStatus = ExternalLoginResponseStatus.Success,
+                Message = "Login successfully"
+            };
+        }
     }
 }

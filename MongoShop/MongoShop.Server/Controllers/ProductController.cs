@@ -69,6 +69,41 @@ namespace MongoShop.Server.Controllers
             }
 
         }
+
+        /// <summary>
+        /// Gets product matched the name.
+        /// </summary>
+        /// <param name="productName">Product name</param>
+        /// <returns>List products matched.</returns>
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                    nameof(DefaultApiConventions.Get))]
+        public async Task<IActionResult> FindByName(string productName)
+        {
+            try
+            {
+                var products = await _productServices.GetByNameAsync(productName);
+                if (products is null || products.Count == 0)
+                {
+                    _logger.LogInformation("There is no product available");
+
+                    return NotFound("There is no product available");
+                }
+
+                var productViewModels = _mapper.Map<List<ProductViewModel>>(products);
+
+                return Ok(productViewModels);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error when getting all products.");
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                        "Error retrieving data from the database");
+            }
+
+        }
+
         /// <summary>
         /// Create new product.
         /// </summary>
@@ -151,7 +186,7 @@ namespace MongoShop.Server.Controllers
         /// </summary>
         /// <param name="id">Product id.</param>
         /// <returns>Product found.</returns>
-        [HttpGet]
+        [HttpGet("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult<ProductViewModel>> GetById([Required, StringLength(24, MinimumLength = 24, ErrorMessage = "Id must be 24 digits string")] string id)
