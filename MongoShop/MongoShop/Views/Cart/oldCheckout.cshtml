@@ -1,0 +1,100 @@
+﻿@{
+    Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
+}
+@using MongoShop.Models.Cart;
+@model CartCheckoutViewModel
+
+
+<form asp-action="PlaceOrder" asp-controller="Cart" method="post" id="checkout_form">
+
+    <div class="super-container">
+        <div class="checkout">
+            <div class="container">
+                <div class="row">
+
+                    Billing Details
+                    <div class="col-lg-6">
+                        <div class="billing">
+                            <div class="checkout_title">billing details</div>
+                            <div class="checkout_form_container">
+                                <div class="d-flex flex-lg-row flex-column align-items-start justify-content-between">
+                                    <input type="text" class="checkout_input checkout_input_50" placeholder="First Name" required="required">
+                                    <input type="text" class="checkout_input checkout_input_50" placeholder="Last Name" required="required">
+                                </div>
+
+                                <input type="text" class="checkout_input" placeholder="Company Name">
+                                <input type="text" class="checkout_input" placeholder="E-mail" required="required">
+                                <input asp-for="Street" type="text" class="checkout_input" placeholder="Street" required="required">
+                                <input asp-for="City" type="text" class="checkout_input" placeholder="City" required="required">
+                                <div class="d-flex flex-lg-row flex-column align-items-start justify-content-between">
+                                    <input asp-for="AddressNumber" type="text" class="checkout_input checkout_input_50" placeholder="Address Number" required="required">
+                                    <input asp-for="PhoneNumber" type="text" class="checkout_input checkout_input_50" placeholder="Phone No" required="required">
+                                </div>
+<textarea asp-for="Comment" class="checkout_comment" placeholder="Leave a comment about your order"></textarea>
+                                <div class="billing_options">
+                                    <div class="billing_shipping">
+                                        <input type="checkbox" />
+
+                                        <label for="checkbox_shipping"><img src="images/checked.png" alt=""></label>
+                                        <span>Use default infomation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    Cart Details
+                    <div class="col-lg-6">
+                        <div class="cart_details">
+                            <div class="checkout_title">cart total</div>
+                            <div class="cart_total">
+                                <ul>
+                                    <li class="d-flex flex-row align-items-center justify-content-start">
+                                        <div class="cart_total_title">Product</div>
+                                        <div class="cart_total_price ml-auto">Total</div>
+                                    </li>
+                                    @foreach (var item in Model.Products)
+                                    {
+                                        double subTotal = item.Product.Price * item.OrderedQuantity;
+                                        <li class="d-flex flex-row align-items-center justify-content-start">
+                                            <div class="cart_total_title">@string.Format($"{item.Product.Name} x{item.OrderedQuantity}")</div>
+                                            <div class="cart_total_price ml-auto">@subTotal</div>
+                                        </li>
+                                    }
+
+
+                                    <li class="d-flex flex-row align-items-center justify-content-start">
+                                        <div class="cart_total_title">Subtotal</div>
+                                        <div class="cart_total_price ml-auto">$35.00</div>
+                                    </li>
+                                    <li class="d-flex flex-row align-items-center justify-content-start">
+                                        <div class="cart_total_title">Shipping</div>
+                                        <div class="cart_total_price ml-auto">$5.00</div>
+                                    </li>
+                                    <li class="d-flex flex-row align-items-start justify-content-start total_row">
+                                        <div class="cart_total_title">Total</div>
+                                        <input type="hidden" asp-for="Total" />
+                                        <div class="cart_total_price ml-auto">@Model.Total</div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="payment_options">
+                                <div>
+                                    <input type="radio" checked id="radio_payment_1" name="regular_radio">
+                                    <label for="radio_payment_1">Cash on delivery</label>
+                                </div>
+
+                                <div>
+                                    <input type="radio" id="radio_payment_2" name="regular_radio" checked>
+                                    <label for="radio_payment_2">Paypal</label>
+                                    <div class="visa payment_option"><a href="#"><img src="~/img/visa.jpg" alt=""></a></div>
+                                    <div class="master payment_option"><a href="#"><img src="~/img/master.jpg" alt=""></a></div>
+                                </div>
+                                <button type="submit" class="cart_total_button">place order</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
