@@ -33,9 +33,15 @@ namespace MongoShop.Controllers
         {
             var products = await _productServices.GetAllAsync();
 
-            var indexProductViewModel = _mapper.Map<List<IndexViewModel>>(products);
+            var indexCustomerViewModel = _mapper.Map<List<IndexViewModel>>(products);
 
-            return View(indexProductViewModel.Take(3));
+            var model = new CustomerMultipleList()
+            {
+                Collection1 = indexCustomerViewModel.Where(m => m.Category == "Type 1"),
+                Collection2 = indexCustomerViewModel.Where(m => m.Category == "Type 2")
+            };
+
+            return View(model);
         }
 
         [HttpGet]
