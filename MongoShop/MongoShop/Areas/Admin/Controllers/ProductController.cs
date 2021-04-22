@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ namespace MongoShop.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
-    [Authorize]
+    //[Authorize]
 
     public class ProductController : Controller
     {
@@ -34,13 +35,13 @@ namespace MongoShop.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int skip = 0, int take = 10)
         {
             var products = await _productServices.GetAllAsync();
 
             var indexProductViewModel = _mapper.Map<List<IndexProductViewModel>>(products);
 
-            return View(indexProductViewModel);
+            return View(indexProductViewModel.Skip(skip).Take(take));
         }
 
         [HttpGet]

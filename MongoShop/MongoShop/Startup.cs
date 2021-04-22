@@ -77,13 +77,13 @@ namespace MongoShop
             };
 
             services.AddMemoryCache();
-           
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.HttpOnly = true;
             });
-            
+
             services.AddMvc();
 
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
@@ -113,13 +113,12 @@ namespace MongoShop
               {
                   options.ClientId = "140589299640-88d9fngq6s6ht88vpr1iktfl9fvnikgo.apps.googleusercontent.com";
                   options.ClientSecret = "y1KKaDWliUnUEQoS69vpBW3s";
-              });
-              //.AddFacebook(options =>
-              //{
-              //    options.AppId = "2100732046726691";
-              //    options.AppSecret = "b9f09335b9154b92ba6cd44a993a8141";
-              //});
-
+              })
+            .AddFacebook(options =>
+            {
+                options.AppId = "745814422783717";
+                options.AppSecret = "bd5da5bdfc0bd7e67fc2569aa96274c2";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -128,6 +127,7 @@ namespace MongoShop
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
             else
             {
