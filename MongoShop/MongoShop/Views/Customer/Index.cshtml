@@ -5,7 +5,6 @@
 @using MongoShop.Models.Customer;
 @*@model IEnumerable<IndexViewModel>*@
 @model CustomerMultipleList
-
 @*@foreach (var item in Model)
     {
         <div class="col-lg-4 product_col">
@@ -52,44 +51,16 @@
 
     </script>*@
 
-<!-- Deal Of The Week Section Begin-->
-<!--<section class="deal-of-week set-bg spad" data-setbg="img/time-bg.jpg">
-    <div class="container">
-        <div class="col-lg-6 text-center">
-            <div class="section-title">
-                <h2>Deal Of The Week</h2>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed<br /> do ipsum dolor sit amet,
-                    consectetur adipisicing elit
-                </p>
-                <div class="product-price">
-                    $35.00
-                    <span>/ HanBag</span>
-                </div>
-            </div>
-            <div class="countdown-timer" id="countdown">
-                <div class="cd-item">
-                    <span>56</span>
-                    <p>Days</p>
-                </div>
-                <div class="cd-item">
-                    <span>12</span>
-                    <p>Hrs</p>
-                </div>
-                <div class="cd-item">
-                    <span>40</span>
-                    <p>Mins</p>
-                </div>
-                <div class="cd-item">
-                    <span>52</span>
-                    <p>Secs</p>
-                </div>
-            </div>
-            <a href="#" class="primary-btn">Shop Now</a>
-        </div>
-    </div>
-</section>-->
-<!-- Deal Of The Week Section End -->
+<script type="text/javascript">
+        function AddToCart(productId) {
+            $.post("@Url.Action("Add", "Cart")", { productId: productId })
+                .done(function () {
+                    alert("product added to your cart");
+                });
+        };
+</script>
+
+
 <!-- Man Banner Section Begin -->
 <section class="man-banner spad">
     <div class="container-fluid">
@@ -110,14 +81,14 @@
                     {
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src=@item.Images[0] alt="">
+                                <img src="~/Custom/img/products/women-2.jpg" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
                                 </div>
                                 <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                    <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                    <li class="w-icon active" onclick="AddToCart('@item.Id');"><a href="#"><i class="icon_bag_alt"></i></a></li>
+                                    <li class="quick-view"><a href="@Url.Action("ProductDetail", new { id = item.Id })">+ Quick View</a></li>
                                     <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                 </ul>
                             </div>
@@ -127,7 +98,7 @@
                                     <h5>@item.Name</h5>
                                 </a>
                                 <div class="product-price">
-                                    $@item.Price
+                                    @String.Format("{0:c}", item.Price)
                                     @*<span>$35.00</span>*@
                                 </div>
                             </div>
@@ -186,7 +157,7 @@
                                     <h5>@item.Name</h5>
                                 </a>
                                 <div class="product-price">
-                                    $@item.Price
+                                    @String.Format("{0:c}", item.Price)
                                     @*<span>$35.00</span>*@
                                 </div>
                             </div>
