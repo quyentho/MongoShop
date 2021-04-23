@@ -51,6 +51,7 @@ namespace MongoShop.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            ModelState.Remove("ExternalLogins");
             if (ModelState.IsValid)
             {
                 Microsoft.AspNetCore.Identity.SignInResult loginResult
