@@ -61,6 +61,7 @@ namespace MongoShop.Controllers
             {
                 foreach (var _product in cartFromSession.Products)
                 {
+                    //Avoid Duplicate and Add-on
                     if (cartFromDb.Products.Any(m => m.Product.Id == _product.Product.Id))
                     {
                         var _targetProduct = cartFromDb.Products.FirstOrDefault(m => m.Product.Id == _product.Product.Id);
@@ -68,7 +69,11 @@ namespace MongoShop.Controllers
                     }
                     else
                     {
-                        cartFromDb.Products.AddRange(cartFromSession.Products);
+                        cartFromDb.Products.Add(new OrderedProduct
+                        {
+                            Product = _product.Product,
+                            OrderedQuantity = _product.OrderedQuantity
+                        });
                     }
                 }               
             }
