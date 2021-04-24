@@ -59,7 +59,18 @@ namespace MongoShop.Controllers
 
             if (cartFromSession != null && cartFromSession.Products.Count > 0)
             {
-                cartFromDb.Products.AddRange(cartFromSession.Products);
+                foreach (var _product in cartFromSession.Products)
+                {
+                    if (cartFromDb.Products.Any(m => m.Product.Id == _product.Product.Id))
+                    {
+                        var _targetProduct = cartFromDb.Products.FirstOrDefault(m => m.Product.Id == _product.Product.Id);
+                        _targetProduct.OrderedQuantity += 1;
+                    }
+                    else
+                    {
+                        cartFromDb.Products.AddRange(cartFromSession.Products);
+                    }
+                }               
             }
 
             CalculateTotalPrice(cartFromDb);
@@ -86,16 +97,19 @@ namespace MongoShop.Controllers
 
             List<string> listShoppingCart = HttpContext.Session.Get<List<string>>("ssShoppingCart");
 
+            
             if (listShoppingCart != null)
             {
                 foreach (var productId in listShoppingCart)
                 {
                     var productFromDb = await _productServices.GetByIdAsync(productId);
+
                     cart.Products.Add(new OrderedProduct()
                     {
                         OrderedQuantity = 1,
                         Product = productFromDb
                     });
+
                     cart.Total += productFromDb.Price;
                 }
             }
