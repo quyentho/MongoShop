@@ -158,7 +158,6 @@ namespace MongoShop
                     );
 
                 endpoints.MapControllerRoute("default_route", "{controller=Customer}/{action=Index}/{id?}");
-
             });
         }
     }

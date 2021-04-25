@@ -161,8 +161,9 @@ namespace MongoShop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //Bỏ Post đê
         [HttpPost]
-        public async Task<IActionResult> Checkout([FromForm] CartIndexViewModel viewModel)
+        public async Task<IActionResult> Checkout( CartIndexViewModel viewModel)
         {
             var cartCheckoutViewModel = _mapper.Map<CartCheckoutViewModel>(viewModel);
 
