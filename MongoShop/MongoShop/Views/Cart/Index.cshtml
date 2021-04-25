@@ -64,7 +64,9 @@
                                                 </div>
                                             </td>
                                             <td class="total-price first-row" id="prod-total">@String.Format("{0:c}", Model.Products[i].Product.Price * @Model.Products[i].OrderedQuantity)</td>
-                                            <td class="close-td first-row"><i class="ti-close"></i></td>
+                                            <td class="close-td first-row">
+                                                <i class="ti-close" onclick="RemoveFromCart('@Model.Products[i].Product.Id');">                                                </i>
+                                            </td>
                                         </tr>
                                     }
 
@@ -78,7 +80,7 @@
                                     <a href="#" class="primary-btn up-cart">Update cart</a>
                                 </div>
                                 <div class="discount-coupon">
-                                    <h6>Discount Codes</h6>
+                                    @* <h6>Discount Codes</h6> *@
                                     @* <form action="#" class="coupon-form">
                                         <input type="text" placeholder="Enter your codes">
                                         <button type="submit" class="site-btn coupon-btn">Apply</button>
@@ -104,3 +106,11 @@
     </section>
 
 <!-- Shopping Cart Section End -->
+<script>
+        function RemoveFromCart(productId) {
+
+        $.post("@Url.Action("Remove","Cart")", { productId: productId }).done(function (data) {
+            location.reload(); // then reload the page.(3)
+        });
+    }; 
+</script>
