@@ -45,7 +45,7 @@
                                     @for (int i = 0; i < Model.Products.Count; i++)
                                     {
                                         <input type="hidden" asp-for="@Model.Products[i].Product.Id"/>
-                                        <input type="hidden" asp-for="@Model.Products[i].OrderedQuantity"/>
+                                        @*<input type="hidden" asp-for="@Model.Products[i].OrderedQuantity"/>*@
                                         <input type="hidden" asp-for="@Model.Products[i].Product.Name"/>
                                         <input type="hidden" asp-for="@Model.Products[i].Product.Price"/>
                                         <tr>

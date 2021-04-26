@@ -78,7 +78,7 @@ namespace MongoShop.Controllers
                 }               
             }
 
-            CalculateTotalPrice(cartFromDb);
+            cartFromDb.Total = CalculateTotalPrice(cartFromDb.Products);
 
             await _cartServices.AddOrUpdateAsync(userId, cartFromDb);
 
@@ -90,10 +90,10 @@ namespace MongoShop.Controllers
             return View(cartIndexViewModel);
         }
 
-        private static void CalculateTotalPrice(Cart cartFromDb)
+        private static double? CalculateTotalPrice(List<OrderedProduct> products)
         {
             // sum price * quantity for each product. If product is null then total = 0.
-            cartFromDb.Total = cartFromDb.Products?.Sum(o => o.Product.Price * o.OrderedQuantity) ?? 0;
+            return products?.Sum(o => o.Product.Price * o.OrderedQuantity) ?? 0;
         }
 
         private async Task<Cart> GetCartFromSession()
@@ -166,12 +166,13 @@ namespace MongoShop.Controllers
         public async Task<IActionResult> Checkout([FromForm] CartIndexViewModel viewModel)
         {
             var cartCheckoutViewModel = _mapper.Map<CartCheckoutViewModel>(viewModel);
-
+            cartCheckoutViewModel.Total = CalculateTotalPrice(cartCheckoutViewModel.Products);
             string userId = GetCurrentLoggedInUserId();
             Cart cart = await _cartServices.GetByUserIdAsync(userId);
 
+            
             cart.Products = viewModel.Products;
-
+            cart.Total = cartCheckoutViewModel.Total;
             // update product order quantity.
             await _cartServices.AddOrUpdateAsync(userId, cart);
 
