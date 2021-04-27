@@ -87,7 +87,7 @@ namespace MongoShop.Controllers
 
             var cartIndexViewModel = _mapper.Map<CartIndexViewModel>(cartFromDb);
 
-            return View(cartIndexViewModel);
+            return View("Index",cartIndexViewModel);
         }
 
         private static double? CalculateTotalPrice(List<OrderedProduct> products)
@@ -186,7 +186,7 @@ namespace MongoShop.Controllers
             {
                 var order = new Order();
 
-                order = _mapper.Map<Order>(cartCheckoutViewModel);
+                    order = _mapper.Map<Order>(cartCheckoutViewModel);
 
                 string userId = GetCurrentLoggedInUserId();
                 order.UserId = userId;
