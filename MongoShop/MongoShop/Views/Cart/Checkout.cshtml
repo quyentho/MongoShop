@@ -3,72 +3,70 @@
 }
 @using MongoShop.Models.Cart;
 @model CartCheckoutViewModel
-
-    <!-- Breadcrumb Section Begin -->
-    <div class="breacrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text product-more">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./shop.html">Shop</a>
-                        <span>Check Out</span>
-                    </div>
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text product-more">
+                    <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                    <a href="./shop.html">Shop</a>
+                    <span>Check Out</span>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb Section Begin -->
-
-    <!-- Shopping Cart Section Begin -->
-    <section class="checkout-section spad">
-        <div class="container">
-            <form asp-action="PlaceOrder" asp-controller="Cart" method="post" id="checkout_form" class="checkout-form">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <a href="#" class="content-btn">Click Here To Login</a>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Shopping Cart Section Begin -->
+<section class="checkout-section spad">
+    <div class="container">
+        <form asp-action="PlaceOrder" asp-controller="Cart" method="post" id="checkout_form" class="checkout-form">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="checkout-content">
+                        <a href="#" class="content-btn">Click Here To Login</a>
+                    </div>
+                    <h4>Biiling Details</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="fir">First Name<span>*</span></label>
+                            <input type="text" id="fir">
                         </div>
-                        <h4>Biiling Details</h4>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="fir">First Name<span>*</span></label>
-                                <input type="text" id="fir">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="last">Last Name<span>*</span></label>
-                                <input type="text" id="last">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="cun-name">Company Name</label>
-                                <input type="text" id="cun-name">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="cun">Country<span>*</span></label>
-                                <input type="text" id="cun">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="street">Street Address<span>*</span></label>
-                                <input asp-for="Street" type="text" id="street" class="street-first">
-                                @* <input type="text"> *@
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="zip">Address Number</label>
-                                <input asp-for="AddressNumber" type="text" id="zip">
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="town">Town / City<span>*</span></label>
-                                <input asp-for="City" type="text" id="town">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="email">Email Address<span>*</span></label>
-                                <input type="text" id="email">
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="phone">Phone<span>*</span></label>
-                                <input asp-for="PhoneNumber" type="text" id="phone">
-                            </div>
-                            @* <div class="col-lg-12">
+                        <div class="col-lg-6">
+                            <label for="last">Last Name<span>*</span></label>
+                            <input type="text" id="last">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="cun-name">Company Name</label>
+                            <input type="text" id="cun-name">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="cun">Country<span>*</span></label>
+                            <input type="text" id="cun">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="street">Street Address<span>*</span></label>
+                            <input asp-for="Street" type="text" id="street" class="street-first">
+                            @* <input type="text"> *@
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="zip">Address Number</label>
+                            <input asp-for="AddressNumber" type="text" id="zip">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="town">Town / City<span>*</span></label>
+                            <input asp-for="City" type="text" id="town">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="email">Email Address<span>*</span></label>
+                            <input type="text" id="email">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="phone">Phone<span>*</span></label>
+                            <input asp-for="PhoneNumber" type="text" id="phone">
+                        </div>
+                        @* <div class="col-lg-12">
                                 <div class="create-item">
                                     <label for="acc-create">
                                         Create an account?
@@ -77,26 +75,26 @@
                                     </label>
                                 </div>
                             </div> *@
-                        </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <input type="text" placeholder="Enter Your Coupon Code">
-                        </div>
-                        <div class="place-order">
-                            <h4>Your Order</h4>
-                            <div class="order-total">
-                                <ul class="order-table">
-                                    <li>Product <span>Total</span></li>
-                                    @foreach(var item in Model.Products)
-                                    {
-                                        <li class="fw-normal">@item.Product.Name x @item.OrderedQuantity <span>@String.Format("{0:c}",@item.Product.Price * @item.OrderedQuantity)</span></li>
-                                    }
-                                    <input asp-for="Total"  type="hidden">
-                                    <li class="fw-normal">Subtotal <span>@String.Format("{0:c}",@Model.Total)</span></li>
-                                    <li class="total-price">Total <span>@String.Format("{0:c}",@Model.Total)</span></li>
-                                </ul>
-                                <div class="payment-check">
+                </div>
+                <div class="col-lg-6">
+                    <div class="checkout-content">
+                        <input type="text" placeholder="Enter Your Coupon Code">
+                    </div>
+                    <div class="place-order">
+                        <h4>Your Order</h4>
+                        <div class="order-total">
+                            <ul class="order-table">
+                                <li>Product <span>Total</span></li>
+                                @foreach (var item in Model.Products)
+                                {
+                                    <li class="fw-normal">@item.Product.Name x @item.OrderedQuantity <span>@String.Format("{0:c}", @item.Product.Price * @item.OrderedQuantity)</span></li>
+                                }
+                                <input asp-for="Total" type="hidden">
+                                <li class="fw-normal">Subtotal <span>@String.Format("{0:c}", @Model.Total)</span></li>
+                                <li class="total-price">Total <span>@String.Format("{0:c}", @Model.Total)</span></li>
+                            </ul>
+                            @*<div class="payment-check">
                                     <div class="pc-item">
                                         <label for="pc-check">
                                             Cheque Payment
@@ -111,16 +109,54 @@
                                             <span class="checkmark"></span>
                                         </label>
                                     </div>
-                                </div>
-                                <div class="order-btn">
-                                    <button  type="submit" value="submit" class="site-btn place-btn">Place Order</button>
-                                </div>
+                                </div>*@
+                            <div class="order-btn">
+                                <button type="submit" value="submit" class="site-btn place-btn">Place Order</button>
+                                @*<button type="submit" asp-action="PaypalCheckout" asp-controller="Cart" class="site-btn place-btn">Paypal</button>*@
+                                
+                                <div id="paypal-button-container"></div>
                             </div>
+
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
-    </section>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
 
-    <!-- Shopping Cart Section End -->
+<script src="https://www.paypal.com/sdk/js?client-id=AdfLRpwRIz1vGEJgLw4liW0BkOLpudgqIKHzT4ZSTFe7rgOD6Vc9mMJzrgJ8yxu2knmh6nAuUqI7GEUq">
+    // Required. Replace YOUR_CLIENT_ID with your sandbox client ID.
+</script>
+
+
+<script>
+
+    var orderID;
+
+    paypal.Buttons({
+        createOrder: function (data, actions) {
+            orderID = data.orderID;
+            return fetch('/Cart/PaypalCheckout', {
+                method: 'post'
+            }).then(function (res) {
+                return res.json();
+            }).then(function (data) {
+                return data.orderID;
+            });
+        },
+
+        onApprove: function (data, actions) {
+            return fetch('/Cart/CheckoutSuccess' + data.orderID, {
+                method: 'post'
+            }).then(function (res) {
+                return actions.order.capture();
+            }).then(function (details) {
+                alert('Transaction funds captured from ' + details.payer_given_name);
+            });
+        }
+    }).render('#paypal-button-container');
+
+
+</script>
