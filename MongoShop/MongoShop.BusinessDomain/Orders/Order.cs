@@ -32,5 +32,7 @@ namespace MongoShop.BusinessDomain.Orders
 
         [BsonElement("comment")]
         public string Comment { get; set; }
+
+
     }
 }

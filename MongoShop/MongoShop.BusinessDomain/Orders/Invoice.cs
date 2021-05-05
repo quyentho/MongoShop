@@ -10,6 +10,12 @@ namespace MongoShop.BusinessDomain.Orders
 
         [BsonElement("status")]
         public string Status { get; set; }
+
+        //[BsonElement("paypal_orderid")]
+        //public string PayPalOrderId { get; set; }
+
+        //[BsonElement("paypal_payerid")]
+        //public string PaypalPayerId { get; set; }
     }
     public static class InvoiceStatus
     {
@@ -21,5 +27,6 @@ namespace MongoShop.BusinessDomain.Orders
     public static class PaymentMethod
     {
         public const string ShipCod = "Ship COD";
+        public const string PayPal = "PayPal";
     }
 }

@@ -103,6 +103,8 @@ namespace MongoShop
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
 
+            services.AddMvc().AddNewtonsoftJson();
+
             services
                 .AddFluentEmail("defaultsender@test.test")
                 .AddRazorRenderer()
