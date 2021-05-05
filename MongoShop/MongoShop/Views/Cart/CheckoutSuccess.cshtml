@@ -1,7 +1,34 @@
 ﻿@{
     Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
 }
+@using MongoShop.BusinessDomain.Orders;
+@model Order;
 
 
+<h1>CHECKOUT SUCCESS</h1>
 
-<p>CHECKOUT SUCCESS</p>
+<h2>Order ID: @Model.Id</h2>
+<h2>User: @Model.UserId</h2>
+<h2>Address: @Model.ShipAddress.City</h2>
+<h2>Grand Total: @String.Format("{0:c}", Model.Total)</h2>
+
+<h2>Invoice: </h2>
+<h3>Payment via: @Model.Invoice.PaymentMethod</h3>
+<h3>Status: @Model.Invoice.Status</h3>
+
+<table>
+    <thead>Product</thead>
+    <thead>Amount</thead>
+    @foreach(var item in Model.OrderedProducts)
+    {
+        <tr>
+            <th>
+                @item.Product.Name
+            </th>
+            <th>
+                @item.OrderedQuantity
+            </th>
+        </tr>
+
+    }
+</table>

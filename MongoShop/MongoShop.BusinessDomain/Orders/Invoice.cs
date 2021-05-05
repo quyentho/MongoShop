@@ -27,5 +27,6 @@ namespace MongoShop.BusinessDomain.Orders
     public static class PaymentMethod
     {
         public const string ShipCod = "Ship COD";
+        public const string PayPal = "PayPal";
     }
 }

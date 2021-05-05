@@ -23,7 +23,6 @@ using PayPalCheckoutSdk.Core;
 using PayPalCheckoutSdk.Orders;
 using PayPalHttp;
 
-
 namespace MongoShop.Controllers
 {
     [Authorize]
@@ -250,7 +249,7 @@ namespace MongoShop.Controllers
                         Value = item.Product.Price.ToString()
                     },
                     Quantity = item.OrderedQuantity.ToString(),
-                    Sku = "sku",
+                    Sku = item.Product.Id,
                     Tax = new Money
                     {
                         CurrencyCode = "USD",
@@ -344,12 +343,7 @@ namespace MongoShop.Controllers
 
                 //return Redirect("/Cart/CheckoutFailed");
             
-
-
-
             ////var hostname = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-
-
 
             //var payment = new Payment()
             //{
@@ -385,27 +379,67 @@ namespace MongoShop.Controllers
             //    }
             //};
 
-
             //PaymentCreateRequest request = new PaymentCreateRequest();
             //request.RequestBody(payment);
-
-
         }
 
         //public IActionResult Captured(string orderID)
         //{
         //    return Ok();
         //}
-        
 
         public IActionResult CheckoutFailed()
         {
             return View();
         }
 
-        public IActionResult CheckoutSuccess(string orderID)
+        [Route("/Cart/CheckoutSuccess/{orderId}")]
+        public async Task<IActionResult> CheckoutSuccess(string orderId, [FromForm] CartCheckoutViewModel cartCheckoutViewModel)
         {
-            return View();
+            var environment = new SandboxEnvironment(_clientId, _secretKey);
+            var client = new PayPalHttpClient(environment);
+
+            OrdersGetRequest request = new OrdersGetRequest(orderId);
+            var response = await client.Execute(request);
+
+            var result = response.Result<PayPalCheckoutSdk.Orders.Order>();
+
+
+            //Create a new invoice in mongodb
+            var order = new BusinessDomain.Orders.Order();
+            order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
+
+            string userId = GetCurrentLoggedInUserId();
+            order.UserId = userId;
+            var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
+            order.OrderedProducts = cartItems;
+            //foreach(var unit in result.PurchaseUnits[0].Items)
+            //{
+            //    order.OrderedProducts.Add(new OrderedProduct
+            //    {
+            //        OrderedQuantity = Convert.ToInt32(unit.Quantity),
+            //        Product = new Product
+            //        {
+            //            Name = unit.Name,
+            //            Id = unit.Sku,
+            //            Price = Convert.ToDouble(unit.UnitAmount.Value),
+            //            Images = new List<string>()
+
+
+            //        }
+            //    });
+            //}
+            order.Invoice = new Invoice
+            {
+                PaymentMethod = BusinessDomain.Orders.PaymentMethod.PayPal,
+                Status = BusinessDomain.Orders.InvoiceStatus.Paid
+            };
+
+            order.Total = Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.Value);
+            // save order to database
+            await _orderServices.AddAsync(order);
+            await _cartServices.ClearCartAsync(userId);
+            return View(order);
         }
 
     }
