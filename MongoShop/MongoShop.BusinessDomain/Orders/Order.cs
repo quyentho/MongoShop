@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
@@ -33,6 +34,7 @@ namespace MongoShop.BusinessDomain.Orders
         [BsonElement("comment")]
         public string Comment { get; set; }
 
-
+        [BsonElement("created_time")]
+        public DateTime CreatedTime { get; set; }
     }
 }

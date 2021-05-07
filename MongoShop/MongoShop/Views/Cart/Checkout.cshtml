@@ -113,7 +113,9 @@
                             <div class="order-btn">
                                 <button type="submit" value="submit" class="site-btn place-btn">Place Order</button>
                                 @*<button type="submit" asp-action="PaypalCheckout" asp-controller="Cart" class="site-btn place-btn">Paypal</button>*@
-                                
+                                <p></p>
+                                <p>--- OR ---</p>
+                                <p></p>
                                 <div id="paypal-button-container"></div>
                             </div>
 
@@ -158,8 +160,20 @@
                     document.location.href='/Cart/CheckoutSuccess/' + data.orderID;
                 }
             });
-        }
+        },
+
+        onError: function (err) {
+            alert(err);
+        },
+
+        style: {
+            shape: 'rect',
+            color: 'gold',
+            layout: 'horizontal',
+            label: 'paypal',
+            tagline: true
+        },
     }).render('#paypal-button-container');
 
-
+    
 </script>

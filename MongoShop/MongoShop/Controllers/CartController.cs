@@ -209,6 +209,12 @@ namespace MongoShop.Controllers
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
                 order.OrderedProducts = cartItems;
 
+                order.Invoice = new Invoice()
+                {
+                    PaymentMethod = BusinessDomain.Orders.PaymentMethod.ShipCod,
+                    Status = BusinessDomain.Orders.InvoiceStatus.Pending
+                };
+
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
@@ -401,39 +407,25 @@ namespace MongoShop.Controllers
 
             OrdersGetRequest request = new OrdersGetRequest(orderId);
             var response = await client.Execute(request);
-
             var result = response.Result<PayPalCheckoutSdk.Orders.Order>();
 
-
-            //Create a new invoice in mongodb
+            //Create a new order&invoice in mongodb
             var order = new BusinessDomain.Orders.Order();
             order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
 
             string userId = GetCurrentLoggedInUserId();
             order.UserId = userId;
+
             var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
             order.OrderedProducts = cartItems;
-            //foreach(var unit in result.PurchaseUnits[0].Items)
-            //{
-            //    order.OrderedProducts.Add(new OrderedProduct
-            //    {
-            //        OrderedQuantity = Convert.ToInt32(unit.Quantity),
-            //        Product = new Product
-            //        {
-            //            Name = unit.Name,
-            //            Id = unit.Sku,
-            //            Price = Convert.ToDouble(unit.UnitAmount.Value),
-            //            Images = new List<string>()
 
-
-            //        }
-            //    });
-            //}
             order.Invoice = new Invoice
             {
                 PaymentMethod = BusinessDomain.Orders.PaymentMethod.PayPal,
                 Status = BusinessDomain.Orders.InvoiceStatus.Paid
             };
+
+            order.CreatedTime = Convert.ToDateTime(result.CreateTime);
 
             order.Total = Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.Value);
             // save order to database
