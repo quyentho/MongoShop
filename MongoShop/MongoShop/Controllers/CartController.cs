@@ -21,6 +21,7 @@ using MongoShop.Models.Cart;
 //using PayPal.v1.Payments;
 using PayPalCheckoutSdk.Core;
 using PayPalCheckoutSdk.Orders;
+//using PayPalCheckoutSdk.Payments;
 using PayPalHttp;
 
 namespace MongoShop.Controllers
@@ -283,6 +284,8 @@ namespace MongoShop.Controllers
                     {
                         ReferenceId = paypal_orderId.ToString(),
                         Description = $"Invoice #{paypal_orderId}",
+                        //InvoiceId = paypal_orderId.ToString(),
+                        //CustomId = paypal_orderId.ToString(),
                         SoftDescriptor = "Clothings",
                         AmountWithBreakdown = new AmountWithBreakdown
                         {
@@ -301,7 +304,8 @@ namespace MongoShop.Controllers
                         Items = ItemList
 
                     }
-                }
+                
+                },
             };
 
             var request = new OrdersCreateRequest();
@@ -399,8 +403,8 @@ namespace MongoShop.Controllers
             return View();
         }
 
-        [Route("/Cart/CheckoutSuccess/{orderId}")]
-        public async Task<IActionResult> CheckoutSuccess(string orderId, [FromForm] CartCheckoutViewModel cartCheckoutViewModel)
+        [Route("/Cart/CheckoutSuccess/{orderId}/{captureId}")]
+        public async Task<IActionResult> CheckoutSuccess(string orderId ,string captureId, [FromForm] CartCheckoutViewModel cartCheckoutViewModel)
         {
             var environment = new SandboxEnvironment(_clientId, _secretKey);
             var client = new PayPalHttpClient(environment);
@@ -408,30 +412,62 @@ namespace MongoShop.Controllers
             OrdersGetRequest request = new OrdersGetRequest(orderId);
             var response = await client.Execute(request);
             var result = response.Result<PayPalCheckoutSdk.Orders.Order>();
-
-            //Create a new order&invoice in mongodb
-            var order = new BusinessDomain.Orders.Order();
-            order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
-
-            string userId = GetCurrentLoggedInUserId();
-            order.UserId = userId;
-
-            var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
-            order.OrderedProducts = cartItems;
-
-            order.Invoice = new Invoice
+            try
             {
-                PaymentMethod = BusinessDomain.Orders.PaymentMethod.PayPal,
-                Status = BusinessDomain.Orders.InvoiceStatus.Paid
-            };
+                //Create a new order&invoice in mongodb
+                var order = new BusinessDomain.Orders.Order();
+                //Mapper doesn't work because haven't call any asp-action via Paypal Checkout Button, cartCheckoutViewModel will be null
+                order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
 
-            order.CreatedTime = Convert.ToDateTime(result.CreateTime);
+                //order.PhoneNumber = result.Payer;
+                order.ShipAddress.Street = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1;
+                order.ShipAddress.City = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AdminArea2;
 
-            order.Total = Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.Value);
-            // save order to database
-            await _orderServices.AddAsync(order);
-            await _cartServices.ClearCartAsync(userId);
-            return View(order);
+                string userId = GetCurrentLoggedInUserId();
+                order.UserId = userId;
+
+
+                var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
+                order.OrderedProducts = cartItems;
+
+                order.Invoice = new Invoice
+                {
+                    PaymentMethod = BusinessDomain.Orders.PaymentMethod.PayPal,
+                    Status = BusinessDomain.Orders.InvoiceStatus.Paid
+                };
+
+                order.CreatedTime = Convert.ToDateTime(result.CreateTime);
+
+                order.Total = Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.Value);
+                // save order to database
+                await _orderServices.AddAsync(order);
+                await _cartServices.ClearCartAsync(userId);
+                return View(order);
+            }
+            catch(ArgumentOutOfRangeException ex)
+            {
+                //Execute Refund Procedure
+
+
+                //"94500092JB986153M"
+
+                PayPalCheckoutSdk.Payments.CapturesRefundRequest newrequest = new PayPalCheckoutSdk.Payments.CapturesRefundRequest(captureId);
+                PayPalCheckoutSdk.Payments.RefundRequest refundRequest = new PayPalCheckoutSdk.Payments.RefundRequest()
+                {
+                    Amount = new PayPalCheckoutSdk.Payments.Money
+                    {
+                        Value = result.PurchaseUnits[0].AmountWithBreakdown.Value,
+                        CurrencyCode = result.PurchaseUnits[0].AmountWithBreakdown.CurrencyCode
+                    }
+                };
+
+                newrequest.RequestBody(refundRequest);
+
+                await client.Execute(newrequest);
+                    
+                return Redirect("/Cart/CheckoutFailed");
+            }
+
         }
 
     }

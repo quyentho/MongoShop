@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-lg-12">
                             <label for="zip">Address Number</label>
-                            <input asp-for="AddressNumber" type="text" id="zip">
+                            <input asp-for="AddressNumber" type="text" id="address-number">
                         </div>
                         <div class="col-lg-12">
                             <label for="town">Town / City<span>*</span></label>
@@ -111,7 +111,7 @@
                                     </div>
                                 </div>*@
                             <div class="order-btn">
-                                <button type="submit" value="submit" class="site-btn place-btn">Place Order</button>
+                                <button  type="submit" value="submit" class="site-btn place-btn">Place Order</button>
                                 @*<button type="submit" asp-action="PaypalCheckout" asp-controller="Cart" class="site-btn place-btn">Paypal</button>*@
                                 <p></p>
                                 <p>--- OR ---</p>
@@ -128,8 +128,7 @@
 </section>
 <!-- Shopping Cart Section End -->
 
-<script src="https://www.paypal.com/sdk/js?client-id=AdfLRpwRIz1vGEJgLw4liW0BkOLpudgqIKHzT4ZSTFe7rgOD6Vc9mMJzrgJ8yxu2knmh6nAuUqI7GEUq">
-    // Required. Replace YOUR_CLIENT_ID with your sandbox client ID.
+<script src="https://www.paypal.com/sdk/js?client-id=AdfLRpwRIz1vGEJgLw4liW0BkOLpudgqIKHzT4ZSTFe7rgOD6Vc9mMJzrgJ8yxu2knmh6nAuUqI7GEUq&disable-funding=credit,card">
 </script>
 
 
@@ -156,10 +155,14 @@
                 return actions.order.capture();
             }).then(function (details) {
                 if (details.status === "COMPLETED") {
-                    alert('Transaction funds captured from ' + details.payer_given_name);
-                    document.location.href='/Cart/CheckoutSuccess/' + data.orderID;
+                    alert('Transaction funds captured from ' + details.purchase_units[0].payments.captures[0].id);
+                    document.location.href = '/Cart/CheckoutSuccess/' + data.orderID + '/' + details.purchase_units[0].payments.captures[0].id;
                 }
             });
+        },
+
+        onCancel: function (data, actions) {
+            document.location.href='/Cart'
         },
 
         onError: function (err) {
