@@ -137,5 +137,11 @@ namespace MongoShop.Areas.Admin.Controllers
             await _productServices.DeleteAsync(id, product);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> SelectMainPageProducts()
+        {
+            return View();
+        }
     }
 }
