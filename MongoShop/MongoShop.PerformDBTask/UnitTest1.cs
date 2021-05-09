@@ -40,7 +40,7 @@ namespace MongoShop.PerformDBTask
                 owen_obj = (JArray)JToken.ReadFrom(reader);
             }
 
-            Product product = new Product();
+            
             Random r = new Random();
             var list = new List<string> { "S", "M", "L", "XL", "XXL" };
             Category Quan = new Category()
@@ -191,6 +191,7 @@ namespace MongoShop.PerformDBTask
 
             foreach (JObject item in owen_obj)
             {
+                Product product = new Product();
                 product.Id = ObjectId.GenerateNewId().ToString();
                 product.Name = item.GetValue("name").ToString();
                 product.Price = double.Parse(item.GetValue("price").ToString().Replace(".", ","), CultureInfo.InvariantCulture);
@@ -320,6 +321,7 @@ namespace MongoShop.PerformDBTask
             }
             foreach (JObject item in hem_obj)
             {
+                Product product = new Product();
                 product.Id = ObjectId.GenerateNewId().ToString();
                 product.Name = item.GetValue("name").ToString();
                 product.Price = double.Parse(item.GetValue("price").ToString(), CultureInfo.InvariantCulture);

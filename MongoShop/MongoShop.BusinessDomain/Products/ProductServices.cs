@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoShop.BusinessDomain.Categories;
 using MongoShop.Infrastructure.Helpers;
 
 namespace MongoShop.BusinessDomain.Products
@@ -60,6 +61,21 @@ namespace MongoShop.BusinessDomain.Products
             return await list.ToListAsync();
         }
 
+        /// <inheritdoc/>  
+        public async Task<List<Product>> GetByMainCategoryAsync(Category mainCategory)
+        {
+
+            var list = await _collection.FindAsync(c => c.Status == true && c.Category == mainCategory);
+            return await list.ToListAsync();
+        }
+
+        /// <inheritdoc/>  
+        public async Task<List<Product>> GetBySubCategoryAsync(Category subCategory)
+        {
+
+            var list = await _collection.FindAsync(c => c.Status == true && c.Category == subCategory);
+            return await list.ToListAsync();
+        }
         /// <inheritdoc/>  
         public async Task<Product> GetByIdAsync(string id)
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MongoShop.BusinessDomain.Categories;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MongoShop.BusinessDomain.Products
@@ -10,7 +11,19 @@ namespace MongoShop.BusinessDomain.Products
         /// </summary>
         /// <returns></returns>
         Task<List<Product>> GetAllAsync();
-        
+
+        /// <summary>
+        /// Get all products by main category
+        /// </summary>
+        /// <returns></returns>
+        Task<List<Product>> GetByMainCategoryAsync(Category mainCategory);
+
+        /// <summary>
+        /// Get all products by sub category
+        /// </summary>
+        /// <returns></returns>
+        Task<List<Product>> GetBySubCategoryAsync(Category subCategory);
+
         /// <summary>
         /// edit a product
         /// </summary>

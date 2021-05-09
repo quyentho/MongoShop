@@ -6,6 +6,7 @@ using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.Infrastructure.Services.FileUpload;
+using MongoShop.Server.ViewModels.Category;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -38,6 +39,75 @@ namespace MongoShop.Server.Controllers
         }
 
         /// <summary>
+        /// Gets all products by main category.
+        /// </summary>
+        /// <returns>List products found.</returns>
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                     nameof(DefaultApiConventions.Get))]
+        public async Task<IActionResult> GetByMainCategory([FromBody]CategoryViewModel categoryViewModel)
+        {
+            try
+            {
+                var category = _mapper.Map<Category>(categoryViewModel);
+
+                var products = await _productServices.GetByMainCategoryAsync(category);
+                if (products is null || products.Count == 0)
+                {
+                    _logger.LogInformation("There is no product available");
+
+                    return NotFound("There is no product available");
+                }
+
+                var productViewModels = _mapper.Map<List<ProductViewModel>>(products);
+
+                return Ok(productViewModels);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error when getting all products.");
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                        "Error retrieving data from the database");
+            }
+        }
+
+
+        /// <summary>
+        /// Gets all products by sub category.
+        /// </summary>
+        /// <returns>List products found.</returns>
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                     nameof(DefaultApiConventions.Get))]
+        public async Task<IActionResult> GetBySubCategory([FromBody] CategoryViewModel categoryViewModel)
+        {
+            try
+            {
+                var category = _mapper.Map<Category>(categoryViewModel);
+
+                var products = await _productServices.GetBySubCategoryAsync(category);
+                if (products is null || products.Count == 0)
+                {
+                    _logger.LogInformation("There is no product available");
+
+                    return NotFound("There is no product available");
+                }
+
+                var productViewModels = _mapper.Map<List<ProductViewModel>>(products);
+
+                return Ok(productViewModels);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error when getting all products.");
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                        "Error retrieving data from the database");
+            }
+        }
+
+        /// <summary>
         /// Gets all products.
         /// </summary>
         /// <returns>List products found.</returns>
@@ -67,7 +137,6 @@ namespace MongoShop.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                         "Error retrieving data from the database");
             }
-
         }
 
         /// <summary>

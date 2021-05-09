@@ -27,5 +27,9 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 
         [Required]
         public CategoryViewModel Category { get; set; }
+
+        public CategoryViewModel SubCategory { get; set; }
+
+        
     }
 }

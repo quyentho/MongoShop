@@ -11,5 +11,8 @@ namespace MongoShop.Server.ViewModels.Category
         [Required]
         [DisplayName("Category name")]
         public string Name { get; set; }
+
+        [Required]
+        public bool IsMainCate { get; set; }
     }
 }
