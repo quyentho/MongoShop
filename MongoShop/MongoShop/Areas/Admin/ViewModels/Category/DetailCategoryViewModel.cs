@@ -9,5 +9,8 @@ namespace MongoShop.Areas.Admin.ViewModels.Category
 
         [DisplayName("Category name")]
         public string Name { get; set; }
+
+        [DisplayName("Is main category")]
+        public bool IsMainCate { get; set; }
     }
 }

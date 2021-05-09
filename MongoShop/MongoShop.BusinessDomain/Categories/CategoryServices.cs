@@ -66,6 +66,12 @@ namespace MongoShop.BusinessDomain.Categories
         }
 
         /// <inheritdoc/>
+        public async Task<List<Category>> GetAllAsync()
+        {
+            var list = await _collection.FindAsync(c => c.Status == true);
+            return await list.ToListAsync();
+        }
+        /// <inheritdoc/>
         public async Task<List<Category>> GetAllSubCategoryAsync()
         {
             var list = await _collection.FindAsync(c => c.Status == true && c.IsMainCate == false);

@@ -26,7 +26,7 @@ namespace MongoShop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int currentPageNumber = 1)
         {
-            var categories = await _categoryServices.GetAllMainCategoryAsync();
+            var categories = await _categoryServices.GetAllAsync();
 
             var indexCategoryViewModels = _mapper.Map<List<IndexCategoryViewModel>>(categories);
 

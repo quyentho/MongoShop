@@ -33,6 +33,7 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Main Category</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,6 +41,7 @@
                         {
                             <tr>
                                 <td>@Html.DisplayFor(model => item.Name)</td>
+                                <td>@Html.DisplayFor(model => item.IsMainCate)</td>
                                 <td>
                                     <div class="btn-group float-right">
                                         <a type="button" class="btn btn-default" href="@Url.Action("Detail","Category", new { id = item.Id})">Detail</a>

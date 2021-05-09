@@ -7,8 +7,15 @@ namespace MongoShop.BusinessDomain.Categories
 {
     public interface ICategoryServices
     {
+
         /// <summary>
         /// Gets all active categories from database.
+        /// </summary>
+        /// <returns>List of categories.</returns>
+        Task<List<Category>> GetAllAsync();
+
+        /// <summary>
+        /// Gets all active main categories from database.
         /// </summary>
         /// <returns>List of categories.</returns>
         Task<List<Category>> GetAllMainCategoryAsync();
