@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoShop.Server", "MongoSh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoShop.Infrastructure", "MongoShop.Infrastructure\MongoShop.Infrastructure.csproj", "{FD36C2E9-415C-43A7-9792-EE83BCC55D0B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoShop.PerformDBTask", "MongoShop.PerformDBTask\MongoShop.PerformDBTask.csproj", "{123E0AE7-67E0-4650-9FF3-7E57E9234AF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{FD36C2E9-415C-43A7-9792-EE83BCC55D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD36C2E9-415C-43A7-9792-EE83BCC55D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD36C2E9-415C-43A7-9792-EE83BCC55D0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{123E0AE7-67E0-4650-9FF3-7E57E9234AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{123E0AE7-67E0-4650-9FF3-7E57E9234AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{123E0AE7-67E0-4650-9FF3-7E57E9234AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{123E0AE7-67E0-4650-9FF3-7E57E9234AF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
