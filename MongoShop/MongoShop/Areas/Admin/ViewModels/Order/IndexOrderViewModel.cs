@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace MongoShop.Areas.Admin.ViewModels.Order
 {
@@ -17,5 +18,8 @@ namespace MongoShop.Areas.Admin.ViewModels.Order
 
         [DisplayName("Status")]
         public string InvoiceStatus { get; set; }
+
+        [DisplayName("Created_Time")]
+        public DateTime CreatedAt { get; set; }
     }
 }

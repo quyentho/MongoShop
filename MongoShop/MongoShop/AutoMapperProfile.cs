@@ -80,6 +80,7 @@ namespace MongoShop
             CreateMap<Cart, CartIndexViewModel>();
             CreateMap<Cart, CartCheckoutViewModel>();
             CreateMap<CartIndexViewModel, CartCheckoutViewModel>();
+            CreateMap<CartCheckoutViewModel, Cart>();
             #endregion
 
             #region Wish list

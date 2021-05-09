@@ -103,6 +103,8 @@ namespace MongoShop
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
 
+            services.AddMvc().AddNewtonsoftJson();
+
             services
                 .AddFluentEmail("defaultsender@test.test")
                 .AddRazorRenderer()
@@ -158,7 +160,6 @@ namespace MongoShop
                     );
 
                 endpoints.MapControllerRoute("default_route", "{controller=Customer}/{action=Index}/{id?}");
-
             });
         }
     }

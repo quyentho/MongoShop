@@ -35,7 +35,7 @@ namespace MongoShop.BusinessDomain.Orders
 
             await ReduceProductQuantityInStockBasedOn(order);
 
-            CreateNewInvoice(order);
+            //CreateNewInvoice(order);
 
             await _collection.InsertOneAsync(order);
 
