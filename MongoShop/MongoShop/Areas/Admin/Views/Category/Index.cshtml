@@ -4,14 +4,14 @@
 }
 
 @using MongoShop.Areas.Admin.ViewModels.Category;
-@model IEnumerable<IndexCategoryViewModel>
+@using MongoShop.Utils;
+@model PaginatedList<IndexCategoryViewModel>
 
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Category List</h3>
-
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 200px;">
                         <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -32,13 +32,13 @@
                 <table class="table table-head-fixed text-nowrap">
                     <thead>
                         <tr>
-                            <th>@Html.DisplayNameFor(model => model.Name)</th>
+                            <th>Name</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in @Model)
                         {
-                             <tr>
+                            <tr>
                                 <td>@Html.DisplayFor(model => item.Name)</td>
                                 <td>
                                     <div class="btn-group float-right">
@@ -51,9 +51,25 @@
                         }
                     </tbody>
                 </table>
-            </div>        
+            </div>
             <!-- /.card-body -->
         </div>
+
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           class="btn btn-info @prevDisabled">
+            Previous
+        </a>
+        <a asp-action="Index"
+           asp-route-currentPageNumber="@(Model.PageIndex + 1)"
+           class="btn btn-info @nextDisabled float-right">
+            Next
+        </a>
         <!-- /.card -->
     </div>
 </div>

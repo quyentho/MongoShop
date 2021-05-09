@@ -8,10 +8,11 @@ namespace MongoShop.Utils
 {
     public class PaginatedList<T> : List<T>
     {
+        private const int  PageSize = 10;
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
 
-        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
+        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize = PageSize)
         {
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
@@ -35,7 +36,7 @@ namespace MongoShop.Utils
             }
         }
 
-        public static PaginatedList<T> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
+        public static PaginatedList<T> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize = PageSize)
         {
             var count = source.Count();
             var items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();

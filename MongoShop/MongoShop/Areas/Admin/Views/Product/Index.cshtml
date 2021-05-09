@@ -71,12 +71,12 @@
 
         <a asp-action="Index"
            asp-route-pageNumber="@(Model.PageIndex - 1)"
-           class="btn btn-default @prevDisabled">
+           class="btn btn-info @prevDisabled">
             Previous
         </a>
         <a asp-action="Index"
-           asp-route-pageNumber="@(Model.PageIndex + 1)"
-           class="btn btn-default @nextDisabled">
+           asp-route-currentPageNumber="@(Model.PageIndex + 1)"
+           class="btn btn-info @nextDisabled float-right">
             Next
         </a>
     </div>

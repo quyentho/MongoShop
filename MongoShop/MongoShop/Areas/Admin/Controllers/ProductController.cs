@@ -19,7 +19,6 @@ namespace MongoShop.Areas.Admin.Controllers
 
     public class ProductController : Controller
     {
-        private const int PageSize = 3;
         private readonly IProductServices _productServices;
         private readonly ICategoryServices _categoryServices;
         private readonly IMapper _mapper;
@@ -36,14 +35,14 @@ namespace MongoShop.Areas.Admin.Controllers
             _fileUploadService = fileUploadService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber = 1)
+        [HttpGet()]
+        public async Task<IActionResult> Index(int currentPageNumber = 1)
         {
             var products = await _productServices.GetAllAsync();
 
             var indexProductViewModels = _mapper.Map<List<IndexProductViewModel>>(products);
 
-           return View( PaginatedList<IndexProductViewModel>.CreateAsync(indexProductViewModels.AsQueryable(), pageNumber, PageSize));
+           return View( PaginatedList<IndexProductViewModel>.CreateAsync(indexProductViewModels.AsQueryable(), currentPageNumber));
         }
 
         [HttpGet]
