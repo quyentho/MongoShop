@@ -50,7 +50,7 @@ namespace MongoShop.Areas.Admin.Controllers
         {
             var createProductViewModel = new CreateProductViewModel();
 
-            List<Category> categories = await _categoryServices.GetAllAsync();
+            List<Category> categories = await _categoryServices.GetAllMainCategoryAsync();
 
             createProductViewModel.CategoryList = _mapper.Map<List<SelectListItem>>(categories);
 
@@ -85,7 +85,7 @@ namespace MongoShop.Areas.Admin.Controllers
             
             var editProductViewModel = _mapper.Map<EditProductViewModel>(product);
 
-            var categories = await _categoryServices.GetAllAsync();
+            var categories = await _categoryServices.GetAllMainCategoryAsync();
 
             editProductViewModel.CategoryList = _mapper.Map<List<SelectListItem>>(categories);
 

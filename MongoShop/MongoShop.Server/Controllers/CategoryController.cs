@@ -32,12 +32,45 @@ namespace MongoShop.Server.Controllers
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult<List<CategoryViewModel>>> GetAll()
+        public async Task<ActionResult<List<CategoryViewModel>>> GetAllMainCategoryAsync()
         {
 
             try
             {
-                var categories = await _categoryServices.GetAllAsync();
+                var categories = await _categoryServices.GetAllMainCategoryAsync();
+                if (categories is null || categories.Count == 0)
+                {
+                    _logger.LogInformation("There is no category available");
+
+                    return NotFound("There is no category available");
+                }
+
+                var categoryViewModels = _mapper.Map<List<CategoryViewModel>>(categories);
+
+                return Ok(categoryViewModels);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error when getting all categories.");
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+        /// <summary>
+        /// Get all Categories.
+        /// </summary>
+        /// <returns>List categories if any</returns>
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                     nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult<List<CategoryViewModel>>> GetAllSubCategoryAsync()
+        {
+
+            try
+            {
+                var categories = await _categoryServices.GetAllSubCategoryAsync();
                 if (categories is null || categories.Count == 0)
                 {
                     _logger.LogInformation("There is no category available");

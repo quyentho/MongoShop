@@ -47,24 +47,28 @@ namespace MongoShop.PerformDBTask
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.Quan,
+                IsMainCate = true,
                 Status = true
             };
             Category Ao = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.Ao,
+                IsMainCate = true,
                 Status = true
             };
             Category QuanAu = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.QuanAu,
+                IsMainCate = false,
                 Status = true
             };
             Category Kaki = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.QuanKaki,
+                IsMainCate = false,
                 Status = true
             };
             Category Short = new Category()
@@ -77,86 +81,111 @@ namespace MongoShop.PerformDBTask
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.QuanJeans,
+                IsMainCate = false,
                 Status = true
             };
             Category Jogger = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.QuanJogger,
+                IsMainCate = false,
                 Status = true
             };
             Category QuanTay = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.QuanTay,
-                Status = true
+                Status = true,
+                IsMainCate = false,
+
             };
             Category DayLung = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.DayLung,
-                Status = true
+                Status = true,
+                IsMainCate = false,
+
             };
             Category Vi = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.Vi,
-                Status = true
+                Status = true,
+                IsMainCate = false,
+
             };
             Category Tat = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.Tat,
-                Status = true
+                Status = true,
+                IsMainCate = false,
+
             };
             Category PhuKien = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.PhuKien,
-                Status = true
+                Status = true,
+                IsMainCate = true,
+
             };
 
             Category AoThun = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.AoThun,
-                Status = true
+                Status = true,
+                IsMainCate = false,
+
             };
             Category Polo = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.Polo,
-                Status = true
+                Status = true,
+                IsMainCate = false,
+
             };
             Category Veston = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.Veston,
-                Status = true
+                Status = true,
+                IsMainCate = false,
+
             };
             Category Jacket = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.Jacket,
-                Status = true
+                Status = true,
+                IsMainCate = false,
             };
             Category AoLen = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.AoLen,
-                Status = true
+                Status = true,
+                IsMainCate = false,
+
             };
             Category Blazor = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = "Blazor",
-                Status = true
+                Status = true,
+                IsMainCate = false,
+
             };
             Category SoMi = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = "Sơ Mi",
-                Status = true
+                Status = true,
+                IsMainCate = false,
+
             };
             _categoryCollection.InsertMany(new List<Category>() { QuanAu, Kaki, Short, Jeans, Jogger, QuanTay, DayLung, Vi, PhuKien, AoThun, Polo, Veston, Jacket, AoLen, Blazor, SoMi, Quan, Ao });
 

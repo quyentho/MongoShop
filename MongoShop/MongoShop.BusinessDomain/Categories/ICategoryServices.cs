@@ -11,7 +11,13 @@ namespace MongoShop.BusinessDomain.Categories
         /// Gets all active categories from database.
         /// </summary>
         /// <returns>List of categories.</returns>
-        Task<List<Category>> GetAllAsync();
+        Task<List<Category>> GetAllMainCategoryAsync();
+
+        /// <summary>
+        /// Gets all active sub categories from database.
+        /// </summary>
+        /// <returns>List of categories.</returns>
+        Task<List<Category>> GetAllSubCategoryAsync();
 
         /// <summary>
         /// Adds new category.
