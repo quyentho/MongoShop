@@ -3,6 +3,10 @@
 @using System.Collections.Generic;
 @inject IHttpContextAccessor HttpContextAccessor
 
+@using MongoShop.BusinessDomain.Users;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 <!--<header class="header">
     <div class="header_inner d-flex flex-row align-items-center justify-content-start">
@@ -68,8 +72,6 @@
         <div class="burger_container d-flex flex-column align-items-center justify-content-around menu_mm"><div></div><div></div><div></div></div>
     </div>
 </header>-->
-
-
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -80,17 +82,41 @@
     <div class="header-top">
         <div class="container">
             <div class="ht-left">
-                <div class="mail-service">
-                    <i class=" fa fa-envelope"></i>
-                    hello.colorlib@gmail.com
-                </div>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <div class="mail-service">
+                        <i class=" fa fa-envelope"></i>
+                        hello @User.Identity.Name!
+                    </div>
+                }
+                else
+                {
+                    <div class="mail-service">
+                        <i class=" fa fa-envelope"></i>
+                        hello anonymous!
+                    </div>
+                }
                 <div class="phone-service">
                     <i class=" fa fa-phone"></i>
                     +65 11.188.888
                 </div>
             </div>
             <div class="ht-right">
-                <a href="#" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form style="display: inline-flex;" asp-controller="Account" asp-action="Logout">
+
+                        <button type="submit" class="btn btn-link login-panel"><i class="fa fa-user"></i>Logout</button>
+
+                    </form>
+
+                }
+                else
+                {
+                <a href="@Url.Action("Login","Account")" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                <a href="@Url.Action("Register","Account")" class="login-panel"><i class="fa fa-user"></i>Register</a>
+                }
+
                 <div class="lan-selector">
                     <select class="language_drop" name="countries" id="countries" style="width:300px;">
                         <option value='yt' data-image="~/Custom/img/flag-1.jpg" data-imagecss="flag yt"
@@ -145,37 +171,37 @@
                                 @* <span>3</span> *@
                             </a>
                             @* <div class="cart-hover">
-                                <div class="select-items">
-                                    <table>
-                                        <tbody>
-                                            @foreach (var item in Model.Products)
-                                            {
-                                                <tr>
-                                                    <td class="si-pic"><img src="~/Custom/img/select-product-1.jpg" alt=""></td>
-                                                    <td class="si-text">
-                                                        <div class="product-selected">
-                                                            <p>@item.Product.Price x @item.OrderedQuantity</p>
-                                                            <h6>@item.Product.Name</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td class="si-close">
-                                                        <i class="ti-close"></i>
-                                                    </td>
-                                                </tr>
-                                            }                                            
-                                            
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="select-total">
-                                    <span>total:</span>
-                                    <h5>$120.00</h5>
-                                </div>
-                                <div class="select-button">
-                                    <a href="#" class="primary-btn view-card">VIEW CARD</a>
-                                    <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
-                                </div>
-                            </div> *@
+                                    <div class="select-items">
+                                        <table>
+                                            <tbody>
+                                                @foreach (var item in Model.Products)
+                                                {
+                                                    <tr>
+                                                        <td class="si-pic"><img src="~/Custom/img/select-product-1.jpg" alt=""></td>
+                                                        <td class="si-text">
+                                                            <div class="product-selected">
+                                                                <p>@item.Product.Price x @item.OrderedQuantity</p>
+                                                                <h6>@item.Product.Name</h6>
+                                                            </div>
+                                                        </td>
+                                                        <td class="si-close">
+                                                            <i class="ti-close"></i>
+                                                        </td>
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="select-total">
+                                        <span>total:</span>
+                                        <h5>$120.00</h5>
+                                    </div>
+                                    <div class="select-button">
+                                        <a href="#" class="primary-btn view-card">VIEW CARD</a>
+                                        <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
+                                    </div>
+                                </div> *@
                         </li>
                         @* <li class="cart-price">$150.00</li> *@
                     </ul>
@@ -233,3 +259,16 @@
     </div>
 </header>
 <!-- Header End -->
+
+<script>
+    $("a[data-form-method='post']").click(function (event) {
+        event.preventDefault();
+        var element = $(this);
+        var action = element.attr("href");
+        element.closest("form").each(function () {
+            var form = $(this);
+            form.attr("Logout", action);
+            form.submit();
+        });
+    });
+</script>

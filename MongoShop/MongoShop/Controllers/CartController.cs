@@ -236,7 +236,7 @@ namespace MongoShop.Controllers
             string userId = GetCurrentLoggedInUserId();
             Cart cartFromDb = await _cartServices.GetByUserIdAsync(userId);
 
-            var total = cartFromDb.Total;
+            var total =  Math.Round((double)(cartFromDb.Total/22000), 2);
             var paypal_orderId = DateTime.Now.Ticks;
 
             //var itemList = new ItemList()
@@ -247,13 +247,14 @@ namespace MongoShop.Controllers
             var ItemList = new List<Item>();
             foreach (var item in cartFromDb.Products)
             {
+
                 ItemList.Add(new Item()
                 {
                     Name = item.Product.Name,
                     UnitAmount = new Money
                     {
                         CurrencyCode = "USD",
-                        Value = item.Product.Price.ToString()
+                        Value = Math.Round(item.Product.Price/22000,2).ToString()
                     },
                     Quantity = item.OrderedQuantity.ToString(),
                     Sku = item.Product.Id,
