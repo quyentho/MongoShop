@@ -81,13 +81,13 @@
                     {
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="~/Custom/img/products/women-2.jpg" alt="">
+                                <img src="~/images/@item.Images[0]" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
                                 </div>
                                 <ul>
-                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt" onclick="AddToCart('@item.Id');"></i></a></li>
+                                    <li class="w-icon active"><a href="#" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt" ></i></a></li>
                                     <li class="quick-view"><a href="@Url.Action("ProductDetail", new { id = item.Id })">+ Quick View</a></li>
                                     <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                 </ul>
@@ -140,13 +140,13 @@
                     {
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src=@item.Images[0] alt="">
+                                <img src="~/images/@item.Images[0]" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
                                     <i class="icon_heart_alt"></i>
                                 </div>
                                 <ul>
-                                    <li class="w-icon active" onclick="AddToCart('@item.Id');"><a href="#"><i class="icon_bag_alt" ></i></a></li>
+                                    <li class="w-icon active" ><a href="#" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt" ></i></a></li>
                                     <li class="quick-view"><a href="#">+ Quick View</a></li>
                                     <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                 </ul>

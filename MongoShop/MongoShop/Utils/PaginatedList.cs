@@ -8,7 +8,7 @@ namespace MongoShop.Utils
 {
     public class PaginatedList<T> : List<T>
     {
-        private const int  PageSize = 10;
+        private const int  PageSize = 9;
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
 

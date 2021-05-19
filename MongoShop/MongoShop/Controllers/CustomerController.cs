@@ -7,6 +7,7 @@ using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.Models.Customer;
 using MongoShop.Infrastructure.Services.FileUpload;
+using MongoShop.Utils;
 
 namespace MongoShop.Controllers
 {
@@ -37,22 +38,24 @@ namespace MongoShop.Controllers
 
             var model = new CustomerMultipleList()
             {
-                Collection1 = indexCustomerViewModel.Where(m => m.Category == "Type 1"),
-                Collection2 = indexCustomerViewModel.Where(m => m.Category == "Type 2")
+                Collection1 = indexCustomerViewModel.Where(m => m.Category == "Áo").Take(4),
+                Collection2 = indexCustomerViewModel.Where(m => m.Category == "Quần").Take(4)
             };
 
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Category()
+        public async Task<IActionResult> Category(int currentPageNumber = 1)
         {
             var products = await _productServices.GetAllAsync();
 
             var indexProductViewModel = _mapper.Map<List<IndexViewModel>>(products);
 
-            return View(indexProductViewModel);
+            return View(PaginatedList<IndexViewModel>.CreateAsync(indexProductViewModel.AsQueryable(), currentPageNumber));
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> ProductDetail(string id)

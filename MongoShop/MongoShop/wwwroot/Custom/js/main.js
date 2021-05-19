@@ -231,20 +231,40 @@
     var proQty = $('.pro-qty');
 	proQty.prepend('<span class="dec qtybtn">-</span>');
 	proQty.append('<span class="inc qtybtn">+</span>');
-	proQty.on('click', '.qtybtn', function () {
-		var $button = $(this);
-		var oldValue = $button.parent().find('input').val();
-		if ($button.hasClass('inc')) {
-			var newVal = parseFloat(oldValue) + 1;
-		} else {
-			// Don't allow decrementing below zero
-			if (oldValue > 0) {
-				var newVal = parseFloat(oldValue) - 1;
-			} else {
-				newVal = 0;
-			}
-		}
-		$button.parent().find('input').val(newVal);
-	});
+    proQty.on('click', '.qtybtn', function () {
+        var $button = $(this);
+        var oldValue = $button.parent().find('input').val();
+        var productPrice = $button.parent().parent().parent().parent().find('#prod-price').val();
+
+        //console.log(productPrice);
+        //var usdProductPrice = productPrice / 22000;
+        if ($button.hasClass('inc')) {
+            var newVal = parseFloat(oldValue) + 1;
+        } else {
+            // Don't allow decrementing below zero
+            if (oldValue > 1) {
+                var newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 1;
+            }
+        }
+        $button.parent().find('input').val(newVal);
+        $(this).parent().parent().parent().parent().children('#prod-total').text((newVal * productPrice).toFixed(2));
+
+        Calculate();
+
+
+    });
+
+    function Calculate() {
+        var subtotal = 0;
+        $('tbody').each(function () {            
+            $.each($(this).children('tr').children('#prod-total'), function (a, b) {
+                console.log($(this).text().replace('$', ''));
+                subtotal += parseFloat($(this).text().replace('$', ''));
+            })
+        });
+        $('#all-prod-total').text(subtotal.toFixed(2));
+    }
 
 })(jQuery);

@@ -44,20 +44,18 @@
                             <tbody>
                                 @for (int i = 0; i < Model.Products.Count; i++)
                                 {
-                                    <input type="hidden" asp-for="@Model.Products[i].Product.Id" />
-                                    @*<input type="hidden" asp-for="@Model.Products[i].OrderedQuantity"/>*@
-                                    <input type="hidden" asp-for="@Model.Products[i].Product.Name" />
-                                    <input type="hidden" asp-for="@Model.Products[i].Product.Price" />
                                     <tr>
-                                        <td class="cart-pic first-row"><img src="~/Custom/img/cart-page/product-1.jpg" alt=""></td>
+                                        <input type="hidden" asp-for="@Model.Products[i].Product.Id" />
+                                        <input type="hidden" asp-for="@Model.Products[i].Product.Name" />
+                                        <input type="hidden" asp-for="@Model.Products[i].Product.Images[0]" />
+                                        <input id="prod-price" type="hidden" asp-for="@Model.Products[i].Product.Price" />
+                                        <td class="cart-pic first-row"><img src="~/images/@Model.Products[i].Product.Images[0]" alt=""></td>
                                         <td class="cart-title first-row">
                                             <h5>@Model.Products[i].Product.Name</h5>
                                         </td>
                                         <td class="p-price first-row">@String.Format("{0:c}", Model.Products[i].Product.Price)</td>
                                         <td class="qua-col first-row">
                                             <div class="quantity">
-
-
                                                 <div class="pro-qty">
                                                     <input id="prod-qty" type="number" min="1" asp-for="@Model.Products[i].OrderedQuantity">
                                                 </div>
@@ -65,7 +63,7 @@
                                         </td>
                                         <td class="total-price first-row" id="prod-total">@String.Format("{0:c}", Model.Products[i].Product.Price * @Model.Products[i].OrderedQuantity)</td>
                                         <td class="close-td first-row">
-                                            <i class="ti-close" onclick="RemoveFromCart('@Model.Products[i].Product.Id');">                                                </i>
+                                            <i class="ti-close" onclick="RemoveFromCart('@Model.Products[i].Product.Id');"></i>
                                         </td>
                                     </tr>
                                 }
@@ -92,7 +90,7 @@
                                 <input type="hidden" asp-for="@Model.Total" />
                                 <ul>
                                     @* <li class="subtotal">Subtotal <span>$240.00</span></li> *@
-                                    <li class="cart-total">Total <span>@String.Format("{0:c}", Model.Total)</span></li>
+                                    <li class="cart-total">Total <span id="all-prod-total">@String.Format("{0:c}", Model.Total)</span></li>
                                 </ul>
                                 @* <a href="@Url.Action("Checkout","Cart");" class="proceed-btn">PROCEED TO CHECK OUT</a> *@
                                 <a><button asp-controller="Cart" asp-action="Checkout" type="submit" value="submit" class="proceed-btn">proceed to checkout</button></a>
@@ -107,10 +105,11 @@
 
 <!-- Shopping Cart Section End -->
 <script>
-        function RemoveFromCart(productId) {
+    function RemoveFromCart(productId) {
 
         $.post("@Url.Action("Remove","Cart")", { productId: productId }).done(function (data) {
             location.reload(); // then reload the page.(3)
         });
     };
+
 </script>

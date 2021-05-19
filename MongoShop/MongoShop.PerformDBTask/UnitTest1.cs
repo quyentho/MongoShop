@@ -34,7 +34,7 @@ namespace MongoShop.PerformDBTask
         {
 
             JArray owen_obj = new JArray();
-            using (StreamReader file = File.OpenText(@"C:\Users\QuyenTho\projects\clothes\owen_dataset.json"))
+            using (StreamReader file = File.OpenText(@"E:\Tieu Luan\MongoShop\MongoShop\owen_dataset.json"))
             using (JsonTextReader reader = new JsonTextReader(file))
             {
                 owen_obj = (JArray)JToken.ReadFrom(reader);
@@ -314,7 +314,7 @@ namespace MongoShop.PerformDBTask
             }
 
             JArray hem_obj = new JArray();
-            using (StreamReader file = File.OpenText(@"C:\Users\QuyenTho\projects\clothes\hemstore_dataset.json"))
+            using (StreamReader file = File.OpenText(@"E:\Tieu Luan\MongoShop\MongoShop\hemstore_dataset.json"))
             using (JsonTextReader reader = new JsonTextReader(file))
             {
                 hem_obj = (JArray)JToken.ReadFrom(reader);
