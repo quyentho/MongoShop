@@ -183,8 +183,8 @@ namespace MongoShop.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
 
                 await _emailSender.To(model.Email).Subject("Reset Password")
-                    .Body("Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>")
-                    .SendAsync();
+                        .Body("Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>")
+                        .SendAsync();
                 return View("ForgotPasswordConfirmation");
             }
 

@@ -98,7 +98,7 @@ namespace MongoShop
             services.AddScoped<ICartServices, CartServices>();
             services.AddScoped<IWishlistServices, WishlistServices>();
             services.AddScoped<IOrderServices, OrderServices>();
-
+            services.AddScoped<IHomePageProductServices, HomePageProductServices>();
             services.AddScoped<IFileUploadService, FileUploadService>();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));

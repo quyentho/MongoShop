@@ -1,0 +1,53 @@
+﻿@using MongoShop.Areas.Admin.ViewModels.Product;
+@model IEnumerable<SelectMainPageProductsViewModel>
+
+<table class="display mytable" style="width:100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Size</th>
+            <th>Stock Quantity</th>
+            <th>Sub Category</th>
+            <th></th>
+            <th></th>
+            <th>Thumbnail</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td></td>
+                <td>@Html.DisplayFor(model => item.Name)</td>
+                <td>@Html.DisplayFor(model => item.Price)</td>
+                <td>@Html.DisplayFor(model => item.Size)</td>
+                <td>@Html.DisplayFor(model => item.StockQuantity)</td>
+                <td>@Html.DisplayFor(model => item.SubCategory)</td>
+                <td>
+                    <input value="@item.ProductId" type="hidden" />
+                </td>
+                <td>
+                    <input value="@ViewData["categoryId"]" type="hidden" />
+                </td>
+                <td>
+                    <img src="@string.Concat("/images/", item.ImageUrl)" width="100px">
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Size</th>
+            <th>Stock Quantity</th>
+            <th>Sub Category</th>
+            <th></th>
+            <th></th>
+            <th>Thumbnail</th>
+        </tr>
+    </tfoot>
+</table>

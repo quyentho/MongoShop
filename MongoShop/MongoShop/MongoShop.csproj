@@ -47,6 +47,9 @@
     <None Include="wwwroot\js\pages\dashboard2.js" />
     <None Include="wwwroot\js\pages\dashboard3.js" />
     <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\plugins\bootstrap4-toggle-3.6.1\js\bootstrap4-toggle.js" />
+    <None Include="wwwroot\plugins\bootstrap4-toggle-3.6.1\js\bootstrap4-toggle.min.js" />
+    <None Include="wwwroot\plugins\bootstrap4-toggle-3.6.1\js\bootstrap4-toggle.min.js.map" />
   </ItemGroup>
 
   <ItemGroup>

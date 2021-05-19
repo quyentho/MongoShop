@@ -1,27 +1,119 @@
-﻿@{
+@{
     ViewData["Title"] = "Manage Products";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
-<!-- Nav tabs -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="shirt-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+    <li class="nav-item btn-tab">
+        <a class="nav-link active" id="shirt-tab" data-toggle="tab" href="#shirt" role="tab" aria-controls="shirt" aria-selected="true">Áo</a>
     </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="trousers-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+    <li class="nav-item btn-tab">
+        <a class="nav-link" id="trousers-tab" data-toggle="tab" href="#trousers" role="tab" aria-controls="trousers" aria-selected="false">Quần</a>
     </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Messages</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
+    <li class="nav-item btn-tab">
+        <a class="nav-link" id="accessories-tab" data-toggle="tab" href="#accessories" role="tab" aria-controls="accessories" aria-selected="false">Phụ Kiện</a>
     </li>
 </ul>
-
-<!-- Tab panes -->
-<div class="tab-content">
-    <div class="tab-pane" id="home" role="tabpanel" aria-labelledby="home-tab">Home</div>
-    <div class="tab-pane active" id="profile" role="tabpanel" aria-labelledby="profile-tab">1</div>
-    <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">2</div>
-    <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">3</div>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="shirt" role="tabpanel" aria-labelledby="shirt-tab">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-success">
+                Submit
+            </button>
+        </div>
+        <partial name="_ProductList" />
+    </div>
+    <div class="tab-pane fade" id="trousers" role="tabpanel" aria-labelledby="trousers-tab">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-success">
+                Submit
+            </button>
+        </div>
+        <partial name="_ProductList" />
+    </div>
+    <div class="tab-pane fade" id="accessories" role="tabpanel" aria-labelledby="accessories-tab">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-success">
+                Submit
+            </button>
+        </div>
+        <partial name="_ProductList" />
+    </div>
 </div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var table = MyDatatables();
+
+            $('button').click(function (e) {
+                e.preventDefault();
+                var selectedRows = table.rows({ selected: true });
+                var productIds = [];
+                var categoryId = "";
+                selectedRows.data().each(function (value, key) {
+                    productIds.push($.parseHTML(value[6])[0].value);
+                    categoryId = $.parseHTML(value[7])[0].value;
+                });
+                if (productIds.length <= 0) {
+                    alert("select at least 1");
+                }
+                if (productIds.length > 10) {
+                    alert("Select exceeds 10 items!");
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/Product/SelectMainPageProducts",
+                        data: {
+                            categoryId: categoryId,
+                            productIds: productIds
+                        },
+                        success: function (result) {
+                            alert('ok');
+                        },
+                        error: function (result) {
+                            alert('error');
+                        }
+                    });
+                }
+            });
+
+            $('.btn-tab').click(function (e) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Admin/Product/SelectMainPageProducts",
+                    data: {
+                        categoryName: e.target.innerText
+                    },
+                    success: function (data) {
+                        table.destroy();
+                        $('.mytable').empty();
+                        $('table').html(data);
+                        table= MyDatatables();
+
+                    }
+                })
+            });
+        });
+        function MyDatatables() {
+            var table = $('table').DataTable({
+                columnDefs: [{
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 0
+                }],
+                select: {
+                    style: 'multi+shift',
+                    selector: 'td:first-child'
+                },
+                order: [[1, 'asc']]
+            });
+            return table;
+        }
+    </script>
+    <script src="~/plugins/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-select/js/dataTables.select.min.js"></script>
+}
+
+@section Styles{
+    <link href="~/plugins/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="~/plugins/datatables-select/css/select.dataTables.min.css" rel="stylesheet">
+}

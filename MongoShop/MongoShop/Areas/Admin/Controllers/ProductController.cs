@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Product;
@@ -13,7 +12,6 @@ using MongoShop.Utils;
 
 namespace MongoShop.Areas.Admin.Controllers
 {
-
     [Area("Admin")]
     //[Authorize]
 
@@ -21,28 +19,81 @@ namespace MongoShop.Areas.Admin.Controllers
     {
         private readonly IProductServices _productServices;
         private readonly ICategoryServices _categoryServices;
+        private readonly IHomePageProductServices _homePageProductServices;
         private readonly IMapper _mapper;
         private readonly IFileUploadService _fileUploadService;
 
         public ProductController(IProductServices productServices,
             IMapper mapper,
             ICategoryServices categoryServices,
+            IHomePageProductServices homePageProductServices,
             IFileUploadService fileUploadService)
         {
             _productServices = productServices;
             _mapper = mapper;
             _categoryServices = categoryServices;
+            this._homePageProductServices = homePageProductServices;
             _fileUploadService = fileUploadService;
         }
+        [HttpGet]
+        public async Task<IActionResult> SelectMainPageProducts(string categoryName)
+        {
+            bool isAjaxRequest = true;
+            if (string.IsNullOrEmpty(categoryName))
+            {
+                isAjaxRequest = false;
+                categoryName = "Áo";
+            }
 
-        [HttpGet()]
+            var category = await _categoryServices.GetByNameAsync(categoryName);
+
+            var products = await _productServices.GetByMainCategoryAsync(category);
+
+            var models = _mapper.Map<List<SelectMainPageProductsViewModel>>(products);
+            if (isAjaxRequest)
+            {
+                return PartialView("_ProductList", models);
+            }
+
+            return View(models);
+
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SelectMainPageProducts(string categoryId, string[] productIds)
+        {
+            if (string.IsNullOrEmpty(categoryId))
+            {
+                var mainCategories = await _categoryServices.GetAllMainCategoryAsync();
+                categoryId = mainCategories.FirstOrDefault(c => c.Name.Contains("Áo"))?.Id;
+            }
+
+            if (productIds is null)
+            {
+                return BadRequest();
+            }
+
+            Category category = await _categoryServices.GetByIdAsync(categoryId);
+            List<Product> products = new List<Product>();
+            for (int i = 0; i < productIds.Length; i++)
+            {
+                products.Add(await _productServices.GetByIdAsync(productIds[i]));
+            }
+
+            await _homePageProductServices.AddAsync(products);
+
+            return Ok();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Index(int currentPageNumber = 1)
         {
             var products = await _productServices.GetAllAsync();
 
             var indexProductViewModels = _mapper.Map<List<IndexProductViewModel>>(products);
 
-           return View( PaginatedList<IndexProductViewModel>.CreateAsync(indexProductViewModels.AsQueryable(), currentPageNumber));
+            return View(PaginatedList<IndexProductViewModel>.CreateAsync(indexProductViewModels.AsQueryable(), currentPageNumber));
         }
 
         [HttpGet]
@@ -81,8 +132,8 @@ namespace MongoShop.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var product = await _productServices.GetByIdAsync(id);
-            
-            
+
+
             var editProductViewModel = _mapper.Map<EditProductViewModel>(product);
 
             var categories = await _categoryServices.GetAllMainCategoryAsync();
@@ -136,12 +187,6 @@ namespace MongoShop.Areas.Admin.Controllers
 
             await _productServices.DeleteAsync(id, product);
             return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> SelectMainPageProducts()
-        {
-            return View();
         }
     }
 }

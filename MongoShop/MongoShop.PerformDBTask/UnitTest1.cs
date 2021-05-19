@@ -196,101 +196,101 @@ namespace MongoShop.PerformDBTask
                 product.Name = item.GetValue("name").ToString();
                 product.Price = double.Parse(item.GetValue("price").ToString().Replace(".", ","), CultureInfo.InvariantCulture);
                 product.Images.Add(item.SelectToken("images[0].path").ToString());
-                if (item.GetValue("name").ToString().Contains(ClothesCategory.SoMi, StringComparison.OrdinalIgnoreCase))
+                if (item.GetValue("name").ToString().Contains(ClothesCategory.SoMi, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = SoMi;
                     product.Category = Ao;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Blazor, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Blazor, StringComparison.InvariantCultureIgnoreCase) || item.GetValue("name").ToString().Contains("Blazer", StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Blazor;
                     product.Category = Ao;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.AoLen, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.AoLen, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = AoLen;
                     product.Category = Ao;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Jacket, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Jacket, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Jacket;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Veston, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Veston, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Veston;
                     product.Category = Ao;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Tshirt, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Tshirt, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = AoThun;
                     product.Category = Ao;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Polo, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Polo, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Polo;
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.AoThun, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.AoThun, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = AoThun;
                     product.Category = Ao;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanAu, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanAu, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = QuanAu;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanKaki, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanKaki, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Kaki;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanShort, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanShort, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Short;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanJeans, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanJeans, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Jeans;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanJogger, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanJogger, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Jogger;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanTay, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanTay, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = QuanTay;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.DayLung, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.DayLung, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = DayLung;
                     product.Category = PhuKien;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Vi, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Vi, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Vi;
                     product.Category = PhuKien;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Tat, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Tat, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Tat;
                     product.Category = PhuKien;
@@ -326,72 +326,77 @@ namespace MongoShop.PerformDBTask
                 product.Name = item.GetValue("name").ToString();
                 product.Price = double.Parse(item.GetValue("price").ToString(), CultureInfo.InvariantCulture);
                 product.Images.Add(item.SelectToken("images[0].path").ToString());
-                if (item.GetValue("name").ToString().Contains(ClothesCategory.SoMi, StringComparison.OrdinalIgnoreCase))
+                if (item.GetValue("name").ToString().Contains(ClothesCategory.SoMi, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = SoMi;
                     product.Category = Ao;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.AoThun, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.AoThun, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = AoThun;
                     product.Category = Ao;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Polo, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Polo, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Polo;
                 }
 
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanAu, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanAu, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = QuanAu;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanKaki, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanKaki, StringComparison.InvariantCultureIgnoreCase) || item.GetValue("name").ToString().Contains("Khaki", StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Kaki;
                     product.Category = Quan;
-
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanShort, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanShort, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Short;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanJeans, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanJeans, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Jeans;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanJogger, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanJogger, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Jogger;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanTay, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Blazor, StringComparison.InvariantCultureIgnoreCase) || item.GetValue("name").ToString().Contains("Blazer", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    product.SubCategory = Blazor;
+                    product.Category = Ao;
+
+                }
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanTay, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = QuanTay;
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.DayLung, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.DayLung, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = DayLung;
                     product.Category = PhuKien;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Tat, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Tat, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Tat;
                     product.Category = PhuKien;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Vi, StringComparison.OrdinalIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Vi, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Vi;
                     product.Category = PhuKien;
@@ -422,17 +427,17 @@ namespace MongoShop.PerformDBTask
             public const string Quan = "Quần";
             public const string SoMi = "sơ mi";
             public const string Blazor = "Blazor";
-            public const string AoLen = "Áo len";
+            public const string AoLen = "len";
             public const string Jacket = "Jacket";
             public const string Veston = "Veston";
-            public const string Tshirt = "Tshirt";
+            public const string Tshirt = "shirt";
             public const string Polo = "Polo";
-            public const string AoThun = "Áo Thun";
+            public const string AoThun = "Thun";
             public const string QuanAu = "Quần Âu";
-            public const string QuanKaki = "Quần Kaki";
-            public const string QuanShort = "Quần Short";
-            public const string QuanJeans = "Quần Jean";
-            public const string QuanJogger = "Quần Jogger";
+            public const string QuanKaki = "Kaki";
+            public const string QuanShort = "Short";
+            public const string QuanJeans = "Jean";
+            public const string QuanJogger = "Jogger";
             public const string QuanTay = "Quần Tây";
             public const string QuanLot = "Boxer";
             public const string DayLung = "Dây Lưng";

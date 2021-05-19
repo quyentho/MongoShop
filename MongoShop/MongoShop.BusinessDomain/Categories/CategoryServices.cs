@@ -84,5 +84,12 @@ namespace MongoShop.BusinessDomain.Categories
             var category = await _collection.FindAsync(c => c.Id == id && c.Status == true);
             return await category.SingleOrDefaultAsync();
         }
+
+        ///<inheritdoc/>
+        public async Task<Category> GetByNameAsync(string name)
+        {
+            var category = await _collection.FindAsync(c => c.Name == name && c.Status == true);
+            return await category.SingleOrDefaultAsync();
+        }
     }
 }

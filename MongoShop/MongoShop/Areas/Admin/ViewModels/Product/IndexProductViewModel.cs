@@ -18,6 +18,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
         public string Size { get; set; }
 
         public string Category { get; set; }
+        public string SubCategory { get; set; }
 
         public List<string> Images { get; set; }
 

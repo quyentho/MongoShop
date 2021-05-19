@@ -54,5 +54,12 @@ namespace MongoShop.BusinessDomain.Categories
         /// <param name="id">Category id.</param>
         /// <returns>Category if found, null if not found.</returns>
         Task<Category> GetByIdAsync(string id);
+
+        /// <summary>
+        /// Gets active category by Name.
+        /// </summary>
+        /// <param name="name">Category name.</param>
+        /// <returns>Category if found, null if not found.</returns>
+        Task<Category> GetByNameAsync(string name);
     }
 }
