@@ -43,7 +43,7 @@
     <script>
         $(document).ready(function () {
             var table = MyDatatables();
-
+            SelectedRows(table);
             $('button').click(function (e) {
                 e.preventDefault();
                 var selectedRows = table.rows({ selected: true });
@@ -86,9 +86,9 @@
                     success: function (data) {
                         table.destroy();
                         $('.mytable').empty();
-                        $('table').html(data);
+                        $('table').html(data)
                         table= MyDatatables();
-
+                        SelectedRows(table);
                     }
                 })
             });
@@ -108,6 +108,14 @@
             });
             return table;
         }
+        function SelectedRows(table) {
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                console.log($.parseHTML(this.data()[8])[0].value);
+                    if($.parseHTML(this.data()[8])[0].value === "true")
+                        this.select();
+                });
+        }
+
     </script>
     <script src="~/plugins/datatables/js/jquery.dataTables.min.js"></script>
     <script src="~/plugins/datatables-select/js/dataTables.select.min.js"></script>

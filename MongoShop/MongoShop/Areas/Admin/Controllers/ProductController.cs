@@ -48,17 +48,26 @@ namespace MongoShop.Areas.Admin.Controllers
             var category = await _categoryServices.GetByNameAsync(categoryName);
 
             var products = await _productServices.GetByMainCategoryAsync(category);
+            List<AdminMainPageProductsViewModel> model = _mapper.Map<List<AdminMainPageProductsViewModel>>(products);
+            var homePageProducts = await _homePageProductServices.GetByMainCategoryAsync(category);
 
-            var models = _mapper.Map<List<SelectMainPageProductsViewModel>>(products);
-            if (isAjaxRequest)
+            for (int i = 0; i < homePageProducts.Count; i++)
             {
-                return PartialView("_ProductList", models);
+                var selectedProduct = model.FirstOrDefault(m => m.ProductId == homePageProducts[i].Id);
+                if (selectedProduct != null)
+                {
+                    selectedProduct.IsSelected = true;
+                }
             }
 
-            return View(models);
+            if (isAjaxRequest)
+            {
+                return PartialView("_ProductList", model);
+            }
+            
+            return View(model);
 
         }
-
 
         [HttpPost]
         public async Task<IActionResult> SelectMainPageProducts(string categoryId, string[] productIds)

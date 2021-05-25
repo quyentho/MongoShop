@@ -10,6 +10,6 @@
         public int StockQuantity { get; set; }
         public string SubCategory { get; set; }
         public string Category { get; set; }
-        public bool IsChose { get; set; } = false;
+        public bool IsSelected { get; set; } = false;
     }
 }

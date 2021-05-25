@@ -26,7 +26,7 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>     
         public async Task<List<Product>> AddAsync(List<Product> product)
         {
-            var filter = Builders<Product>.Filter.Empty;
+            var filter = Builders<Product>.Filter.Where(p => p.Category == product[0].Category);
             
             await _collection.DeleteManyAsync(filter);
             await _collection.InsertManyAsync(product);
@@ -54,9 +54,10 @@ namespace MongoShop.BusinessDomain.Products
             throw new NotImplementedException();
         }
 
-        public Task<List<Product>> GetByMainCategoryAsync(Category mainCategory)
+        public async Task<List<Product>> GetByMainCategoryAsync(Category mainCategory)
         {
-            throw new NotImplementedException();
+            var list = await _collection.FindAsync(c => c.Status == true && c.Category == mainCategory);
+            return await list.ToListAsync();
         }
 
         public Task<List<Product>> GetByNameAsync(string productName)
