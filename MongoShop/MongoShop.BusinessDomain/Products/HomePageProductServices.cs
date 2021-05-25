@@ -26,7 +26,7 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>     
         public async Task<List<Product>> AddAsync(List<Product> product)
         {
-            var filter = Builders<Product>.Filter.Where(p => p.Category == product[0].Category);
+            var filter = Builders<Product>.Filter.Empty;
             
             await _collection.DeleteManyAsync(filter);
             await _collection.InsertManyAsync(product);

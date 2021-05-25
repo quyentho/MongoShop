@@ -1,6 +1,6 @@
 ﻿@using MongoShop.Areas.Admin.ViewModels.Product;
-@model IEnumerable<SelectMainPageProductsViewModel>
-<table class="display mytable" style="width:100%">
+@model IEnumerable<MainPageProductList>
+<table id="table-@Model.First().CategoryId" class="display mytable" style="width:100%">
     <thead>
         <tr>
             <th></th>

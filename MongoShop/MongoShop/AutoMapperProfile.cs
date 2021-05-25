@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.Areas.Admin.ViewModels.Order;
@@ -33,9 +32,10 @@ namespace MongoShop
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.SubCategory.Name));
 
-            CreateMap<Product, AdminMainPageProductsViewModel>()
+            CreateMap<Product, MainPageProductList>()
                 .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Images[0]))
+                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Category.Id))
                 .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.SubCategory.Name));
 
             CreateMap<Product, IndexViewModel>()
