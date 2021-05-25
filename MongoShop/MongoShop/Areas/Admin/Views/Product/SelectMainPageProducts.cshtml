@@ -47,13 +47,13 @@
     <script>
         $(document).ready(function () {
             var tableShirt = ImplementDataTables(@Html.Raw(JsonConvert.SerializeObject(Model.ListProduct[1].First().CategoryId)));
-            SelectedRows(tableShirt)
+            SelectedRows(tableShirt);
 
-            var tableAccessories = MyDatatables(@Html.Raw(JsonConvert.SerializeObject(Model.ListProduct[2].First().CategoryId)));
-            SelectedRows(tableAccessories)
-
-            var tableTrouser = MyDatatables(@Html.Raw(JsonConvert.SerializeObject(Model.ListProduct[0].First().CategoryId)));
-            SelectedRows(tableTrouser)
+            var tableAccessories = ImplementDataTables(@Html.Raw(JsonConvert.SerializeObject(Model.ListProduct[2].First().CategoryId)));
+            SelectedRows(tableAccessories);
+            
+            var tableTrouser = ImplementDataTables(@Html.Raw(JsonConvert.SerializeObject(Model.ListProduct[0].First().CategoryId)));
+            SelectedRows(tableTrouser);
 
             $('button').click(function (e) {
                 e.preventDefault();
@@ -99,7 +99,7 @@
             });
 
         });
-        function MyDatatables(categoryId) {
+        function ImplementDataTables(categoryId) {
             var table = $(`#table-${categoryId}`).DataTable({
                 columnDefs: [{
                     orderable: false,

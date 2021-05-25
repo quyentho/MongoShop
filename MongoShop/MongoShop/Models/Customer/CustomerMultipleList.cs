@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MongoShop.Models.Customer
 {
     public class CustomerMultipleList
     {
-        public IEnumerable<IndexViewModel> Collection1 { get; set; }
-        public IEnumerable<IndexViewModel> Collection2 { get; set; }
+        public IEnumerable<IndexViewModel> ShirtCollection { get; set; }
+        public IEnumerable<IndexViewModel> TrouserCollection { get; set; }
+        public IEnumerable<IndexViewModel> AccessoriesCollection { get; set; }
     }
 }

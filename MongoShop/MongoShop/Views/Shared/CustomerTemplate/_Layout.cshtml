@@ -13,39 +13,33 @@
 <body>
 
     @*<div class="super_container">*@
+    <!-- Header -->
+    <partial name="CustomerTemplate/_Headers" />
+    @*@await Html.PartialAsync("CustomerTemplate/_Headers", Model.ListProduct[0])*@
 
-        <!-- Header -->
-        <partial name="CustomerTemplate/_Headers" />
 
-
-
-        <!-- Menu -->
-        <!--<partial name="CustomerTemplate/_Menus" />-->
-
-        <!-- New Arrivals -->
-
-        <!--<div class="arrivals">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="section_title_container text-center">
-                            <div class="section_subtitle">only the best</div>
-                            <div class="section_title">new arrivals</div>
-                        </div>
+    <!-- Menu -->
+    <!--<partial name="CustomerTemplate/_Menus" />-->
+    <!-- New Arrivals -->
+    <!--<div class="arrivals">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="section_title_container text-center">
+                        <div class="section_subtitle">only the best</div>
+                        <div class="section_title">new arrivals</div>
                     </div>
                 </div>
-                <div class="row products_container">-->
-
-                    <!-- Product -->
-        @RenderBody()
-
-
-
-        <!-- Extra -->
+            </div>
+            <div class="row products_container">-->
+    <!-- Product -->
+    @RenderBody()
 
 
-        <!-- Footer -->
-        <partial name="CustomerTemplate/_Footers" />
+
+    <!-- Extra -->
+    <!-- Footer -->
+    <partial name="CustomerTemplate/_Footers" />
 
 
     @*</div>*@
