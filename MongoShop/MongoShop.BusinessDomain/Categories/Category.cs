@@ -24,5 +24,7 @@ namespace MongoShop.BusinessDomain.Categories
         public bool IsMainCate { get; set; }
 
         public bool Status { get; set; }
+
+        public string ParentId { get; set; }
     }
 }

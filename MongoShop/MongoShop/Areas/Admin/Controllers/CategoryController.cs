@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.BusinessDomain.Categories;

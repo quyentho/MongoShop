@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using MongoShop.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MongoShop.BusinessDomain.Categories
@@ -62,7 +63,7 @@ namespace MongoShop.BusinessDomain.Categories
         public async Task<List<Category>> GetAllMainCategoryAsync()
         {
             var list = await _collection.FindAsync(c => c.Status == true && c.IsMainCate == true);
-            return await list.ToListAsync();
+            return list.ToList().OrderBy(c => c.Name).ToList();
         }
 
         /// <inheritdoc/>
@@ -75,7 +76,7 @@ namespace MongoShop.BusinessDomain.Categories
         public async Task<List<Category>> GetAllSubCategoryAsync()
         {
             var list = await _collection.FindAsync(c => c.Status == true && c.IsMainCate == false);
-            return await list.ToListAsync();
+            return list.ToList().OrderBy(c => c.Name).ToList();
         }
 
         ///<inheritdoc/>

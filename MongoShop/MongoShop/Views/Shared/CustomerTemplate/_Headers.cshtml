@@ -1,79 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Http;
 @using MongoShop.Infrastructure.Extensions;
 @using System.Collections.Generic;
+@using MongoShop.BusinessDomain.Categories;
 @inject IHttpContextAccessor HttpContextAccessor
 
 @using MongoShop.BusinessDomain.Users;
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@using MongoShop.Models.Shared
-@*@model IEnumerable<CategoryViewModel>*@
-<!--<header class="header">
-    <div class="header_inner d-flex flex-row align-items-center justify-content-start">
-        <div class="logo"><a href="#">Wish</a></div>
-        <nav class="main_nav">
-            <ul>
-                <li><a href="#">home</a></li>
-                <li><a href="@Url.Action("Category","Customer")">clothes</a></li>
-                <li><a href="categories.html">accessories</a></li>
-                <li><a href="categories.html">lingerie</a></li>
-                <li><a href="contact.html">contact</a></li>
-            </ul>
-        </nav>
-        <div class="header_content ml-auto">
-            <div class="search header_search">
-                <form action="#">
-                    <input type="search" class="search_input" required="required">
-                    <button type="submit" id="search_button" class="search_button"><img src="~/img/magnifying-glass.svg" alt=""></button>
-                </form>
-            </div>
-            <div class="shopping">-->
-<!-- Cart -->
-<!--<a href="@Url.Action("Index","Cart")">
-    <div class="cart">
-        <img src="~/img/shopping-bag.svg" alt="">
-        <div class="cart_num_container">
-            <div class="cart_num_inner">
-                @if (HttpContextAccessor.HttpContext.Session.Get<List<string>>("ssShoppingCart") != null)
-                {
-
-                    var count = HttpContextAccessor.HttpContext.Session.Get<List<string>>("ssShoppingCart").Count().ToString();
-                    <div class="cart_num">@count</div>
-                }
-                else
-                {
-                    <div class="cart_num">0</div>
-                }
-
-            </div>
-        </div>
-    </div>
-</a>-->
-<!-- Star -->
-<!--<a href="@Url.Action("Index","Wishlist")">
-    <div class="star">
-        <img src="~/img/star.svg" alt="">
-        <div class="star_num_container">
-            <div class="star_num_inner">
-                <div class="star_num">0</div>
-            </div>
-        </div>
-    </div>
-</a>-->
-<!-- Avatar -->
-<!--<a href="@Url.Action("Profile","Account")">
-                    <div class="avatar">
-                        <img src="~/img/avatar.svg" alt="">
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <div class="burger_container d-flex flex-column align-items-center justify-content-around menu_mm"><div></div><div></div><div></div></div>
-    </div>
-</header>-->
-<!-- Page Preloder -->
+@inject ICategoryServices CategoryService
+@{ 
+    var mainCategories = await CategoryService.GetAllMainCategoryAsync();
+    var subCategories = await CategoryService.GetAllSubCategoryAsync();
+}
 <div id="preloder">
     <div class="loader"></div>
 </div>
@@ -114,8 +53,8 @@
                 }
                 else
                 {
-                <a href="@Url.Action("Login","Account")" class="login-panel"><i class="fa fa-user"></i>Login</a>
-                <a href="@Url.Action("Register","Account")" class="login-panel"><i class="fa fa-user"></i>Register</a>
+                    <a href="@Url.Action("Login","Account")" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                    <a href="@Url.Action("Register","Account")" class="login-panel"><i class="fa fa-user"></i>Register</a>
                 }
 
                 <div class="lan-selector">
@@ -171,40 +110,7 @@
                                 <i class="icon_bag_alt"></i>
                                 @* <span>3</span> *@
                             </a>
-                            @* <div class="cart-hover">
-                                    <div class="select-items">
-                                        <table>
-                                            <tbody>
-                                                @foreach (var item in Model.Products)
-                                                {
-                                                    <tr>
-                                                        <td class="si-pic"><img src="~/Custom/img/select-product-1.jpg" alt=""></td>
-                                                        <td class="si-text">
-                                                            <div class="product-selected">
-                                                                <p>@item.Product.Price x @item.OrderedQuantity</p>
-                                                                <h6>@item.Product.Name</h6>
-                                                            </div>
-                                                        </td>
-                                                        <td class="si-close">
-                                                            <i class="ti-close"></i>
-                                                        </td>
-                                                    </tr>
-                                                }
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="select-total">
-                                        <span>total:</span>
-                                        <h5>$120.00</h5>
-                                    </div>
-                                    <div class="select-button">
-                                        <a href="#" class="primary-btn view-card">VIEW CARD</a>
-                                        <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
-                                    </div>
-                                </div> *@
                         </li>
-                        @* <li class="cart-price">$150.00</li> *@
                     </ul>
                 </div>
             </div>
@@ -217,28 +123,33 @@
                     <i class="ti-menu"></i>
                     <span>All categories</span>
                     <ul class="depart-hover">
-                        @*@foreach (var item in Model)
+                        @foreach (var category in subCategories)
                         {
                             <li>
-                                <a href="#">@Html.DisplayFor(model => item.Name)</a>
+                                <a href="#">@category.Name</a>
                             </li>
-                        }*@
+                        }
                     </ul>
                 </div>
             </div>
             <nav class="nav-menu mobile-menu">
                 <ul>
-                    <li><a href="@Url.Action("Index", "Customer")">Home</a></li>
-                    <li><a href="@Url.Action("Category","Customer")">Shop</a></li>
-                    <li>
-                        <a href="#">Collection</a>
-                        <ul class="dropdown">
-                            <li><a href="#">Men's</a></li>
-                            <li><a href="#">Women's</a></li>
-                            <li><a href="#">Kid's</a></li>
-                        </ul>
-                    </li>
-                   
+                    @foreach (var category in mainCategories)
+                    {
+                        <li>
+                            <a href="#">@category.Name</a>
+                            <ul class="dropdown">
+                                @foreach(var subCategory in subCategories)
+                                {
+                                    if (subCategory.ParentId.Equals(category.Id))
+                                    {
+                                        <li><a href="#">@subCategory.Name</a></li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                    }
+
                 </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>

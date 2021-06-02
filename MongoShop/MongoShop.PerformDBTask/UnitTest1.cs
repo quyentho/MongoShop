@@ -34,7 +34,7 @@ namespace MongoShop.PerformDBTask
         {
 
             JArray owen_obj = new JArray();
-            using (StreamReader file = File.OpenText(@"E:\Tieu Luan\MongoShop\MongoShop\owen_dataset.json"))
+            using (StreamReader file = File.OpenText(@"D:\MyFolder\Programming\C#\MongoShop\MongoShop\MongoShop\owen_dataset.json"))
             using (JsonTextReader reader = new JsonTextReader(file))
             {
                 owen_obj = (JArray)JToken.ReadFrom(reader);
@@ -48,48 +48,55 @@ namespace MongoShop.PerformDBTask
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.Quan,
                 IsMainCate = true,
-                Status = true
+                Status = true,
+                ParentId = "None"
             };
             Category Ao = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.Ao,
                 IsMainCate = true,
-                Status = true
+                Status = true,
+                ParentId = "None"
             };
             Category QuanAu = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.QuanAu,
                 IsMainCate = false,
-                Status = true
+                Status = true,
+                ParentId = Quan.Id
             };
             Category Kaki = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.QuanKaki,
                 IsMainCate = false,
-                Status = true
+                Status = true,
+                ParentId = Quan.Id
             };
             Category Short = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.QuanShort,
-                Status = true
+                Status = true,
+                ParentId = Quan.Id
             };
             Category Jeans = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.QuanJeans,
                 IsMainCate = false,
-                Status = true
+                Status = true,
+                ParentId = Quan.Id
             };
             Category Jogger = new Category()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Name = ClothesCategory.QuanJogger,
                 IsMainCate = false,
-                Status = true
+                Status = true,
+                ParentId = Quan.Id
             };
             Category QuanTay = new Category()
             {
@@ -97,31 +104,7 @@ namespace MongoShop.PerformDBTask
                 Name = ClothesCategory.QuanTay,
                 Status = true,
                 IsMainCate = false,
-
-            };
-            Category DayLung = new Category()
-            {
-                Id = ObjectId.GenerateNewId().ToString(),
-                Name = ClothesCategory.DayLung,
-                Status = true,
-                IsMainCate = false,
-
-            };
-            Category Vi = new Category()
-            {
-                Id = ObjectId.GenerateNewId().ToString(),
-                Name = ClothesCategory.Vi,
-                Status = true,
-                IsMainCate = false,
-
-            };
-            Category Tat = new Category()
-            {
-                Id = ObjectId.GenerateNewId().ToString(),
-                Name = ClothesCategory.Tat,
-                Status = true,
-                IsMainCate = false,
-
+                ParentId = Quan.Id
             };
             Category PhuKien = new Category()
             {
@@ -129,7 +112,31 @@ namespace MongoShop.PerformDBTask
                 Name = ClothesCategory.PhuKien,
                 Status = true,
                 IsMainCate = true,
-
+                ParentId = "None"
+            };
+            Category DayLung = new Category()
+            {
+                Id = ObjectId.GenerateNewId().ToString(),
+                Name = ClothesCategory.DayLung,
+                Status = true,
+                IsMainCate = false,
+                ParentId = PhuKien.Id
+            };
+            Category Vi = new Category()
+            {
+                Id = ObjectId.GenerateNewId().ToString(),
+                Name = ClothesCategory.Vi,
+                Status = true,
+                IsMainCate = false,
+                ParentId = PhuKien.Id
+            };
+            Category Tat = new Category()
+            {
+                Id = ObjectId.GenerateNewId().ToString(),
+                Name = ClothesCategory.Tat,
+                Status = true,
+                IsMainCate = false,
+                ParentId = PhuKien.Id
             };
 
             Category AoThun = new Category()
@@ -138,7 +145,7 @@ namespace MongoShop.PerformDBTask
                 Name = ClothesCategory.AoThun,
                 Status = true,
                 IsMainCate = false,
-
+                ParentId= Ao.Id
             };
             Category Polo = new Category()
             {
@@ -146,7 +153,7 @@ namespace MongoShop.PerformDBTask
                 Name = ClothesCategory.Polo,
                 Status = true,
                 IsMainCate = false,
-
+                ParentId = Ao.Id
             };
             Category Veston = new Category()
             {
@@ -154,7 +161,7 @@ namespace MongoShop.PerformDBTask
                 Name = ClothesCategory.Veston,
                 Status = true,
                 IsMainCate = false,
-
+                ParentId = Ao.Id
             };
             Category Jacket = new Category()
             {
@@ -162,6 +169,7 @@ namespace MongoShop.PerformDBTask
                 Name = ClothesCategory.Jacket,
                 Status = true,
                 IsMainCate = false,
+                ParentId = Ao.Id
             };
             Category AoLen = new Category()
             {
@@ -169,6 +177,7 @@ namespace MongoShop.PerformDBTask
                 Name = ClothesCategory.AoLen,
                 Status = true,
                 IsMainCate = false,
+                ParentId = Ao.Id
 
             };
             Category Blazor = new Category()
@@ -177,7 +186,7 @@ namespace MongoShop.PerformDBTask
                 Name = "Blazor",
                 Status = true,
                 IsMainCate = false,
-
+                ParentId = Ao.Id
             };
             Category SoMi = new Category()
             {
@@ -185,7 +194,7 @@ namespace MongoShop.PerformDBTask
                 Name = "Sơ Mi",
                 Status = true,
                 IsMainCate = false,
-
+                ParentId = Ao.Id
             };
             _categoryCollection.InsertMany(new List<Category>() { QuanAu, Kaki, Short, Jeans, Jogger, QuanTay, DayLung, Vi, PhuKien, AoThun, Polo, Veston, Jacket, AoLen, Blazor, SoMi, Quan, Ao });
 
@@ -248,7 +257,7 @@ namespace MongoShop.PerformDBTask
                     product.Category = Quan;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanKaki, StringComparison.InvariantCultureIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains(ClothesCategory.QuanKaki, StringComparison.InvariantCultureIgnoreCase) || item.GetValue("name").ToString().Contains("Khaki", StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Kaki;
                     product.Category = Quan;
@@ -314,7 +323,7 @@ namespace MongoShop.PerformDBTask
             }
 
             JArray hem_obj = new JArray();
-            using (StreamReader file = File.OpenText(@"E:\Tieu Luan\MongoShop\MongoShop\hemstore_dataset.json"))
+            using (StreamReader file = File.OpenText(@"D:\MyFolder\Programming\C#\MongoShop\MongoShop\MongoShop\hemstore_dataset.json"))
             using (JsonTextReader reader = new JsonTextReader(file))
             {
                 hem_obj = (JArray)JToken.ReadFrom(reader);
