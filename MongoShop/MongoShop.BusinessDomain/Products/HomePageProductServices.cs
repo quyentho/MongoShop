@@ -54,9 +54,10 @@ namespace MongoShop.BusinessDomain.Products
             throw new NotImplementedException();
         }
 
-        public Task<List<Product>> GetByMainCategoryAsync(Category mainCategory)
+        public async Task<List<Product>> GetByMainCategoryAsync(Category mainCategory)
         {
-            throw new NotImplementedException();
+            var list = await _collection.FindAsync(c => c.Status == true && c.Category == mainCategory);
+            return await list.ToListAsync();
         }
 
         public Task<List<Product>> GetByNameAsync(string productName)

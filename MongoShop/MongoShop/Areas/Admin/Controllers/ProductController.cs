@@ -36,29 +36,36 @@ namespace MongoShop.Areas.Admin.Controllers
             _fileUploadService = fileUploadService;
         }
         [HttpGet]
-        public async Task<IActionResult> SelectMainPageProducts(string categoryName)
+        public async Task<IActionResult> SelectMainPageProducts()
         {
-            bool isAjaxRequest = true;
-            if (string.IsNullOrEmpty(categoryName))
+            var mainCategories = await _categoryServices.GetAllMainCategoryAsync();
+            mainCategories = (List<Category>)mainCategories.OrderBy(c => c.Name).ToList();
+
+            AdminMainPageProductsViewModel adminMainPageProductsViewModel = new AdminMainPageProductsViewModel();
+            foreach (var category in mainCategories)
             {
-                isAjaxRequest = false;
-                categoryName = "Áo";
+                var products = await _productServices.GetByMainCategoryAsync(category);
+                var homePageProducts = await _homePageProductServices.GetByMainCategoryAsync(category);
+
+                List<MainPageProductList> productViewModels = GetViewModel(products, homePageProducts);
+
+                adminMainPageProductsViewModel.ListProduct.Add(productViewModels);
             }
-
-            var category = await _categoryServices.GetByNameAsync(categoryName);
-
-            var products = await _productServices.GetByMainCategoryAsync(category);
-
-            var models = _mapper.Map<List<SelectMainPageProductsViewModel>>(products);
-            if (isAjaxRequest)
-            {
-                return PartialView("_ProductList", models);
-            }
-
-            return View(models);
+            return View(adminMainPageProductsViewModel);
 
         }
 
+        private List<MainPageProductList> GetViewModel(List<Product> products, List<Product> homePageProducts)
+        {
+            List<MainPageProductList> productViewModels = _mapper.Map<List<MainPageProductList>>(products);
+            for (int i = 0; i < homePageProducts.Count; i++)
+            {
+                var selectedProduct = productViewModels.Find(c => c.ProductId == homePageProducts[i].Id);
+                selectedProduct.IsSelected = true;
+            }
+
+            return productViewModels;
+        }
 
         [HttpPost]
         public async Task<IActionResult> SelectMainPageProducts(string categoryId, string[] productIds)

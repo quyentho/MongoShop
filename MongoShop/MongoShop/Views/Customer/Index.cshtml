@@ -3,53 +3,7 @@
 }
 
 @using MongoShop.Models.Customer;
-@*@model IEnumerable<IndexViewModel>*@
 @model CustomerMultipleList
-@*@foreach (var item in Model)
-    {
-        <div class="col-lg-4 product_col">
-            <div class="product">
-                <div class="product_image">
-                    @try
-                    {
-                        <img src=@item.Images[0] alt="">
-                    }
-                    catch (Exception)
-                    {
-                        <img alt="Not available">
-                    }
-                </div>
-                <div class="product_content clearfix">
-                    <div class="product_info">
-                        <div class="product_name"><a href=@Url.Action("ProductDetail", new { id = item.Id })>@Html.DisplayFor(model => item.Name)</a></div>
-                        <div class="product_price">@String.Format("{0:c}", item.Price)</div>
-                    </div>
-                    <div class="product_options">
-                        <div class="product_buy product_option" onclick="AddToCart('@item.Id');"><img src="~/img/shopping-bag-white.svg" alt=""></div>
-                        <div onclick="AddToWishlist('@item.Id');" class="product_fav product_option">+</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    }
-
-    <script src="~/js/jquery.min.js"></script>
-    <script type="text/javascript">
-        function AddToCart(productId) {
-            $.post("@Url.Action("Add", "Cart")", { productId: productId })
-                .done(function () {
-                    alert("product added to your cart");
-                });
-        };
-        function AddToWishlist(productId) {
-            $.post("@Url.Action("Add","Wishlist")", { productId: productId })
-                .done(function () {
-                    alert("product added to your wishlist");
-                });
-        };
-
-    </script>*@
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
         function AddToCart(productId) {
@@ -59,9 +13,7 @@
                 });
         };
 </script>
-
-
-<!-- Man Banner Section Begin -->
+<!-- Shirt Banner Section Begin -->
 <section class="man-banner spad">
     <div class="container-fluid">
 
@@ -70,14 +22,11 @@
             <div class="col-lg-8">
                 <div class="filter-control">
                     <ul>
-                        <li class="active">Clothings</li>
-                        @*<li>HandBag</li>
-                        <li>Shoes</li>
-                        <li>Accessories</li>*@
+                        <li class="active">Áo</li>
                     </ul>
                 </div>
                 <div class="product-slider owl-carousel">
-                    @foreach (var item in Model.Collection1)
+                    @foreach (var item in Model.ShirtCollection)
                     {
                         <div class="product-item">
                             <div class="pi-pic">
@@ -87,7 +36,7 @@
                                     <i class="icon_heart_alt"></i>
                                 </div>
                                 <ul>
-                                    <li class="w-icon active"><a href="#" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt" ></i></a></li>
+                                    <li class="w-icon active"><a href="#" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
                                     <li class="quick-view"><a href="@Url.Action("ProductDetail", new { id = item.Id })">+ Quick View</a></li>
                                     <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                 </ul>
@@ -99,7 +48,6 @@
                                 </a>
                                 <div class="product-price">
                                     @String.Format("{0:c}", item.Price)
-                                    @*<span>$35.00</span>*@
                                 </div>
                             </div>
                         </div>
@@ -108,35 +56,35 @@
             </div>
             <div class="col-lg-3 offset-lg-1">
                 <div class="product-large set-bg m-large" data-setbg="Custom/img/products/man-large.jpg">
-                    <h2>Men’s</h2>
-                    <a href="#">Discover More</a>
+                    <h2>Áo</h2>
+                    <a href="#">Xem Thêm</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Man Banner Section End -->
+<!-- Shirt Banner Section End -->
 
 <section class="women-banner spad">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-3">
-                <div class="product-large set-bg" data-setbg="/Custom/img/products/women-large.jpg">
-                    <h2>Women’s</h2>
-                    <a href="#">Discover More</a>
+                <div class="product-large set-bg" data-setbg="/Custom/img/products/trouser-banner.jpg">
+                    <h2>Quần</h2>
+                    <a href="#">Xem thêm</a>
                 </div>
             </div>
             <div class="col-lg-8 offset-lg-1">
                 <div class="filter-control">
                     <ul>
-                        <li class="active">Clothings</li>
+                        <li class="active">Quần</li>
                         @*<li>HandBag</li>
-                        <li>Shoes</li>
-                        <li>Accessories</li>*@
+                            <li>Shoes</li>
+                            <li>Accessories</li>*@
                     </ul>
                 </div>
                 <div class="product-slider owl-carousel">
-                    @foreach (var item in Model.Collection2)
+                    @foreach (var item in Model.TrouserCollection)
                     {
                         <div class="product-item">
                             <div class="pi-pic">
@@ -146,7 +94,7 @@
                                     <i class="icon_heart_alt"></i>
                                 </div>
                                 <ul>
-                                    <li class="w-icon active" ><a href="#" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt" ></i></a></li>
+                                    <li class="w-icon active"><a href="#" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
                                     <li class="quick-view"><a href="#">+ Quick View</a></li>
                                     <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                 </ul>
@@ -168,7 +116,56 @@
         </div>
     </div>
 </section>
-<!-- Women Banner Section End -->
+<!-- Trouser Banner Section End -->
+<!-- Accessories Banner Section Begin -->
+<section class="man-banner spad">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="filter-control">
+                    <ul>
+                        <li class="active">Phụ Kiện</li>
+                    </ul>
+                </div>
+                <div class="product-slider owl-carousel">
+                    @foreach (var item in Model.AccessoriesCollection)
+                    {
+                        <div class="product-item">
+                            <div class="pi-pic">
+                                <img src="~/images/@item.Images[0]" alt="">
+                                <div class="sale">Sale</div>
+                                <div class="icon">
+                                    <i class="icon_heart_alt"></i>
+                                </div>
+                                <ul>
+                                    <li class="w-icon active"><a href="#" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
+                                    <li class="quick-view"><a href="@Url.Action("ProductDetail", new { id = item.Id })">+ Quick View</a></li>
+                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="pi-text">
+                                <div class="catagory-name">@item.Category</div>
+                                <a href="#">
+                                    <h5>@item.Name</h5>
+                                </a>
+                                <div class="product-price">
+                                    @String.Format("{0:c}", item.Price)
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-3 offset-lg-1">
+                <div class="product-large set-bg m-large" data-setbg="Custom/img/products/accessories-banner.jpg">
+                    <h2>Phụ Kiện</h2>
+                    <a href="#">Xem Thêm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Accessories Banner Section End -->
 
 <!-- Instagram Section Begin -->
 <div class="instagram-photo">

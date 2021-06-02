@@ -64,7 +64,6 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>  
         public async Task<List<Product>> GetByMainCategoryAsync(Category mainCategory)
         {
-
             var list = await _collection.FindAsync(c => c.Status == true && c.Category == mainCategory);
             return await list.ToListAsync();
         }

@@ -1,6 +1,6 @@
 ﻿@using MongoShop.Infrastructure.Helpers;
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="~/Home" class="brand-link">
+    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="brand-link">
         <img src="~/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8">
         <span class="brand-text font-weight-light">Admin</span>
@@ -17,7 +17,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item ">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link @Url.MakeActiveClass("home","index")">
+                    <a href="/" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home

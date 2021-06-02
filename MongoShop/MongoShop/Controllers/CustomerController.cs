@@ -15,6 +15,7 @@ namespace MongoShop.Controllers
     public class CustomerController : Controller
     {
         private readonly IProductServices _productServices;
+        private readonly IHomePageProductServices _homePageProductServices;
         private readonly ICategoryServices _categoryServices;
         private readonly IMapper _mapper;
         private readonly IFileUploadService _fileUploadService;
@@ -22,25 +23,40 @@ namespace MongoShop.Controllers
         public CustomerController(IProductServices productServices,
             IMapper mapper,
             ICategoryServices categoryServices,
-            IFileUploadService fileUploadService)
+            IFileUploadService fileUploadService, 
+            IHomePageProductServices homePageProductServices)
         {
             _productServices = productServices;
             _mapper = mapper;
             _categoryServices = categoryServices;
             _fileUploadService = fileUploadService;
+            _homePageProductServices = homePageProductServices;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var products = await _productServices.GetAllAsync();
+            var shirtCate =await _categoryServices.GetByNameAsync("Áo");
+            var trouserCate =await _categoryServices.GetByNameAsync("Quần");
+            var accessoriesCate =await _categoryServices.GetByNameAsync("Phụ Kiện");
+            
+            var shirts = await _homePageProductServices.GetByMainCategoryAsync(shirtCate);
 
-            var indexCustomerViewModel = _mapper.Map<List<IndexViewModel>>(products);
+            var shirtsViewModel = _mapper.Map<List<IndexViewModel>>(shirts);
+
+            var trousers = await _homePageProductServices.GetByMainCategoryAsync(trouserCate);
+
+            var trousersViewModel = _mapper.Map<List<IndexViewModel>>(trousers);
+
+            var accessories = await _homePageProductServices.GetByMainCategoryAsync(accessoriesCate);
+
+            var accessoriesViewModel = _mapper.Map<List<IndexViewModel>>(accessories);
 
             var model = new CustomerMultipleList()
             {
-                Collection1 = indexCustomerViewModel.Where(m => m.Category == "Áo").Take(4),
-                Collection2 = indexCustomerViewModel.Where(m => m.Category == "Quần").Take(4)
+                ShirtCollection = shirtsViewModel,
+                TrouserCollection = trousersViewModel,
+                AccessoriesCollection = accessoriesViewModel
             };
 
             return View(model);

@@ -1,7 +1,6 @@
 ﻿@using MongoShop.Areas.Admin.ViewModels.Product;
-@model IEnumerable<SelectMainPageProductsViewModel>
-
-<table class="display mytable" style="width:100%">
+@model IEnumerable<MainPageProductList>
+<table id="table-@Model.First().CategoryId" class="display mytable" style="width:100%">
     <thead>
         <tr>
             <th></th>
@@ -10,6 +9,7 @@
             <th>Size</th>
             <th>Stock Quantity</th>
             <th>Sub Category</th>
+            <th></th>
             <th></th>
             <th></th>
             <th>Thumbnail</th>
@@ -30,6 +30,9 @@
                 </td>
                 <td>
                     <input value="@ViewData["categoryId"]" type="hidden" />
+                </td>
+                <td>
+                    <input value="@item.IsSelected.ToString().ToLower()" type ="hidden" />
                 </td>
                 <td>
                     <img src="@string.Concat("/images/", item.ImageUrl)" width="100px">
