@@ -8,6 +8,7 @@ using MongoShop.BusinessDomain.Products;
 using MongoShop.Models.Customer;
 using MongoShop.Infrastructure.Services.FileUpload;
 using MongoShop.Utils;
+using System;
 
 namespace MongoShop.Controllers
 {
@@ -48,14 +49,13 @@ namespace MongoShop.Controllers
         [HttpGet]
         public async Task<IActionResult> Category(int currentPageNumber = 1)
         {
+
             var products = await _productServices.GetAllAsync();
 
             var indexProductViewModel = _mapper.Map<List<IndexViewModel>>(products);
 
             return View(PaginatedList<IndexViewModel>.CreateAsync(indexProductViewModel.AsQueryable(), currentPageNumber));
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> ProductDetail(string id)
@@ -68,21 +68,42 @@ namespace MongoShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Category(string[] tags, float? price_min, float? price_max)
+        public async Task<IActionResult> Category(string[] tags, string? price_min, string? price_max, int currentPageNumber = 1)
         {
-            var products = await _productServices.GetAllAsync();
-            var indexProductViewModel = _mapper.Map<List<IndexViewModel>>(products);
-            var result = indexProductViewModel.Where(m=>m.Price > price_min && m.Price<price_max);
-            if(tags.Length == 1)
+            float min = float.Parse(price_min.Replace("$", ""));
+            float max = float.Parse(price_max.Replace("$", ""));
+
+            List<string> list = new List<string>();
+
+            foreach (string tag in tags)
             {
-                return View(result.Where(m => m.Category == tags[0]));
-            }
-            else if(tags.Length == 2)
-            {
-                return View(result.Where(m => m.Category == tags[0] || m.Category == tags[1]));
+                list.Add(tag);
             }
 
-            return View(result);
+            var products = await _productServices.GetAllAsync();
+
+            var indexProductViewModel = _mapper.Map<List<IndexViewModel>>(products);
+            var result = indexProductViewModel.Where(m => m.Price > min && m.Price < max)
+                                              .Where(y => list.Contains(y.Category));
+            
+
+            // var movies = _db.Movies.Where(p => p.Genres.Any(x => listOfGenres.Contains(x));
+
+            //if (tags.Length > 0)
+            //{
+
+            //}
+            //{
+            //    return View(result.Where(m => m.Category == tags[0]));
+            //}
+            //else if(tags.Length == 2)
+            //{
+            //    return View(result.Where(m => m.Category == tags[0] || m.Category == tags[1]));
+            //}
+
+
+            return View(PaginatedList<IndexViewModel>.CreateAsync(result.AsQueryable(), currentPageNumber));
         }
+
     }
 }

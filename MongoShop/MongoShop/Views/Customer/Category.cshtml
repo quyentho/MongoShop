@@ -32,34 +32,35 @@
                         <li><a href="#">Kids</a></li>
                     </ul>
                 </div>
+                <form method="post" asp-controller="Customer" asp-action="Category">
                 <div class="filter-widget">
                     <h4 class="fw-title">Brand</h4>
                     <div class="fw-brand-check">
                         <div class="bc-item">
                             <label for="bc-calvin">
-                                Calvin Klein
-                                <input type="checkbox" id="bc-calvin">
+                                Áo
+                                <input type="checkbox" name="tags" id="bc-calvin" value="Áo">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <div class="bc-item">
                             <label for="bc-diesel">
-                                Diesel
-                                <input type="checkbox" id="bc-diesel">
+                                Quần
+                                <input type="checkbox" name="tags" id="bc-diesel" value="Quần">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <div class="bc-item">
                             <label for="bc-polo">
-                                Polo
-                                <input type="checkbox" id="bc-polo">
+                                Phụ Kiện
+                                <input type="checkbox" name="tags" id="bc-polo" value="Phụ Kiện">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <div class="bc-item">
                             <label for="bc-tommy">
                                 Tommy Hilfiger
-                                <input type="checkbox" id="bc-tommy">
+                                <input type="checkbox" name="tags" id="bc-tommy" value="4">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
@@ -70,20 +71,21 @@
                     <div class="filter-range-wrap">
                         <div class="range-slider">
                             <div class="price-input">
-                                <input type="text" id="minamount">
-                                <input type="text" id="maxamount">
+                                <input type="text" name="price_min" id="minamount">
+                                <input type="text" name="price_max" id="maxamount">
                             </div>
                         </div>
                         <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                             data-min="33" data-max="98">
+                             data-min="5" data-max="98">
                             <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                             <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                             <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                         </div>
                     </div>
-                    <a href="#" class="filter-btn">Filter</a>
+                    <input value="Filter" class="filter-btn" type="submit"></input>
                 </div>
-                <div class="filter-widget">
+                </form>
+                @* <div class="filter-widget">
                     <h4 class="fw-title">Color</h4>
                     <div class="fw-color-choose">
                         <div class="cs-item">
@@ -111,8 +113,8 @@
                             <label class="cs-green" for="cs-green">Green</label>
                         </div>
                     </div>
-                </div>
-                <div class="filter-widget">
+                </div> *@
+                @* <div class="filter-widget">
                     <h4 class="fw-title">Size</h4>
                     <div class="fw-size-choose">
                         <div class="sc-item">
@@ -132,7 +134,7 @@
                             <label for="xs-size">xs</label>
                         </div>
                     </div>
-                </div>
+                </div> *@
                 <div class="filter-widget">
                     <h4 class="fw-title">Tags</h4>
                     <div class="fw-tags">
@@ -160,7 +162,7 @@
                             </div>
                         </div>
                         <div class="col-lg-5 col-md-5 text-right">
-                            <p>Show 01 - 09 Of @Model.Count Product</p>
+                            <p>Show 01 - 09 Of @String.Format("{0:0}",Model.Count * Model.TotalPages) Products</p>
                         </div>
                     </div>
                 </div>
@@ -200,15 +202,17 @@
                     @{
                         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                        
+
                     }
                     <ul class="pagination justify-content-center">
                         <a asp-action="Category"
-                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-pageNumber="@(Model.PageIndex - 1)" 
                            class="btn btn-outline-warning @prevDisabled ">
                             Previous
                         </a>
                         <a asp-action="Category"
-                           asp-route-currentPageNumber="@(Model.PageIndex + 1)"
+                           asp-route-currentPageNumber="@(Model.PageIndex + 1)" 
                            class="btn btn-outline-warning @nextDisabled float-right">
                             Next
                         </a>
