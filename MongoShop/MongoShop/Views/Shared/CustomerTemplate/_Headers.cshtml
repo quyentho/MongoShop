@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-lg-7 col-md-7">
                     <div class="advanced-search">
-                        <button type="button" class="category-btn">All Categories</button>
+                        <button type="button" class="category-btn">Search</button>
                         <form action="#" class="input-group">
                             <input type="text" placeholder="What do you need?">
                             <button type="button"><i class="ti-search"></i></button>
@@ -137,13 +137,13 @@
                     @foreach (var category in mainCategories)
                     {
                         <li>
-                            <a href="#">@category.Name</a>
+                            <a asp-action="MainCategoryProducts" asp-controller="Customer" asp-route-categoryId="@category.Id" >@category.Name</a>
                             <ul class="dropdown">
                                 @foreach(var subCategory in subCategories)
                                 {
                                     if (subCategory.ParentId.Equals(category.Id))
                                     {
-                                        <li><a href="#">@subCategory.Name</a></li>
+                                        <li><a asp-action="SubCategoryProducts" asp-controller="Customer" asp-route-categoryId="@subCategory.Id">@subCategory.Name</a></li>
                                     }
                                 }
                             </ul>
