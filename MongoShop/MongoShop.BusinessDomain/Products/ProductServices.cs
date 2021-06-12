@@ -72,7 +72,7 @@ namespace MongoShop.BusinessDomain.Products
         public async Task<List<Product>> GetBySubCategoryAsync(Category subCategory)
         {
 
-            var list = await _collection.FindAsync(c => c.Status == true && c.Category == subCategory);
+            var list = await _collection.FindAsync(c => c.Status == true && c.SubCategory == subCategory);
             return await list.ToListAsync();
         }
         /// <inheritdoc/>  

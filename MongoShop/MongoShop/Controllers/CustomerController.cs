@@ -83,43 +83,32 @@ namespace MongoShop.Controllers
             return View(customerProductDetailViewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Category(string[] tags, string? price_min, string? price_max, int currentPageNumber = 1)
+        [HttpGet]
+        public async Task<IActionResult> MainCategoryProducts(string categoryId, int pageNumber = 1)
         {
-            float min = float.Parse(price_min.Replace("$", ""));
-            float max = float.Parse(price_max.Replace("$", ""));
-
-            List<string> list = new List<string>();
-
-            foreach (string tag in tags)
-            {
-                list.Add(tag);
-            }
-
-            var products = await _productServices.GetAllAsync();
-
-            var indexProductViewModel = _mapper.Map<List<IndexViewModel>>(products);
-            var result = indexProductViewModel.Where(m => m.Price > min && m.Price < max)
-                                              .Where(y => list.Contains(y.Category));
+            ViewData["categoryId"] = categoryId;
+            ViewData["isMainCate"] = true;
+            var category = await _categoryServices.GetByIdAsync(categoryId);
             
+            var products = await _productServices.GetByMainCategoryAsync(category);
 
-            // var movies = _db.Movies.Where(p => p.Genres.Any(x => listOfGenres.Contains(x));
+            var viewModels = _mapper.Map<List<IndexViewModel>>(products);
 
-            //if (tags.Length > 0)
-            //{
-
-            //}
-            //{
-            //    return View(result.Where(m => m.Category == tags[0]));
-            //}
-            //else if(tags.Length == 2)
-            //{
-            //    return View(result.Where(m => m.Category == tags[0] || m.Category == tags[1]));
-            //}
-
-
-            return View(PaginatedList<IndexViewModel>.CreateAsync(result.AsQueryable(), currentPageNumber));
+            return View("CategorizedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), pageNumber));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> SubCategoryProducts(string categoryId, int pageNumber = 1)
+        {
+            ViewData["categoryId"] = categoryId;
+            ViewData["isMainCate"] = false;
+            var category = await _categoryServices.GetByIdAsync(categoryId);
+
+            var products = await _productServices.GetBySubCategoryAsync(category);
+
+            var viewModels = _mapper.Map<List<IndexViewModel>>(products);
+
+            return View("CategorizedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), pageNumber));
+        }
     }
 }

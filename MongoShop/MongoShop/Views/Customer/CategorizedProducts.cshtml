@@ -1,9 +1,11 @@
 ﻿@{
     Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
+    bool isMainCate = Convert.ToBoolean(ViewData["isMainCate"]);
+    string actionName = isMainCate == true ? "MainCategoryProducts" : "SubCategoryProducts";
 }
 @using MongoShop.Utils;
 @using MongoShop.Models.Customer;
-@*@model IEnumerable<IndexViewModel>*@
+
 @model PaginatedList<IndexViewModel>
 <!-- Breadcrumb Section Begin -->
 <div class="breacrumb-section">
@@ -85,56 +87,6 @@
                     <input value="Filter" class="filter-btn" type="submit"></input>
                 </div>
                 </form>
-                @* <div class="filter-widget">
-                    <h4 class="fw-title">Color</h4>
-                    <div class="fw-color-choose">
-                        <div class="cs-item">
-                            <input type="radio" id="cs-black">
-                            <label class="cs-black" for="cs-black">Black</label>
-                        </div>
-                        <div class="cs-item">
-                            <input type="radio" id="cs-violet">
-                            <label class="cs-violet" for="cs-violet">Violet</label>
-                        </div>
-                        <div class="cs-item">
-                            <input type="radio" id="cs-blue">
-                            <label class="cs-blue" for="cs-blue">Blue</label>
-                        </div>
-                        <div class="cs-item">
-                            <input type="radio" id="cs-yellow">
-                            <label class="cs-yellow" for="cs-yellow">Yellow</label>
-                        </div>
-                        <div class="cs-item">
-                            <input type="radio" id="cs-red">
-                            <label class="cs-red" for="cs-red">Red</label>
-                        </div>
-                        <div class="cs-item">
-                            <input type="radio" id="cs-green">
-                            <label class="cs-green" for="cs-green">Green</label>
-                        </div>
-                    </div>
-                </div> *@
-                @* <div class="filter-widget">
-                    <h4 class="fw-title">Size</h4>
-                    <div class="fw-size-choose">
-                        <div class="sc-item">
-                            <input type="radio" id="s-size">
-                            <label for="s-size">s</label>
-                        </div>
-                        <div class="sc-item">
-                            <input type="radio" id="m-size">
-                            <label for="m-size">m</label>
-                        </div>
-                        <div class="sc-item">
-                            <input type="radio" id="l-size">
-                            <label for="l-size">l</label>
-                        </div>
-                        <div class="sc-item">
-                            <input type="radio" id="xs-size">
-                            <label for="xs-size">xs</label>
-                        </div>
-                    </div>
-                </div> *@
                 <div class="filter-widget">
                     <h4 class="fw-title">Tags</h4>
                     <div class="fw-tags">
@@ -162,7 +114,7 @@
                             </div>
                         </div>
                         <div class="col-lg-5 col-md-5 text-right">
-                            <p>Show 01 - 09 Of @String.Format("{0:0}",Model.Count * Model.TotalPages) Products</p>
+                            <p>Show 01 - 09 Of @String.Format("{0:0}", Model.Count * Model.TotalPages) Products</p>
                         </div>
                     </div>
                 </div>
@@ -202,36 +154,32 @@
                     @{
                         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
                         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-                        
 
                     }
-                    <ul class="pagination justify-content-center">
-                        <a asp-action="Category"
-                           asp-route-pageNumber="@(Model.PageIndex - 1)" 
-                           class="btn btn-outline-warning @prevDisabled ">
-                            Previous
-                        </a>
-                        <a asp-action="Category"
-                           asp-route-currentPageNumber="@(Model.PageIndex + 1)" 
-                           class="btn btn-outline-warning @nextDisabled float-right">
-                            Next
-                        </a>
-                    </ul>
+                <div class="pagination justify-content-center">
+                   
+                    <a asp-action = "@actionName"
+                       asp-controller="Customer"
+                       asp-route-categoryId="@ViewData["categoryId"].ToString()"
+                       asp-route-pageNumber="@(Model.PageIndex - 1)"
+                       class="btn btn-outline-warning @prevDisabled ">
+                        Previous
+                    </a>
+                    
+                    <a asp-action="@actionName"
+                       asp-controller="Customer"
+                       asp-route-categoryId="@ViewData["categoryId"].ToString()"
+                       asp-route-pageNumber="@(Model.PageIndex + 1)"
+                       class="btn btn-outline-warning @nextDisabled float-right">
+                        Next
+                    </a>
                 </div>
-                @*<div class="loading-more">
-                        <i class="icon_loading"></i>
-                        <a href="#">
-                            Loading More
-                        </a>
-                    </div>*@
+                </div>
             </div>
         </div>
     </div>
 </section>
 <!-- Product Shop Section End -->
-
-
-
 
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
@@ -239,7 +187,7 @@
         function AddToCart(productId) {
             $.post("@Url.Action("Add", "Cart")", { productId: productId})
                 .done(function () {
-                    alert("product added to your cart");
-                });
-        };
+                                alert("product added to your cart");
+                            });
+                        };
 </script>
