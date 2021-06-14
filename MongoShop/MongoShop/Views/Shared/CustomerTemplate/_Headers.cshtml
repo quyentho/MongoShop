@@ -57,18 +57,6 @@
                     <a href="@Url.Action("Register","Account")" class="login-panel"><i class="fa fa-user"></i>Register</a>
                 }
 
-                <div class="lan-selector">
-                    <select class="language_drop" name="countries" id="countries" style="width:300px;">
-                        <option value='yt' data-image="~/Custom/img/flag-1.jpg" data-imagecss="flag yt"
-                                data-title="English">
-                            English
-                        </option>
-                        <option value='yu' data-image="~/Custom/img/flag-2.jpg" data-imagecss="flag yu"
-                                data-title="Bangladesh">
-                            German
-                        </option>
-                    </select>
-                </div>
                 <div class="top-social">
                     <a href="#"><i class="ti-facebook"></i></a>
                     <a href="#"><i class="ti-twitter-alt"></i></a>
@@ -83,14 +71,14 @@
             <div class="row">
                 <div class="col-lg-2 col-md-2">
                     <div class="logo">
-                        <a href="./index.html">
+                        <a asp-controller="Customer" asp-action="Index">
                             <img src="~/Custom/img/logo.png" alt="">
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-7">
                     <div class="advanced-search">
-                        <button type="button" class="category-btn">Search</button>
+                        <button type="button" class="category-btn">Search for all</button>
                         <form method="get" asp-controller="ElasticSearch" asp-action="Search" class="input-group">
                             <input name="queryString" type="text" placeholder="What do you need?">
                             <button type="submit"><i class="ti-search"></i></button>

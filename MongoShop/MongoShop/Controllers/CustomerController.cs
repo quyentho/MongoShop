@@ -52,15 +52,9 @@ namespace MongoShop.Controllers
 
             var accessoriesViewModel = _mapper.Map<List<IndexViewModel>>(accessories);
 
-            //Test
-
-            var img = await _productServices.GetByImageAsync("E:/Tieu Luan/MongoShop/MongoShop/wwwroot/images/full/0a82e722c4549f93abe53ffbb59df536d989b0d2.jpg");
-            var imgViewModel = _mapper.Map<List<IndexViewModel>>(img);
-
             var model = new CustomerMultipleList()
             {
-                //ShirtCollection = shirtsViewModel,
-                ShirtCollection = imgViewModel,
+                ShirtCollection = shirtsViewModel,
                 TrouserCollection = trousersViewModel,
                 AccessoriesCollection = accessoriesViewModel
             };
