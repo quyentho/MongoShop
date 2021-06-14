@@ -52,7 +52,7 @@ namespace MongoShop.BusinessDomain.Products
 
             await _collection.ReplaceOneAsync(c => c.Id == id, product);
         }
-     
+
         /// <inheritdoc/>  
         public async Task<List<Product>> GetAllAsync()
         {
@@ -85,11 +85,20 @@ namespace MongoShop.BusinessDomain.Products
         /// <inheritdoc/>  
         public async Task<List<Product>> GetByNameAsync(string productName)
         {
-            productName =  Regex.Escape(productName);
+            productName = Regex.Escape(productName);
 
             var filter = Builders<Product>.Filter.Regex("name", new BsonRegularExpression(productName, "i"));
 
             return await _collection.Find(filter).ToListAsync();
         }
+
+        public async Task<List<Product>> GetByImageAsync(string imgPath)
+        {
+            //var filter = Builders<Product>.Filter.Regex("images", new BsonRegularExpression(imgPath, "i"));
+            var trimPath = imgPath.Substring(imgPath.IndexOf("full"));
+
+            return await _collection.Find(c => c.Images[0] == trimPath).ToListAsync();
+        }
+
     }
 }

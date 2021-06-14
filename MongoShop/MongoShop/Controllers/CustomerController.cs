@@ -52,9 +52,15 @@ namespace MongoShop.Controllers
 
             var accessoriesViewModel = _mapper.Map<List<IndexViewModel>>(accessories);
 
+            //Test
+
+            var img = await _productServices.GetByImageAsync("E:/Tieu Luan/MongoShop/MongoShop/wwwroot/images/full/0a82e722c4549f93abe53ffbb59df536d989b0d2.jpg");
+            var imgViewModel = _mapper.Map<List<IndexViewModel>>(img);
+
             var model = new CustomerMultipleList()
             {
-                ShirtCollection = shirtsViewModel,
+                //ShirtCollection = shirtsViewModel,
+                ShirtCollection = imgViewModel,
                 TrouserCollection = trousersViewModel,
                 AccessoriesCollection = accessoriesViewModel
             };
@@ -65,12 +71,12 @@ namespace MongoShop.Controllers
         [HttpGet]
         public async Task<IActionResult> Category(int currentPageNumber = 1)
         {
-
-            var products = await _productServices.GetAllAsync();
+            //var products = await _productServices.GetAllAsync();
+            var products = await _productServices.GetByImageAsync("E:\\Tieu Luan\\MongoShop\\MongoShop\\wwwroot\\images\\full\\0a82e722c4549f93abe53ffbb59df536d989b0d2.jpg");
 
             var indexProductViewModel = _mapper.Map<List<IndexViewModel>>(products);
 
-            return View(PaginatedList<IndexViewModel>.CreateAsync(indexProductViewModel.AsQueryable(), currentPageNumber));
+            return View("CategorizedProducts", PaginatedList<IndexViewModel>.CreateAsync(indexProductViewModel.AsQueryable(), currentPageNumber));
         }
 
         [HttpGet]
