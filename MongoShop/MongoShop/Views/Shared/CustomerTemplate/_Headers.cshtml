@@ -91,8 +91,8 @@
                 <div class="col-lg-7 col-md-7">
                     <div class="advanced-search">
                         <button type="button" class="category-btn">Search</button>
-                        <form action="#" class="input-group">
-                            <input type="text" placeholder="What do you need?">
+                        <form method="get" asp-controller="ElasticSearch" asp-action="Search" class="input-group">
+                            <input name="queryString" type="text" placeholder="What do you need?">
                             <button type="button"><i class="ti-search"></i></button>
                         </form>
                     </div>

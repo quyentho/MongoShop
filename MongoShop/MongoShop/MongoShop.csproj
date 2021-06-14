@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MongoShop.BusinessDomain\MongoShop.BusinessDomain.csproj" />
+    <ProjectReference Include="..\MongoShop.ElasticSearch.Indexer\MongoShop.ElasticSearch.Indexer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -20,7 +20,9 @@ using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
 using MongoShop.BusinessDomain.Wishlists;
+using MongoShop.ElasticSearch.Indexer;
 using MongoShop.Infrastructure.Services.FileUpload;
+using Nest;
 
 namespace MongoShop
 {
@@ -121,6 +123,8 @@ namespace MongoShop
                 options.AppId = "745814422783717";
                 options.AppSecret = "bd5da5bdfc0bd7e67fc2569aa96274c2";
             });
+
+            services.AddSingleton<IElasticClient>(ElasticSearchConfiguration.GetClient());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
