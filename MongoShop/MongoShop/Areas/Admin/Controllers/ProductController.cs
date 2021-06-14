@@ -9,6 +9,7 @@ using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.Infrastructure.Services.FileUpload;
 using MongoShop.Utils;
+using Nest;
 
 namespace MongoShop.Areas.Admin.Controllers
 {
@@ -22,18 +23,20 @@ namespace MongoShop.Areas.Admin.Controllers
         private readonly IHomePageProductServices _homePageProductServices;
         private readonly IMapper _mapper;
         private readonly IFileUploadService _fileUploadService;
+        private readonly IElasticClient _elasticSearchClient;
 
         public ProductController(IProductServices productServices,
             IMapper mapper,
             ICategoryServices categoryServices,
             IHomePageProductServices homePageProductServices,
-            IFileUploadService fileUploadService)
+            IFileUploadService fileUploadService, IElasticClient client)
         {
             _productServices = productServices;
             _mapper = mapper;
             _categoryServices = categoryServices;
             this._homePageProductServices = homePageProductServices;
             _fileUploadService = fileUploadService;
+            _elasticSearchClient = client;
         }
         [HttpGet]
         public async Task<IActionResult> SelectMainPageProducts()
@@ -132,6 +135,8 @@ namespace MongoShop.Areas.Admin.Controllers
 
             await _productServices.AddAsync(product);
 
+            _elasticSearchClient.IndexDocument<Product>(product);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -193,6 +198,9 @@ namespace MongoShop.Areas.Admin.Controllers
             }
 
             await _productServices.DeleteAsync(id, product);
+            
+            _elasticSearchClient.Delete<Product>(id);
+
             return RedirectToAction(nameof(Index));
         }
     }

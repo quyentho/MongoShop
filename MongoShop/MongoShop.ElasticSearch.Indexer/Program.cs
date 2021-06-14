@@ -94,7 +94,7 @@ namespace MongoShop.ElasticSearch.Indexer
                 )
                 .Custom("product-name-ascii-analyzer", c => c
                      .Tokenizer("standard")
-                     .Filters("product-name-token-filter", "asciifolding")
+                     .Filters("product-name-token-filter", "asciifolding", "lowercase")
                 )
                 .Custom("product-name-keyword", c => c
                     .Tokenizer("keyword")
