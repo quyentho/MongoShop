@@ -1,7 +1,5 @@
 ﻿@{
     Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
-    bool isMainCate = Convert.ToBoolean(ViewData["isMainCate"]);
-    string actionName = isMainCate == true ? "MainCategoryProducts" : "SubCategoryProducts";
 }
 @using MongoShop.Utils;
 @using MongoShop.Models.Customer;
@@ -59,13 +57,13 @@
                                 <span class="checkmark"></span>
                             </label>
                         </div>
-                        @*<div class="bc-item">
+                        <div class="bc-item">
                             <label for="bc-tommy">
                                 Tommy Hilfiger
                                 <input type="checkbox" name="tags" id="bc-tommy" value="4">
                                 <span class="checkmark"></span>
                             </label>
-                        </div>*@
+                        </div>
                     </div>
                 </div>
                 <div class="filter-widget">
@@ -155,7 +153,7 @@
                         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 
                     }
-                <div class="pagination justify-content-center">
+                @*<div class="pagination justify-content-center">
                    
                     <a asp-action = "@actionName"
                        asp-controller="Customer"
@@ -172,7 +170,7 @@
                        class="btn btn-outline-warning @nextDisabled float-right">
                         Next
                     </a>
-                </div>
+                </div>*@
                 </div>
             </div>
         </div>

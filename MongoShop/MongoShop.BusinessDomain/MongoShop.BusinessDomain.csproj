@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="2.1.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.11.5" />
+    <PackageReference Include="NEST" Version="7.13.0" />
     <PackageReference Include="PayPalCheckoutSdk" Version="1.0.3" />
     <PackageReference Include="PayPalHttp" Version="1.0.0" />
   </ItemGroup>
