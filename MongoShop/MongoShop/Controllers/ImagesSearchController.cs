@@ -1,23 +1,50 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoShop.BusinessDomain.Products;
+using MongoShop.Infrastructure.Services.FileUpload;
+using MongoShop.Models.Customer;
+using MongoShop.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MongoShop.Controllers
 {
     public class ImagesSearchController : Controller
     {
-        public IActionResult Upload(ImageUploadModel)
+        private readonly IFileUploadService _fileUploadService;
+        private readonly IMapper _mapper;
+
+        public ImagesSearchController(IFileUploadService fileUploadService, IMapper mapper)
         {
-
-            return View();
+            _fileUploadService = fileUploadService;
+            _mapper = mapper;
         }
-    }
 
-    public class ImageUploadModel
-    {
-        public List<IFormFile> ImagesUpload { get; set; }
+        public async Task<IActionResult> SearchSimilar(IFormFile imageUpload)
+        {
+            // upload image
+            List<string> imagePaths = await _fileUploadService.Upload(new List<IFormFile>() { imageUpload });
+            
+            // 64 base encode
+            string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(imagePaths[0]));
+
+            // use RestSharp to make http request
+
+            // get back the return
+
+            // find product by image path
+
+            // return view
+
+            List<Product> products = new List<Product>();
+
+
+            var viewModels = _mapper.Map<List<IndexViewModel>>(products);
+            return View("SearchedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), 1));
+        }
     }
 }

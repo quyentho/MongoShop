@@ -1,0 +1,99 @@
+﻿@{
+    Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
+}
+@using MongoShop.Utils;
+@using MongoShop.Models.Customer;
+
+@model PaginatedList<IndexViewModel>
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <a href="#"><i class="fa fa-home"></i> Home</a>
+                    <span>Shop</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Product Shop Section Begin -->
+<section class="product-shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
+            </div>
+            <div class="col-lg-12 order-1 order-lg-2">
+                <div class="product-list">
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="product-item">
+                                    <div class="pi-pic">
+                                        <img src="~/images/@item.Images[0]" alt="">
+                                        <div class="sale pp-sale">Sale</div>
+                                        <div class="icon">
+                                            <i class="icon_heart_alt"></i>
+                                        </div>
+                                        <ul>
+                                            <li class="w-icon active"><a href="#" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
+                                            <li class="quick-view"><a href="@Url.Action("ProductDetail", new { id = item.Id })">+ Quick View</a></li>
+                                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="pi-text">
+                                        <a href="@Url.Action("ProductDetail", new { id = item.Id })">
+                                            <h5>@item.Name</h5>
+                                        </a>
+                                        <div class="product-price">
+                                            @String.Format("{0:c}", item.Price)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    @{
+                        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+                    }
+                <div class="pagination justify-content-center">
+                   
+                    <a asp-action = "Search"
+                       asp-controller="ElasticSearch"
+                       asp-route-queryString="@ViewData["queryString"].ToString()"
+                       asp-route-pageNumber="@(Model.PageIndex - 1)"
+                       class="btn btn-outline-warning @prevDisabled ">
+                        Previous
+                    </a>
+                    
+                    <a asp-action="Search"
+                       asp-controller="ElasticSearch"
+                       asp-route-queryString="@ViewData["queryString"].ToString()"
+                       asp-route-pageNumber="@(Model.PageIndex + 1)"
+                       class="btn btn-outline-warning @nextDisabled float-right">
+                        Next
+                    </a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Shop Section End -->
+
+<script src="~/js/jquery.min.js"></script>
+<script type="text/javascript">
+
+        function AddToCart(productId) {
+            $.post("@Url.Action("Add", "Cart")", { productId: productId})
+                .done(function () {
+                                alert("product added to your cart");
+                            });
+                        };
+</script>

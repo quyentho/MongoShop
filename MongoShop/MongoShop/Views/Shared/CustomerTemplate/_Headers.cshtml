@@ -9,7 +9,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject ICategoryServices CategoryService
-@{ 
+@{
     var mainCategories = await CategoryService.GetAllMainCategoryAsync();
     var subCategories = await CategoryService.GetAllSubCategoryAsync();
 }
@@ -84,6 +84,9 @@
                             <button type="submit"><i class="ti-search"></i></button>
                         </form>
                     </div>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="input-file-now" class="file-upload" />
+                    </div>
                 </div>
                 <div class="col-lg-3 text-right col-md-3">
                     <ul class="nav-right">
@@ -125,9 +128,9 @@
                     @foreach (var category in mainCategories)
                     {
                         <li>
-                            <a asp-action="MainCategoryProducts" asp-controller="Customer" asp-route-categoryId="@category.Id" >@category.Name</a>
+                            <a asp-action="MainCategoryProducts" asp-controller="Customer" asp-route-categoryId="@category.Id">@category.Name</a>
                             <ul class="dropdown">
-                                @foreach(var subCategory in subCategories)
+                                @foreach (var subCategory in subCategories)
                                 {
                                     if (subCategory.ParentId.Equals(category.Id))
                                     {
@@ -138,7 +141,7 @@
                         </li>
                     }
                     @*<li><a asp-action="Category" asp-controller="Customer">Tất Cả</a></li>*@
-                </ul> 
+                </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>
         </div>
