@@ -38,10 +38,10 @@ namespace MongoShop.Controllers
 
             // find product by image path
 
-            // return view
 
             List<Product> products = new List<Product>();
 
+            // return view
 
             var viewModels = _mapper.Map<List<IndexViewModel>>(products);
             return View("SearchedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), 1));
