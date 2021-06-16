@@ -38,9 +38,10 @@ namespace MongoShop.Controllers
         {
             // upload image
             List<string> imagePaths = await _fileUploadService.Upload(new List<IFormFile>() { imageUpload });
-            
+
+            var imagePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{imagePaths[0]}";
             // 64 base encode
-            string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(imagePaths[0]));
+            string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(imagePath);
 
             // use RestSharp to make http request
 
