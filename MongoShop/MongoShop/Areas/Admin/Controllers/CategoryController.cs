@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.BusinessDomain.Categories;
@@ -11,7 +12,7 @@ namespace MongoShop.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
-    //[Authorize]
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly ICategoryServices _categoryServices;

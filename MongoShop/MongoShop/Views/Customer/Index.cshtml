@@ -57,7 +57,7 @@
             <div class="col-lg-3 offset-lg-1">
                 <div class="product-large set-bg m-large" data-setbg="Custom/img/products/man-large.jpg">
                     <h2>Áo</h2>
-                    <a href="#">Xem Thêm</a>
+                    <a href="@Url.Action("MainCategoryProducts","Customer",new { categoryId = ViewData["shirtCateId"].ToString()})">Xem Thêm</a>
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
             <div class="col-lg-3">
                 <div class="product-large set-bg" data-setbg="/Custom/img/products/trouser-banner.jpg">
                     <h2>Quần</h2>
-                    <a href="#">Xem thêm</a>
+                    <a href="@Url.Action("MainCategoryProducts","Customer",new { categoryId = ViewData["trousersCateId"].ToString()})">Xem thêm</a>
                 </div>
             </div>
             <div class="col-lg-8 offset-lg-1">
@@ -159,7 +159,7 @@
             <div class="col-lg-3 offset-lg-1">
                 <div class="product-large set-bg m-large" data-setbg="Custom/img/products/accessories-banner.jpg">
                     <h2>Phụ Kiện</h2>
-                    <a href="#">Xem Thêm</a>
+                    <a href="@Url.Action("MainCategoryProducts","Customer",new { categoryId = ViewData["accessoriesCateId"].ToString()})">Xem Thêm</a>
                 </div>
             </div>
         </div>

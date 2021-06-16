@@ -11,7 +11,7 @@ using MongoShop.Utils;
 namespace MongoShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize]
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly IOrderServices _orderServices;

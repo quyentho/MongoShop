@@ -41,14 +41,17 @@ namespace MongoShop.Controllers
             var accessoriesCate =await _categoryServices.GetByNameAsync("Phụ Kiện");
             
             var shirts = await _homePageProductServices.GetByMainCategoryAsync(shirtCate);
+            ViewData["shirtCateId"] = shirtCate.Id;
 
             var shirtsViewModel = _mapper.Map<List<IndexViewModel>>(shirts);
 
             var trousers = await _homePageProductServices.GetByMainCategoryAsync(trouserCate);
+            ViewData["trousersCateId"] = trouserCate.Id;
 
             var trousersViewModel = _mapper.Map<List<IndexViewModel>>(trousers);
 
             var accessories = await _homePageProductServices.GetByMainCategoryAsync(accessoriesCate);
+            ViewData["accessoriesCateId"] = accessoriesCate.Id;
 
             var accessoriesViewModel = _mapper.Map<List<IndexViewModel>>(accessories);
 
