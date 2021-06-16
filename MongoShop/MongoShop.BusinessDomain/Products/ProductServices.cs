@@ -92,12 +92,12 @@ namespace MongoShop.BusinessDomain.Products
             return await _collection.Find(filter).ToListAsync();
         }
 
-        public async Task<List<Product>> GetByImageAsync(string imgPath)
+        public async Task<Product> GetByImageAsync(string imgPath)
         {
             //var filter = Builders<Product>.Filter.Regex("images", new BsonRegularExpression(imgPath, "i"));
-            var trimPath = imgPath.Substring(imgPath.IndexOf("full"));
+            //var trimPath = imgPath.Substring(imgPath.IndexOf("full"));
 
-            return await _collection.Find(c => c.Images[0] == trimPath).ToListAsync();
+            return await _collection.Find(c => c.Images[0].Contains(imgPath)).FirstOrDefaultAsync();
         }
 
     }

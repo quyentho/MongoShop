@@ -67,6 +67,6 @@ namespace MongoShop.BusinessDomain.Products
         /// </summary>
         /// <param name="image">product to add.</param>
         /// <returns>Created Product.</returns>
-        Task<List<Product>> GetByImageAsync(string imgPath);
+        Task<Product> GetByImageAsync(string imgPath);
     }
 }

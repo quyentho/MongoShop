@@ -5,6 +5,8 @@ using MongoShop.BusinessDomain.Products;
 using MongoShop.Infrastructure.Services.FileUpload;
 using MongoShop.Models.Customer;
 using MongoShop.Utils;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +19,13 @@ namespace MongoShop.Controllers
     {
         private readonly IFileUploadService _fileUploadService;
         private readonly IMapper _mapper;
+        private readonly IProductServices _productServices;
 
-        public ImagesSearchController(IFileUploadService fileUploadService, IMapper mapper)
+        public ImagesSearchController(IFileUploadService fileUploadService, IMapper mapper, IProductServices productServices)
         {
             _fileUploadService = fileUploadService;
             _mapper = mapper;
+            _productServices = productServices;
         }
 
 
@@ -44,16 +48,35 @@ namespace MongoShop.Controllers
             string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(imagePath));
 
             // use RestSharp to make http request
+            //calling the api
+            var client = new RestClient("http://127.0.0.1:5000/");
 
-            // get back the return
+            var request = new RestRequest("/SearchImage/{img_path}/")
+                .AddUrlSegment("img_path", encodedStr);
 
-            // find product by image path
+            var response = client.Get(request);
 
+            //get the json object
+            var json = JsonConvert.DeserializeObject<List<string>>(response.Content);
+
+            List<string> pathlist = new List<string>();
+
+            //add to the list
+            foreach (var path in json)
+            {
+                pathlist.Add(path);
+            }
 
             List<Product> products = new List<Product>();
 
-            // return view
+            // find product by image path
+            foreach (var path in pathlist)
+            {
+                 products.Add(await _productServices.GetByImageAsync(path));
+            }
 
+
+            // return view
             
             return RedirectToAction(nameof(DisplaySearchResult), products);
         }
