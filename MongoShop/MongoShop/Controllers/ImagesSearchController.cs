@@ -24,6 +24,14 @@ namespace MongoShop.Controllers
             _mapper = mapper;
         }
 
+
+        [HttpGet]
+        public IActionResult DisplaySearchResult(List<Product> products, int pageNumber = 1)
+        {
+            var viewModels = _mapper.Map<List<IndexViewModel>>(products);
+            return View("SearchedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), 1));
+        }
+
         [HttpPost]
         public async Task<IActionResult> SearchForSimilar([FromForm] IFormFile imageUpload)
         {
@@ -44,8 +52,8 @@ namespace MongoShop.Controllers
 
             // return view
 
-            var viewModels = _mapper.Map<List<IndexViewModel>>(products);
-            return View("SearchedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), 1));
+            
+            return RedirectToAction(nameof(DisplaySearchResult), products);
         }
     }
 }
