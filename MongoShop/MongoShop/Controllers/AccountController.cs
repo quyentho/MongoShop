@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -182,8 +183,10 @@ namespace MongoShop.Controllers
 
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
 
-                await _emailSender.To(model.Email).Subject("Reset Password")
-                        .Body("Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>")
+                var body = $"Please follow this link to reset your password: {callbackUrl}";
+                await _emailSender
+                        .To(model.Email).Subject("Reset Password")
+                        .Body(body, true)
                         .SendAsync();
                 return View("ForgotPasswordConfirmation");
             }
@@ -228,7 +231,8 @@ namespace MongoShop.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                return RedirectToAction(nameof(ResetPasswordConfirmation));
+                ModelState.AddModelError(string.Empty, "Invalid attempt to reset password.");
+                return View();
             }
 
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
