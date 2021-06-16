@@ -30,8 +30,9 @@ namespace MongoShop.Controllers
 
 
         [HttpGet]
-        public IActionResult DisplaySearchResult(List<Product> products, int pageNumber = 1)
+        public IActionResult DisplaySearchResult( int pageNumber = 1)
         {
+            var products = JsonConvert.DeserializeObject<List<Product>>(TempData["products"].ToString());
             ViewData["products"] = products;
             var viewModels = _mapper.Map<List<IndexViewModel>>(products);
             return View("SearchedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), pageNumber));
@@ -45,26 +46,26 @@ namespace MongoShop.Controllers
 
             var imagePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{imagePaths[0]}";
             // 64 base encode
-            string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(imagePath);
+            var encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(imagePath));
 
             // use RestSharp to make http request
             //calling the api
             var client = new RestClient("http://127.0.0.1:5000/");
 
-            var request = new RestRequest("/SearchImage/{img_path}/")
+            var request = new RestRequest("/SearchImage/{img_path}" )
                 .AddUrlSegment("img_path", encodedStr);
 
             var response = client.Get(request);
 
             //get the json object
-            var json = JsonConvert.DeserializeObject<List<string>>(response.Content);
+            var json = JsonConvert.DeserializeObject<List<ImgPath>>(response.Content);
 
             List<string> pathlist = new List<string>();
 
             //add to the list
             foreach (var path in json)
             {
-                pathlist.Add(path);
+                pathlist.Add(path.path);
             }
 
             List<Product> products = new List<Product>();
@@ -76,9 +77,16 @@ namespace MongoShop.Controllers
             }
 
 
+            TempData["products"] = JsonConvert.SerializeObject(products);
             // return view
             
-            return RedirectToAction(nameof(DisplaySearchResult), products);
+            return RedirectToAction(nameof(DisplaySearchResult));
         }
+    }
+
+    public class ImgPath
+    {
+        [JsonProperty("path")]
+        public string path { get; set; }
     }
 }
