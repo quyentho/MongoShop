@@ -3,7 +3,7 @@
 }
 @using MongoShop.Utils;
 @using MongoShop.Models.Customer;
-
+@using MongoShop.BusinessDomain.Products;
 @model PaginatedList<IndexViewModel>
 <!-- Breadcrumb Section Begin -->
 <div class="breacrumb-section">
@@ -64,17 +64,17 @@
                     }
                 <div class="pagination justify-content-center">
                    
-                    <a asp-action = "Search"
-                       asp-controller="ElasticSearch"
-                       asp-route-queryString="@ViewData["queryString"].ToString()"
+                    <a asp-action = "DisplaySearchResult"
+                       asp-controller="ImagesSearch"
+                       asp-route-queryString="@ViewData["products"]"
                        asp-route-pageNumber="@(Model.PageIndex - 1)"
                        class="btn btn-outline-warning @prevDisabled ">
                         Previous
                     </a>
                     
-                    <a asp-action="Search"
-                       asp-controller="ElasticSearch"
-                       asp-route-queryString="@ViewData["queryString"].ToString()"
+                    <a asp-action="DisplaySearchResult"
+                       asp-controller="ImagesSearch"
+                       asp-route-queryString="@ViewData["products"]"
                        asp-route-pageNumber="@(Model.PageIndex + 1)"
                        class="btn btn-outline-warning @nextDisabled float-right">
                         Next

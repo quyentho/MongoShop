@@ -28,6 +28,7 @@ namespace MongoShop.Controllers
         [HttpGet]
         public IActionResult DisplaySearchResult(List<Product> products, int pageNumber = 1)
         {
+            ViewData["products"] = products;
             var viewModels = _mapper.Map<List<IndexViewModel>>(products);
             return View("SearchedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), 1));
         }
