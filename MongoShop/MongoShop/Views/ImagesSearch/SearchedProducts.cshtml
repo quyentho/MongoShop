@@ -66,7 +66,7 @@
                    
                     <a asp-action = "DisplaySearchResult"
                        asp-controller="ImagesSearch"
-                       asp-route-queryString="@ViewData["products"]"
+                       asp-route-products="@ViewData["products"]"
                        asp-route-pageNumber="@(Model.PageIndex - 1)"
                        class="btn btn-outline-warning @prevDisabled ">
                         Previous
@@ -74,7 +74,7 @@
                     
                     <a asp-action="DisplaySearchResult"
                        asp-controller="ImagesSearch"
-                       asp-route-queryString="@ViewData["products"]"
+                       asp-route-products="@ViewData["products"]"
                        asp-route-pageNumber="@(Model.PageIndex + 1)"
                        class="btn btn-outline-warning @nextDisabled float-right">
                         Next

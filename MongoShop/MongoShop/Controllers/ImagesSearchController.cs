@@ -30,7 +30,7 @@ namespace MongoShop.Controllers
         {
             ViewData["products"] = products;
             var viewModels = _mapper.Map<List<IndexViewModel>>(products);
-            return View("SearchedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), 1));
+            return View("SearchedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), pageNumber));
         }
 
         [HttpPost]
