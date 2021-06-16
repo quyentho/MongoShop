@@ -24,7 +24,8 @@ namespace MongoShop.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> SearchSimilar(IFormFile imageUpload)
+        [HttpPost]
+        public async Task<IActionResult> SearchForSimilar([FromForm] IFormFile imageUpload)
         {
             // upload image
             List<string> imagePaths = await _fileUploadService.Upload(new List<IFormFile>() { imageUpload });

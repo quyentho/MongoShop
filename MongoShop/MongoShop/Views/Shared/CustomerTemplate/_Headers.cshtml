@@ -84,9 +84,12 @@
                             <button type="submit"><i class="ti-search"></i></button>
                         </form>
                     </div>
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="input-file-now" class="file-upload" />
-                    </div>
+                    <form id="imageSearchForm" enctype="multipart/form-data" method="post" asp-controller="ImagesSearch" asp-action="SearchForSimilar">
+                        <div>
+                            <label for="imageUpload" class="drop-files-container">Drag Image Here To Search</label>
+                            <input id="imageUpload" type="file" name="imageUpload" style="visibility:hidden;">
+                        </div>
+                    </form>
                 </div>
                 <div class="col-lg-3 text-right col-md-3">
                     <ul class="nav-right">
@@ -150,6 +153,7 @@
 <!-- Header End -->
 
 <script>
+
     $("a[data-form-method='post']").click(function (event) {
         event.preventDefault();
         var element = $(this);

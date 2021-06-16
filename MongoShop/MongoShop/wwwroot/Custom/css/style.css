@@ -3888,6 +3888,23 @@ ol {
 	color: #6B6B6B;
 }
 
+.drop-files-container {
+	display: block;
+	border: 2px dashed #aaa;
+	height:42px;
+	margin: 0 auto;
+	margin-top: 20px;
+	font-size: 20px;
+	line-height: 2;
+	color: #999;
+	text-align: center;
+	cursor: pointer;
+}
+
+.drop-files-container:hover {
+	background-color: #f1f1f1;
+}
+
 /* ------------------------------ Responsive Media Styles ---------------------------- */
 
 @media only screen and (min-width: 1200px) and (max-width: 1920px) {

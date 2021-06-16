@@ -7,7 +7,6 @@
     <meta name="description" content="Wish shop project">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <partial name="CustomerTemplate/_Styles" />
-
 </head>
 
 <body>
@@ -45,6 +44,34 @@
     @*</div>*@
 
     <partial name="CustomerTemplate/_Scripts" />
+    <script>
+
+        // first case
+        $('.drop-files-container').on('drop dragdrop', function (e) {
+            //var files = e.originalEvent.dataTransfer.files;
+            processFileUpload();
+            //return false;
+        });
+
+        // second case
+        $('#imageUpload').on('change', function (e) {
+            //    var files = document.getElementById('files').files;
+            processFileUpload();
+            return false;
+        });
+
+        function processFileUpload() {
+            document.getElementById('imageSearchForm').submit();
+        }
+
+        $('.drop-files-container').on('dragenter', function (event) {
+            event.preventDefault();
+            $(this).css('background', '#f1f1f1');
+        })
+        $('.drop-files-container').on('dragover', function (event) {
+            event.preventDefault();
+        })
+    </script>>
     @RenderSection("Scripts", false)
 </body>
 </html>
