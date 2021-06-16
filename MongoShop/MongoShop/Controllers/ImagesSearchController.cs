@@ -41,7 +41,7 @@ namespace MongoShop.Controllers
 
             var imagePath = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{imagePaths[0]}";
             // 64 base encode
-            string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(imagePath);
+            string encodedStr = Convert.ToBase64String(Encoding.UTF8.GetBytes(imagePath));
 
             // use RestSharp to make http request
 
