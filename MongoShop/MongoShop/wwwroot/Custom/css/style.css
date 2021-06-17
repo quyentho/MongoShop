@@ -3905,6 +3905,10 @@ ol {
 	background-color: #f1f1f1;
 }
 
+.verticalLine {
+	border-left: thick solid #E7AB3C;
+}
+
 /* ------------------------------ Responsive Media Styles ---------------------------- */
 
 @media only screen and (min-width: 1200px) and (max-width: 1920px) {

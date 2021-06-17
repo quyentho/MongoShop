@@ -21,19 +21,65 @@ namespace MongoShop.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMapper _mapper;
         private readonly IFluentEmail _emailSender;
+        private readonly IUserServices _userService;
+
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IMapper mapper,
             IFluentEmail emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, IUserServices userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             this._mapper = mapper;
             _emailSender = emailSender;
             _logger = logger;
+            this._userService = userService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateInformation()
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(GetCurrentUserId());
+
+            UpdateInformationViewModel profileViewModel = _mapper.Map<UpdateInformationViewModel>(user);
+            return View(profileViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateInformation(UpdateInformationViewModel updateInformationViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var email = User.FindFirstValue(ClaimTypes.Email);
+                var user = await _userManager.FindByEmailAsync(email);
+
+                _mapper.Map(updateInformationViewModel, user);
+
+                await _userManager.UpdateAsync(user);
+            }
+            var applicationUser = _mapper.Map<ApplicationUser>(updateInformationViewModel);
+            await _userService.UpdateUserAsync(GetCurrentUserId(), applicationUser);
+            return View(updateInformationViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePasswordViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var email = User.FindFirstValue(ClaimTypes.Email);
+
+                var loggedInUser = await _userManager.FindByEmailAsync(email);
+               await _userManager.ChangePasswordAsync(loggedInUser, changePasswordViewModel.CurrentPassword,
+                    changePasswordViewModel.NewPassword);
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid attempt to change password");
+
+            return View("UpdateInformation");
         }
 
         [HttpGet]
@@ -56,7 +102,7 @@ namespace MongoShop.Controllers
             if (ModelState.IsValid)
             {
                 Microsoft.AspNetCore.Identity.SignInResult loginResult
-                    = await _signInManager.PasswordSignInAsync(model.Email,model.Password,isPersistent:false,lockoutOnFailure:true);
+                    = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: true);
 
                 if (loginResult == Microsoft.AspNetCore.Identity.SignInResult.Success)
                 {

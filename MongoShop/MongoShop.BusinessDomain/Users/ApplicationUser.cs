@@ -26,7 +26,7 @@ namespace MongoShop.BusinessDomain.Users
         public string Name { get; set; }
 
         [BsonElement("birthday")]
-        public DateTime BirthDay { get; set; }
+        public DateTimeOffset BirthDay { get; set; }
 
         [BsonElement("status")]
         public bool Status { get; set; }

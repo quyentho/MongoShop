@@ -94,16 +94,18 @@ namespace MongoShop
             #endregion
 
             #region User
-            CreateMap<ApplicationUser, AccountProfileViewModel>()
+            CreateMap<ApplicationUser, UpdateInformationViewModel>()
                  .ForMember(dest => dest.AddressNumber, opt => opt.MapFrom(src => src.Contact.Address.Number))
                  .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Contact.Address.Street))
                  .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Contact.Address.City))
+                 .ForMember(dest => dest.BirthDay, opt => opt.MapFrom(src => src.BirthDay))
                  .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Contact.PhoneNumber));
 
-            CreateMap<AccountProfileViewModel, ApplicationUser>(MemberList.Source)
+            CreateMap<UpdateInformationViewModel, ApplicationUser>(MemberList.Source)
                  .ForPath(dest => dest.Contact.Address.Number, opt => opt.MapFrom(src => src.AddressNumber))
                  .ForPath(dest => dest.Contact.Address.Street, opt => opt.MapFrom(src => src.Street))
                  .ForPath(dest => dest.Contact.Address.City, opt => opt.MapFrom(src => src.City))
+                 .ForPath(dest => dest.BirthDay, opt => opt.MapFrom(src => src.BirthDay))
                  .ForPath(dest => dest.Contact.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber));
             #endregion
         }
