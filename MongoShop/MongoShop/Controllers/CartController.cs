@@ -177,7 +177,6 @@ namespace MongoShop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //Bỏ Post đê
         [HttpPost]
         public async Task<IActionResult> Checkout([FromForm] CartIndexViewModel viewModel)
         {

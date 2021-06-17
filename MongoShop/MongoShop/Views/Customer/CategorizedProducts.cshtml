@@ -39,7 +39,7 @@
                                         <img src="~/images/@item.Images[0]" alt="">
                                         <div class="sale pp-sale">Sale</div>
                                         <div class="icon">
-                                            <i class="icon_heart_alt"></i>
+                                            <a href="#" onclick="AddToWishList('@item.Id');"><i class="icon_heart_alt"></i></a>
                                         </div>
                                         <ul>
                                             <li class="w-icon active"><a href="#" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
@@ -94,10 +94,18 @@
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
 
-        function AddToCart(productId) {
-            $.post("@Url.Action("Add", "Cart")", { productId: productId})
-                .done(function () {
-                                alert("product added to your cart");
-                            });
-                        };
+    function AddToCart(productId) {
+        $.post("@Url.Action("Add", "Cart")", { productId: productId})
+            .done(function () {
+                            alert("product added to your cart");
+        });
+    };
+
+
+    function AddToWishList(productId) {
+        $.post("@Url.Action("Add", "Wishlist")", { productId: productId})
+            .done(function () {
+                            alert("product added to your wishlist");
+        });
+    };
 </script>

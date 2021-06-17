@@ -1,0 +1,121 @@
+﻿@{
+    Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
+}
+@using MongoShop.Models.Wishlist;
+@model WishlistIndexViewModel
+
+
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text product-more">
+                    <a href="./home.html"><i class="fa fa-home"></i> Home</a>
+                    <a href="./shop.html">Shop</a>
+                    <span>Shopping Cart</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Shopping Cart Section Begin -->
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+<section class="shopping-cart spad">
+
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="cart-table">
+                        <input type="hidden" asp-for="@Model.Id" />
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th class="p-name">Product Name</th>
+                                    <th>Price</th>
+                                    <th></th>
+                                    <th><i class="ti-close"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Products.Count; i++)
+                                {
+                                    <tr>
+                                        <input type="hidden" asp-for="@Model.Products[i].Id" />
+                                        <input type="hidden" asp-for="@Model.Products[i].Name" />
+                                        <input type="hidden" asp-for="@Model.Products[i].Images[0]" />
+                                        <input id="prod-price" type="hidden" asp-for="@Model.Products[i].Price" />
+                                        <td class="cart-pic first-row"><img src="~/images/@Model.Products[i].Images[0]" alt=""></td>
+                                        <td class="cart-title first-row">
+                                            <h5>@Model.Products[i].Name</h5>
+                                        </td>
+                                        <td class="p-price first-row">@String.Format("{0:c}", Model.Products[i].Price)</td>
+                                        <td class="qua-col first-row">
+                                            @*<div class="quantity">
+                                                <div class="pro-qty">*@
+                                                    <a href="#" class="primary-btn up-cart" onclick="AddToCart('@Model.Products[i].Id');">Add to Cart</a>
+                                                @*</div>
+                                            </div>*@
+                                        </td>
+                                        @*<td class="total-price first-row" id="prod-total">@String.Format("{0:c}", Model.Products[i].Price * @Model.Products[i].OrderedQuantity)</td>*@
+                                        <td class="close-td first-row">
+                                            <i class="ti-close" onclick="RemoveFromWishList('@Model.Products[i].Id');"></i>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="cart-buttons">
+                                <a href="#" class="primary-btn continue-shop">Continue shopping</a>
+                                <a href="#" class="primary-btn up-cart">Update cart</a>
+                            </div>
+                            <div class="discount-coupon">
+                                @* <h6>Discount Codes</h6> *@
+                                @* <form action="#" class="coupon-form">
+                                        <input type="text" placeholder="Enter your codes">
+                                        <button type="submit" class="site-btn coupon-btn">Apply</button>
+                                    </form> *@
+                            </div>
+                        </div>
+                        <div class="col-lg-4 offset-lg-4">
+                            <div class="proceed-checkout">
+                                <!--<input type="hidden" asp-for="@Model" />
+                                <ul>-->
+                                    @* <li class="subtotal">Subtotal <span>$240.00</span></li> *@
+                                    <!--<li class="cart-total">Total <span id="all-prod-total">@String.Format("{0:c}", Model)</span></li>
+                                </ul>-->
+                                @* <a href="@Url.Action("Checkout","Cart");" class="proceed-btn">PROCEED TO CHECK OUT</a> *@
+                                <!--<a><button asp-controller="Cart" asp-action="Checkout" type="submit" value="submit" class="proceed-btn">proceed to checkout</button></a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Shopping Cart Section End -->
+<script>
+    function RemoveFromWishList(productId) {
+
+        $.post("@Url.Action("Remove","Wishlist")", { productId: productId }).done(function (data) {
+            location.reload(); // then reload the page.(3)
+        });
+    };
+
+    function AddToCart(productId) {
+    $.post("@Url.Action("Add", "Cart")", { productId: productId})
+        .done(function () {
+                        alert("product added to your cart");
+        });
+    };
+
+</script>
