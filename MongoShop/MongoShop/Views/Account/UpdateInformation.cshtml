@@ -1,0 +1,95 @@
+﻿@{
+    Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
+}
+@model MongoShop.Models.Account.UpdateInformationViewModel
+<div class="register-login-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="register-form">
+                    <h2>Update Password</h2>
+                    <form asp-action="ChangePassword" asp-controller="Account">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="group-input">
+                            <label for="username">Current Password *</label>
+                            <input name="CurrentPassword" type="password" id="username">
+                        </div>
+                        <div class="group-input">
+                            <label for="pass"> New Password *</label>
+                            <input name="NewPassword" type="password" id="pass">
+                        </div>
+                        <div class="group-input">
+                            <label for="con-pass">Confirm Password *</label>
+                            <input name="ConfirmPassword" type="password" id="con-pass">
+                        </div>
+                        <button type="submit" class="site-btn register-btn">SUBMIT</button>
+                    </form>
+                </div>
+            </div>
+            <div class="verticalLine col-1">
+            </div>
+            <div class="col-lg-6">
+                <div class="register-form">
+                    <h2>Update Information</h2>
+                    <form method="post" asp-action="UpdateInformation" asp-controller="Account" class="row">
+                        <div class="group-input col-6">
+                            <label for="username">Đường</label>
+                            <input asp-for="@Model.AddressNumber" type="text" id="username">
+                        </div>
+                        <div class="group-input col-6">
+                            <label for="pass"> Phường/xã</label>
+                            <input asp-for="@Model.Street" type="text" id="pass">
+                        </div>
+                        <div class="group-input col-6">
+                            <label for="con-pass">Thành phố</label>
+                            <input asp-for="@Model.City" type="text" id="con-pass">
+                        </div>
+                        <div class="group-input col-6">
+                            <label for="con-pass">SĐT</label>
+                            <input asp-for="@Model.PhoneNumber" type="text" id="con-pass">
+                        </div>
+                        <div class="group-input col-12">
+                            <label for="con-pass">Ngày Sinh</label>
+                            <input asp-for="@Model.BirthDay" placeholder="dd/mm/yyyy" data-slots="dmyh">
+                        </div>
+                        <button type="submit" class="site-btn register-btn">SUBMIT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            for (const el of document.querySelectorAll("[placeholder][data-slots]")) {
+                const pattern = el.getAttribute("placeholder"),
+                    slots = new Set(el.dataset.slots || "_"),
+                    prev = (j => Array.from(pattern, (c, i) => slots.has(c) ? j = i + 1 : j))(0),
+                    first = [...pattern].findIndex(c => slots.has(c)),
+                    accept = new RegExp(el.dataset.accept || "\\d", "g"),
+                    clean = input => {
+                        input = input.match(accept) || [];
+                        return Array.from(pattern, c =>
+                            input[0] === c || slots.has(c) ? input.shift() || c : c
+                        );
+                    },
+                    format = () => {
+                        const [i, j] = [el.selectionStart, el.selectionEnd].map(i => {
+                            i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
+                            return i < 0 ? prev[prev.length - 1] : back ? prev[i - 1] || first : i;
+                        });
+                        el.value = clean(el.value).join``;
+                        el.setSelectionRange(i, j);
+                        back = false;
+                    };
+                let back = false;
+                el.addEventListener("keydown", (e) => back = e.key === "Backspace");
+                el.addEventListener("input", format);
+                el.addEventListener("focus", format);
+                el.addEventListener("blur", () => el.value === pattern && (el.value = ""));
+            }
+        });
+    </script>
+}
