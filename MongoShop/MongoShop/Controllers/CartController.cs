@@ -209,6 +209,7 @@ namespace MongoShop.Controllers
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
                 order.OrderedProducts = cartItems;
 
+                order.CreatedTime = DateTime.Now;
                 order.Invoice = new Invoice()
                 {
                     PaymentMethod = BusinessDomain.Orders.PaymentMethod.ShipCod,
@@ -361,6 +362,7 @@ namespace MongoShop.Controllers
 
 
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
+
                 order.OrderedProducts = cartItems;
 
                 order.Invoice = new Invoice
@@ -371,7 +373,7 @@ namespace MongoShop.Controllers
 
                 order.CreatedTime = Convert.ToDateTime(result.CreateTime);
 
-                order.Total = Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.Value);
+                order.Total = Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.Value) * 22000;
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
