@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -9,8 +10,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Users;
 using MongoShop.Models.Account;
+using MongoShop.Utils;
 
 namespace MongoShop.Controllers
 {
@@ -22,6 +25,8 @@ namespace MongoShop.Controllers
         private readonly IMapper _mapper;
         private readonly IFluentEmail _emailSender;
         private readonly IUserServices _userService;
+        private readonly IOrderServices _orderServices;
+
 
 
         public AccountController(
@@ -29,14 +34,15 @@ namespace MongoShop.Controllers
             SignInManager<ApplicationUser> signInManager,
             IMapper mapper,
             IFluentEmail emailSender,
-            ILogger<AccountController> logger, IUserServices userService)
+            ILogger<AccountController> logger, IUserServices userService, IOrderServices orderServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            this._mapper = mapper;
+            _mapper = mapper;
             _emailSender = emailSender;
             _logger = logger;
-            this._userService = userService;
+            _userService = userService;
+            _orderServices = orderServices;
         }
 
         [HttpGet]
@@ -317,6 +323,19 @@ namespace MongoShop.Controllers
             _logger.LogInformation("External login successfully, redirect to {returnUrl}", returnUrl);
 
             return LocalRedirect(returnUrl);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetMyOrders(int currentPageNumber = 1)
+        {
+            List<Order> orders = await _orderServices.GetByUserIdAsync(GetCurrentUserId());
+
+            orders = orders.OrderByDescending(o => o.CreatedTime).ToList();
+
+            List<MyOrdersViewModel> model = _mapper.Map<List<MyOrdersViewModel>>(orders);
+
+            return View(PaginatedList<MyOrdersViewModel>.CreateAsync(model.AsQueryable(), currentPageNumber));
         }
 
         private async Task<ExternalLoginResponse> GetExternalLoginResponseAsync(LoginViewModel loginViewModel)
