@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Manage Products";
+    Layout = "~/Views/Shared/CustomerTemplate/_Layout.cshtml";
+}
+@using MongoShop.Utils;
+@using MongoShop.Models.Account;
+@model PaginatedList<MyOrdersViewModel>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Đơn hàng của tôi</h3>
+            </div>
+            <!-- /.card-header -->
+
+            <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Giá</th>
+                            <th>Số Lượng</th>
+                            <th>Tổng tiền</th>
+                            <th>Ngày mua</th>
+                            <th>Trạng thái đơn hàng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in @Model)
+                        {
+                            foreach (var product in order.OrderedProducts)
+                            {
+                                string badgeStatusClass;
+                                if (order.InvoiceStatus == "Pending")
+                                {
+                                    badgeStatusClass = "badge-primary";
+                                }
+                                else if (order.InvoiceStatus == "Cancel")
+                                {
+                                    badgeStatusClass = "badge-danger";
+                                }
+                                else
+                                {
+                                    badgeStatusClass = "badge-secondary";
+                                }
+                                var datetimeString = string.Format("{0:dd/MM/yyyy HH:mm:ss}", order.CreatedDate);
+                                <tr>
+                                    <td>@Html.DisplayFor(model => order.OrderId)</td>
+                                    <td>@Html.DisplayFor(model => product.ProductName)</td>
+                                    <td>@Html.DisplayFor(model=> product.Price)</td>
+                                    <td>@Html.DisplayFor(model => product.Quantity)</td>
+                                    <td>@Html.DisplayFor(model => product.TotalPrice)</td>
+                                    <td>@Html.DisplayFor(model => datetimeString)</td>
+                                    <td class="order-state text-center">
+                                        <span class="badge @badgeStatusClass">@Html.DisplayFor(m => order.InvoiceStatus)</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+        <div class="d-flex justify-content-center">
+            <a asp-action="GetMyOrders"
+               asp-controller="Account"
+               asp-route-currentPageNumber="@(Model.PageIndex - 1)"
+               class="btn btn-info @prevDisabled">
+                Previous
+            </a>
+            <a asp-action="GetMyOrders"
+               asp-controller="Account"
+               asp-route-currentPageNumber="@(Model.PageIndex + 1)"
+               class="btn btn-info @nextDisabled">
+                Next
+            </a>
+        </div>
+    </div>
+</div>

@@ -35,6 +35,7 @@ namespace MongoShop.BusinessDomain.Orders
         public string Comment { get; set; }
 
         [BsonElement("created_time")]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreatedTime { get; set; }
     }
 }

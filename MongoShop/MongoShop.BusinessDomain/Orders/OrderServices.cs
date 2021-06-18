@@ -106,5 +106,13 @@ namespace MongoShop.BusinessDomain.Orders
         {
             return await _collection.FindAsync(o => o.Id == id).GetAwaiter().GetResult().FirstOrDefaultAsync();
         }
+
+        ///<inheritdoc/>
+        public async Task<List<Order>> GetByUserIdAsync(string userId)
+        {
+            var orders = await _collection.FindAsync(o => o.UserId == userId).GetAwaiter().GetResult().ToListAsync();
+
+            return orders;
+        }
     }
 }

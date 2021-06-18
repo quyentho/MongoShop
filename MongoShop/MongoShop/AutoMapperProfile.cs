@@ -75,6 +75,17 @@ namespace MongoShop
             #region Order
             CreateMap<Order, IndexOrderViewModel>();
 
+            CreateMap<Order, MyOrdersViewModel>()
+                .ForPath(dest => dest.OrderId, opt => opt.MapFrom(scr => scr.Id))
+                .ForPath(dest => dest.CreatedDate, opt => opt.MapFrom(scr => scr.CreatedTime))
+                .ForPath(dest => dest.InvoiceStatus, opt => opt.MapFrom(scr => scr.Invoice.Status))
+                .ForPath(dest => dest.OrderedProducts, opt => opt.MapFrom(scr => scr.OrderedProducts));
+
+            CreateMap<OrderedProduct, ProductViewModel>()
+                .ForPath(dest => dest.Quantity, opt => opt.MapFrom(scr => scr.OrderedQuantity))
+                .ForPath(dest => dest.Price, opt => opt.MapFrom(scr => scr.Product.Price))
+                .ForPath(dest => dest.ProductName, opt => opt.MapFrom(scr => scr.Product.Name));
+
             CreateMap<CartCheckoutViewModel, Order>()
                .ForPath(dest => dest.ShipAddress.Street, opt => opt.MapFrom(scr => scr.Street))
                .ForPath(dest => dest.ShipAddress.Number, opt => opt.MapFrom(scr => scr.AddressNumber))

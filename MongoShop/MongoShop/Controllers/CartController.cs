@@ -205,6 +205,7 @@ namespace MongoShop.Controllers
 
                 string userId = GetCurrentLoggedInUserId();
                 order.UserId = userId;
+                order.CreatedTime = DateTime.Now;
 
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
                 order.OrderedProducts = cartItems;

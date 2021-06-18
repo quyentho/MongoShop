@@ -41,5 +41,12 @@ namespace MongoShop.BusinessDomain.Orders
         /// <param name="id">Order id</param>
         /// <returns></returns>
         Task<Order> GetByIdAsync(string id);
+
+        /// <summary>
+        /// Get orders by user id.
+        /// </summary>
+        /// <param name="userId">user id.</param>
+        /// <returns></returns>
+        Task<List<Order>> GetByUserIdAsync(string userId);
     }
 }

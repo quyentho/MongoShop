@@ -28,6 +28,10 @@
                         <i class=" fa fa-envelope"></i>
                         <a asp-action="UpdateInformation" asp-controller="Account">hello @User.Identity.Name!</a>
                     </div>
+                    <div class="phone-service">
+                        <i class="bi bi-book"></i>
+                        <a href="@Url.Action("GetMyOrders","Account")">Đơn hàng của tôi</a>
+                    </div>
                 }
                 else
                 {
@@ -36,10 +40,6 @@
                         hello anonymous!
                     </div>
                 }
-                <div class="phone-service">
-                    <i class=" fa fa-phone"></i>
-                    +65 11.188.888
-                </div>
             </div>
             <div class="ht-right">
                 @if (SignInManager.IsSignedIn(User))
