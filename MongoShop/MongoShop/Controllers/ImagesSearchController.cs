@@ -51,7 +51,7 @@ namespace MongoShop.Controllers
 
             // use RestSharp to make http request
             //calling the api
-            var client = new RestClient("http://127.0.0.1:5000/");
+            var client = new RestClient("http://127.0.0.1:5200/");
 
             var request = new RestRequest("/SearchImage/{img_path}" )
                 .AddUrlSegment("img_path", encodedStr);
