@@ -116,62 +116,63 @@ namespace MongoShop
                 {
                     Port = 587,
                     Credentials = new NetworkCredential("mongoshopemail@gmail.com", "passwordofmongoshopemail"),
-                    EnableSsl = true 
+                    EnableSsl = true
                 });
 
             services.AddAuthentication()
               .AddGoogle(options =>
               {
-            options.ClientId = "140589299640-88d9fngq6s6ht88vpr1iktfl9fvnikgo.apps.googleusercontent.com";
-            options.ClientSecret = "y1KKaDWliUnUEQoS69vpBW3s";
-        })
+                  options.ClientId = "140589299640-88d9fngq6s6ht88vpr1iktfl9fvnikgo.apps.googleusercontent.com";
+                  options.ClientSecret = "j_6UG2HEEst7fZvc-YDgidqZ";
+              })
             .AddFacebook(options =>
             {
-            options.AppId = "745814422783717";
-            options.AppSecret = "bd5da5bdfc0bd7e67fc2569aa96274c2";
-        });
+                options.AppId = "745814422783717";
+                options.AppSecret = "bd5da5bdfc0bd7e67fc2569aa96274c2";
+            });
 
             services.AddSingleton<IElasticClient>(ElasticSearchConfiguration.GetClient());
         }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-        if (env.IsDevelopment())
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
 
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Lax
+            });
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
+
+            app.UseSession();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapAreaControllerRoute(
+                    name: "admin_route",
+                    areaName: "Admin",
+                    pattern: "Admin/{controller=product}/{action=index}/{id?}"
+                    );
+
+                endpoints.MapControllerRoute("default_route", "{controller=Customer}/{action=Index}/{id?}");
+            });
         }
-        else
-        {
-            app.UseExceptionHandler("/Home/Error");
-        }
-
-        app.UseCookiePolicy(new CookiePolicyOptions
-        {
-            MinimumSameSitePolicy = SameSiteMode.Lax
-        });
-
-        app.UseStaticFiles();
-
-        app.UseRouting();
-
-        app.UseAuthentication();
-
-        app.UseAuthorization();
-
-        app.UseSession();
-
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapAreaControllerRoute(
-                name: "admin_route",
-                areaName: "Admin",
-                pattern: "Admin/{controller=product}/{action=index}/{id?}"
-                );
-
-            endpoints.MapControllerRoute("default_route", "{controller=Customer}/{action=Index}/{id?}");
-        });
     }
-}
 }
