@@ -9,8 +9,6 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
 {
     public class CreateProductViewModel
     {
-        public string Id { get; set; }
-
         [DisplayName("Product name")]
         [Required]
         public string Name { get; set; }
@@ -31,6 +29,6 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
         public string SelectedCategoryId { get; set; }
 
         [DisplayName("Category")]
-        public List<SelectListItem> CategoryList { get; set; }
+        public List<SelectListItem>? CategoryList { get; set; }
     }
 }

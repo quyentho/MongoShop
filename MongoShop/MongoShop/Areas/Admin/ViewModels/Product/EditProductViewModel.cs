@@ -33,7 +33,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
         public string SelectedCategoryId { get; set; }
 
         [DisplayName("Category")]
-        public List<SelectListItem> CategoryList { get; set; }
+        public List<SelectListItem>? CategoryList { get; set; }
 
     }
 }
