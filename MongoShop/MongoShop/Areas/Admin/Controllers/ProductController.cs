@@ -176,7 +176,7 @@ namespace MongoShop.Areas.Admin.Controllers
 
             await _productServices.EditAsync(id, editedProduct);
 
-            //await _elasticSearchClient.Update(id);
+            await _elasticSearchClient.UpdateAsync<Product, dynamic>(new DocumentPath<Product>(id), u => u.Index("mongoshop").Doc(editedProduct));
 
             return RedirectToAction(nameof(Index));
         }

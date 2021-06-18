@@ -23,7 +23,9 @@
                         </form>
 
                         <br />
-                        <a type="button" style="width: 200px;" class="btn btn-success" href="@Url.Action("Create","Product")">Create</a>
+                        <a type="button" style="width: 200px;" class="btn btn-success" asp-action="Create" asp-controller="Product" asp-area="Admin">
+                        Create
+                        </a>
                     </div>
                 </div>
             </div>
