@@ -295,13 +295,13 @@ namespace MongoShop.Controllers
                         AmountWithBreakdown = new AmountWithBreakdown
                         {
                             CurrencyCode = "USD",
-                            Value = total.ToString(),
+                            Value = Math.Round(total,2).ToString(),
                             AmountBreakdown = new AmountBreakdown
                             {
                                 ItemTotal = new Money
                                 {
                                     CurrencyCode = "USD",
-                                    Value = total.ToString()
+                                    Value = Math.Round(total,2).ToString()
                                 }
                             }
 
@@ -373,7 +373,7 @@ namespace MongoShop.Controllers
 
                 order.CreatedTime = Convert.ToDateTime(result.CreateTime);
 
-                order.Total = Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.Value) * 22000;
+                order.Total = Math.Round(Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.Value) * 22000, 0);
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
