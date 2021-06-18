@@ -176,6 +176,8 @@ namespace MongoShop.Areas.Admin.Controllers
 
             await _productServices.EditAsync(id, editedProduct);
 
+            //await _elasticSearchClient.Update(id);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -206,5 +208,8 @@ namespace MongoShop.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+
     }
 }
