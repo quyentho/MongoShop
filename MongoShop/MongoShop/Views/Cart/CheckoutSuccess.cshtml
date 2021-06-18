@@ -5,7 +5,7 @@
 @model Order;
 
 
-<h1>CHECKOUT SUCCESS</h1>
+<h1 style="text-align:center">CHECKOUT SUCCESS</h1>
 
 <!-- Shopping Cart Section Begin -->
 <section class="checkout-section spad">
@@ -13,9 +13,9 @@
         <form asp-action="PlaceOrder" asp-controller="Cart" method="post" id="checkout_form" class="checkout-form">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="checkout-content">
+                    @*<div class="checkout-content">
                         <a href="#" class="content-btn">Click Here To Login</a>
-                    </div>
+                    </div>*@
                     <h4>Biiling Details</h4>
                     <div class="row">
                         @*<div class="col-lg-6">
@@ -67,9 +67,9 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="checkout-content">
+                    @*<div class="checkout-content">
                         <input type="text" placeholder="Enter Your Coupon Code">
-                    </div>
+                    </div>*@
                     <div class="place-order">
                         <h4>Your Order</h4>
                         <div class="order-total">

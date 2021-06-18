@@ -249,8 +249,7 @@
             }
         }
         $button.parent().find('input').val(newVal);
-        $(this).parent().parent().parent().parent().children('#prod-total').text((newVal * productPrice).toFixed(2));
-
+        $(this).parent().parent().parent().parent().children('#prod-total').text((newVal * productPrice));
         Calculate();
 
 
@@ -260,8 +259,11 @@
         var subtotal = 0;
         $('tbody').each(function () {            
             $.each($(this).children('tr').children('#prod-total'), function (a, b) {
-                console.log($(this).text().replace('$', ''));
-                subtotal += parseFloat($(this).text().replace('$', ''));
+               
+                //console.log($(this).text().replace(',', ''));
+                //First Remove the ',' then remove the '$'
+                console.log(parseFloat($(this).text().replace(',', '').replace(',', '').replace('$','')));
+                subtotal += parseFloat(parseFloat($(this).text().replace(',', '').replace('$','')));
             })
         });
         $('#all-prod-total').text(subtotal.toFixed(2));
