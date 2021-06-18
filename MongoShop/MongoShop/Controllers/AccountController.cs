@@ -377,7 +377,8 @@ namespace MongoShop.Controllers
                 user = new ApplicationUser
                 {
                     UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
-                    Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                    Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                    Status = true
                 };
 
                 await _userManager.CreateAsync(user);
