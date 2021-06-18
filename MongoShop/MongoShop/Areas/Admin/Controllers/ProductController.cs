@@ -164,7 +164,9 @@ namespace MongoShop.Areas.Admin.Controllers
                 return await Edit(id);
             }
 
-            var editedProduct = _mapper.Map<Product>(editProductViewModel);
+            var editedProduct = await _productServices.GetByIdAsync(id);
+
+            _mapper.Map(editProductViewModel, editedProduct);
 
             if (editProductViewModel.ImagesUpload != null)
             {
@@ -173,6 +175,8 @@ namespace MongoShop.Areas.Admin.Controllers
             }
 
             await _productServices.EditAsync(id, editedProduct);
+
+            //await _elasticSearchClient.Update(id);
 
             return RedirectToAction(nameof(Index));
         }
@@ -204,5 +208,8 @@ namespace MongoShop.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+
     }
 }

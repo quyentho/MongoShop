@@ -27,7 +27,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Product
         [Required]
         public string Size { get; set; }
 
-        public List<IFormFile> ImagesUpload { get; set; }
+        public List<IFormFile>? ImagesUpload { get; set; }
 
         [Required(ErrorMessage = "Category is required")]
         public string SelectedCategoryId { get; set; }

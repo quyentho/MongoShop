@@ -22,6 +22,7 @@ namespace MongoShop.ElasticSearch.Indexer
         static ElasticSearchConfiguration()
         {
             _connectionSettings = new ConnectionSettings(CreateUri(9200))
+                .BasicAuthentication("elastic","123asd123") //For Quang
                 .DefaultIndex("mongoshop")
                 .DefaultMappingFor<Product>(i => i
                     .IndexName("mongoshop")
