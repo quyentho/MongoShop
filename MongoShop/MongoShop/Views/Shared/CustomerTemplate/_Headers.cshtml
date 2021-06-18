@@ -32,6 +32,13 @@
                         <i class="bi bi-book"></i>
                         <a href="@Url.Action("GetMyOrders","Account")">Đơn hàng của tôi</a>
                     </div>
+                    if (User.IsInRole("Admin"))
+                    {
+                        <div class="phone-service">
+                            <i class="bi bi-book"></i>
+                            <a asp-area="Admin" asp-action="Index" asp-controller="Product">Trang Quản Trị</a>
+                        </div>
+                    }
                 }
                 else
                 {

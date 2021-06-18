@@ -53,6 +53,14 @@ namespace MongoShop.Controllers
             UpdateInformationViewModel profileViewModel = _mapper.Map<UpdateInformationViewModel>(user);
             return View(profileViewModel);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetMyInformation()
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(GetCurrentUserId());
+
+            GetMyInformationViewModel profileViewModel = _mapper.Map<GetMyInformationViewModel>(user);
+            return Ok(profileViewModel);
+        }
 
         [HttpPost]
         public async Task<IActionResult> UpdateInformation(UpdateInformationViewModel updateInformationViewModel)
