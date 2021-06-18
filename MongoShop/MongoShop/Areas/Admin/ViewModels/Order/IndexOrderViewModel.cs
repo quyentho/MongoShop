@@ -19,7 +19,7 @@ namespace MongoShop.Areas.Admin.ViewModels.Order
         [DisplayName("Status")]
         public string InvoiceStatus { get; set; }
 
-        [DisplayName("Created_Time")]
+        [DisplayName("Created At")]
         public DateTime CreatedAt { get; set; }
     }
 }
