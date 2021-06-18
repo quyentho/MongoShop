@@ -164,7 +164,9 @@ namespace MongoShop.Areas.Admin.Controllers
                 return await Edit(id);
             }
 
-            var editedProduct = _mapper.Map<Product>(editProductViewModel);
+            var editedProduct = await _productServices.GetByIdAsync(id);
+
+            _mapper.Map(editProductViewModel, editedProduct);
 
             if (editProductViewModel.ImagesUpload != null)
             {
