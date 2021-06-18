@@ -39,6 +39,8 @@ namespace MongoShop.BusinessDomain.Products
 
         [BsonElement("images")]
         public List<string> Images { get; set;}
+        
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
 
         public DateTime CreatedAt { get; set; }
 
