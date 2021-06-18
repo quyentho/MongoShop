@@ -59,15 +59,13 @@ namespace MongoShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                var email = User.FindFirstValue(ClaimTypes.Email);
+                var email = User.FindFirstValue(ClaimTypes.Name);
                 var user = await _userManager.FindByEmailAsync(email);
 
                 _mapper.Map(updateInformationViewModel, user);
 
                 await _userManager.UpdateAsync(user);
             }
-            var applicationUser = _mapper.Map<ApplicationUser>(updateInformationViewModel);
-            await _userService.UpdateUserAsync(GetCurrentUserId(), applicationUser);
             return View(updateInformationViewModel);
         }
 
