@@ -14,12 +14,12 @@ namespace MongoShop.BusinessDomain.Orders
         Task<List<Order>> GetAllAsync();
 
         /// <summary>
-        /// Add a new Order accompany with invoice and reduce the quantity if stock.
-        /// Throw exception if any product not have enough quantity instock.
+        /// Add a new Order accompany with invoice and reduce the quantity in stock.
+        /// Throw exception if any product not have enough quantity in stock.
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
-        Task AddAsync(Order order);
+        Task<Order> AddAsync(Order order);
 
         /// <summary>
         /// Update an Order. Use for update invoice status
@@ -33,13 +33,20 @@ namespace MongoShop.BusinessDomain.Orders
         /// Get orders with invoice that has status 'Pending'
         /// </summary>
         /// <returns></returns>
-        Task<List<Order>> GetOrdersWithUnpaidInvoiceAsync();
+        Task<List<Order>> GetPendingOrderAsync();
 
         /// <summary>
         /// Get order by order id.
         /// </summary>
         /// <param name="id">Order id</param>
         /// <returns></returns>
-        Task<Order> GetOrderByIdAsync(string id);
+        Task<Order> GetByIdAsync(string id);
+
+        /// <summary>
+        /// Get orders by user id.
+        /// </summary>
+        /// <param name="userId">user id.</param>
+        /// <returns></returns>
+        Task<List<Order>> GetByUserIdAsync(string userId);
     }
 }

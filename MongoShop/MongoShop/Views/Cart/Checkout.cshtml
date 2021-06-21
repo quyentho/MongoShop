@@ -3,93 +3,157 @@
 }
 @using MongoShop.Models.Cart;
 @model CartCheckoutViewModel
-<form asp-action="PlaceOrder" asp-controller="Cart" method="post" id="checkout_form">
-
-    <div class="super-container">
-        <div class="checkout">
-            <div class="container">
-                <div class="row">
-
-                    <!-- Billing Details -->
-                    <div class="col-lg-6">
-                        <div class="billing">
-                            <div class="checkout_title">billing details</div>
-                            <div class="checkout_form_container">
-                                <div class="d-flex flex-lg-row flex-column align-items-start justify-content-between">
-                                    <input type="text" class="checkout_input checkout_input_50" placeholder="First Name" required="required">
-                                    <input type="text" class="checkout_input checkout_input_50" placeholder="Last Name" required="required">
-                                </div>
-                                @*<input type="text" class="checkout_input" placeholder="Company Name">*@
-                                @*<input type="text" class="checkout_input" placeholder="E-mail" required="required">*@
-                                <input asp-for="Street" type="text" class="checkout_input" placeholder="Street" required="required">
-                                <input asp-for="City" type="text" class="checkout_input" placeholder="City" required="required">
-                                <div class="d-flex flex-lg-row flex-column align-items-start justify-content-between">
-                                    <input asp-for="AddressNumber" type="text" class="checkout_input checkout_input_50" placeholder="Address Number" required="required">
-                                    <input asp-for="PhoneNumber" type="text" class="checkout_input checkout_input_50" placeholder="Phone No" required="required">
-                                </div>
-                                <textarea asp-for="Comment"  class="checkout_comment" placeholder="Leave a comment about your order"></textarea>
-                                <div class="billing_options">
-                                    <div class="billing_shipping">
-                                        <input type="checkbox" />
-                                        @*<label for="checkbox_shipping"><img src="images/checked.png" alt=""></label>*@
-                                        <span>Use default infomation</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cart Details -->
-                    <div class="col-lg-6">
-                        <div class="cart_details">
-                            <div class="checkout_title">cart total</div>
-                            <div class="cart_total">
-                                <ul>
-                                    <li class="d-flex flex-row align-items-center justify-content-start">
-                                        <div class="cart_total_title">Product</div>
-                                        <div class="cart_total_price ml-auto">Total</div>
-                                    </li>
-                                    @foreach (var item in Model.Products)
-                                    {
-                                        double subTotal = item.Product.Price * item.OrderedQuantity;
-                                        <li class="d-flex flex-row align-items-center justify-content-start">
-                                            <div class="cart_total_title">@string.Format($"{item.Product.Name} x{item.OrderedQuantity}")</div>
-                                            <div class="cart_total_price ml-auto">@subTotal</div>
-                                        </li>
-                                    }
-
-                                    @*<li class="d-flex flex-row align-items-center justify-content-start">
-                                            <div class="cart_total_title">Subtotal</div>
-                                            <div class="cart_total_price ml-auto">$35.00</div>
-                                        </li>*@
-                                    @*<li class="d-flex flex-row align-items-center justify-content-start">
-                                            <div class="cart_total_title">Shipping</div>
-                                            <div class="cart_total_price ml-auto">$5.00</div>
-                                        </li>*@
-                                    <li class="d-flex flex-row align-items-start justify-content-start total_row">
-                                        <div class="cart_total_title">Total</div>
-                                        <input type="hidden" asp-for="Total" />
-                                        <div class="cart_total_price ml-auto">@Model.Total</div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="payment_options">
-                                <div>
-                                    <input type="radio" checked id="radio_payment_1" name="regular_radio">
-                                    <label for="radio_payment_1">Cash on delivery</label>
-                                </div>
-                                @*<div>
-                                        <input type="radio" id="radio_payment_2" name="regular_radio" checked>
-                                        <label for="radio_payment_2">Paypal</label>
-                                            <div class="visa payment_option"><a href="#"><img src="~/img/visa.jpg" alt=""></a></div>
-                                            <div class="master payment_option"><a href="#"><img src="~/img/master.jpg" alt=""></a></div>
-                                    </div>*@
-                                <button type="submit" class="cart_total_button">place order</button>
-                            </div>
-                        </div>
-                    </div>
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text product-more">
+                    <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                    <a href="./shop.html">Shop</a>
+                    <span>Check Out</span>
                 </div>
             </div>
         </div>
     </div>
-</form>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Shopping Cart Section Begin -->
+<section class="checkout-section spad">
+    <div class="container">
+        <form asp-action="PlaceOrder" asp-controller="Cart" method="post" id="checkout_form" class="checkout-form">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="checkout-content">
+                        <a href="javascript:void(0)" class="content-btn">Dùng địa chỉ của tôi</a>
+                    </div>
+                    <h4>Billing Details</h4>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="fir">Tên người nhận<span></span></label>
+                            <input type="text" id="fir">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="zip">Đường</label>
+                            <input asp-for="AddressNumber" type="text" id="address-number">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="street">Phường/xã<span>*</span></label>
+                            <input asp-for="Street" type="text" id="street" class="street-first">
+                            @* <input type="text"> *@
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="town">Thành Phố<span>*</span></label>
+                            <input asp-for="City" type="text" id="town">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="phone">SĐT<span>*</span></label>
+                            <input asp-for="PhoneNumber" type="text" id="phone">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="checkout-content">
+                        @*<input type="text" placeholder="Enter Your Coupon Code">*@
+                    </div>
+                    <div class="place-order">
+                        <h4>Your Order</h4>
+                        <div class="order-total">
+                            <ul class="order-table">
+                                <li>Product <span>Total</span></li>
+                                @foreach (var item in Model.Products)
+                                {
+                                    <li class="fw-normal">@item.Product.Name x @item.OrderedQuantity <span>@String.Format("{0:c}", @item.Product.Price * @item.OrderedQuantity)</span></li>
+                                }
+                                <input asp-for="Total" type="hidden">
+                                <li class="fw-normal">Subtotal <span>@String.Format("{0:c}", @Model.Total)</span></li>
+                                <li class="total-price">Total <span>@String.Format("{0:c}", @Model.Total)</span></li>
+                            </ul>
+                            <div class="order-btn">
+                                <button  type="submit" value="submit" class="site-btn place-btn">Place Order</button>
+                                @*<button type="submit" asp-action="PaypalCheckout" asp-controller="Cart" class="site-btn place-btn">Paypal</button>*@
+                                <p></p>
+                                <p>--- OR ---</p>
+                                <p></p>
+                                <div id="paypal-button-container"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+<script src="https://www.paypal.com/sdk/js?client-id=AdfLRpwRIz1vGEJgLw4liW0BkOLpudgqIKHzT4ZSTFe7rgOD6Vc9mMJzrgJ8yxu2knmh6nAuUqI7GEUq&disable-funding=credit,card">
+</script>
+
+
+<script>
+
+    var orderID;
+
+    paypal.Buttons({
+        createOrder: function (data, actions) {
+            orderID = data.orderID;
+            return fetch('/Cart/PaypalCheckout', {
+                method: 'post'
+            }).then(function (res) {
+                return res.json();
+            }).then(function (data) {
+                return data.orderID;
+            });
+        },
+
+        onApprove: function (data, actions) {
+            return fetch('/Cart/CheckoutSuccess' + data.orderID, {
+                method: 'post'
+            }).then(function (res) {
+                return actions.order.capture();
+            }).then(function (details) {
+                if (details.status === "COMPLETED") {
+                    alert('Transaction funds captured from ' + details.purchase_units[0].payments.captures[0].id);
+                    document.location.href = '/Cart/CheckoutSuccess/' + data.orderID + '/' + details.purchase_units[0].payments.captures[0].id;
+                }
+            });
+        },
+
+        onCancel: function (data, actions) {
+            document.location.href='/Cart'
+        },
+
+        onError: function (err) {
+            //alert(err);
+            alert(res.json);
+        },
+
+        style: {
+            shape: 'rect',
+            color: 'gold',
+            layout: 'horizontal',
+            label: 'paypal',
+            tagline: true
+        },
+    }).render('#paypal-button-container');
+  
+</script>
+
+@section Scripts{ 
+    <script>
+        $(".content-btn").click(function () {
+            $.getJSON("@Url.Action("GetMyInformation","Account")", function (data) {
+                console.log(data);
+                console.log(data.street);
+                $("#street").val(data.street);
+                $("#address-number").val(data.addressNumber);
+                $("#town").val(data.city);
+                $("#phone").val(data.phoneNumber);
+                $("#fir").val(data.firstName);
+                $("#last").val(data.lastName);
+
+            });
+        })
+    </script>
+}

@@ -20,6 +20,6 @@ namespace MongoShop.BusinessDomain.Carts
 
         public List<OrderedProduct> Products { get; set; } = new List<OrderedProduct>();
 
-        public double Total { get; set; }
+        public double? Total { get; set; }
     }
 }

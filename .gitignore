@@ -348,3 +348,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+# Ignore uploads folder
+MongoShop/MongoShop/wwwroot/uploads/*
+MongoShop/MongoShop.Server/uploads/*
+MongoShop/MongoShop.Server/logs/*
+

@@ -26,6 +26,7 @@ namespace MongoShop.BusinessDomain.Users
         public string Name { get; set; }
 
         [BsonElement("birthday")]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime BirthDay { get; set; }
 
         [BsonElement("status")]

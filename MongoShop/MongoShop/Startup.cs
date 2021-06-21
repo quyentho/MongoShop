@@ -1,16 +1,20 @@
 using System;
+using System.Net;
+using System.Net.Mail;
 using System.Reflection;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+
+using MongoDB.Driver;
 using MongoShop.BusinessDomain;
 using MongoShop.BusinessDomain.Carts;
 using MongoShop.BusinessDomain.Categories;
@@ -18,7 +22,9 @@ using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
 using MongoShop.BusinessDomain.Wishlists;
-using MongoShop.Services.FileUpload;
+using MongoShop.ElasticSearch.Indexer;
+using MongoShop.Infrastructure.Services.FileUpload;
+using Nest;
 
 namespace MongoShop
 {
@@ -36,12 +42,15 @@ namespace MongoShop
         {
             services.AddControllersWithViews();
 
-            // requires using Microsoft.Extensions.Options
+            services.AddOptions();
+
             services.Configure<DatabaseSetting>(
                   Configuration.GetSection(nameof(DatabaseSetting)));
 
-            services.AddSingleton<IDatabaseSetting>(sp =>
-                sp.GetRequiredService<IOptions<DatabaseSetting>>().Value);
+            services.AddSingleton<IMongoClient, MongoClient>((serviceProvider) =>
+            {
+                return new MongoClient(Configuration["DatabaseSetting:ConnectionString"]);
+            });
 
             services.AddScoped<IUserConfirmation<ApplicationUser>, UserConfirmation>();
 
@@ -72,34 +81,57 @@ namespace MongoShop
             };
 
             services.AddMemoryCache();
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.HttpOnly = true;
             });
+
             services.AddMvc();
 
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
 
-            services.AddSingleton<IProductServices, ProductServices>();
+            services.AddScoped<IProductServices, ProductServices>();
 
-            services.AddSingleton<IUserServices, UserServices>();
+            services.AddScoped<IUserServices, UserServices>();
 
-            services.AddSingleton<IOrderServices, OrderServices>();
+            services.AddScoped<IOrderServices, OrderServices>();
 
-            services.AddSingleton<ICategoryServices, CategoryServices>();
-            services.AddSingleton<ICartServices, CartServices>();
-            services.AddSingleton<IWishlistServices, WishlistServices>();
-            services.AddSingleton<IOrderServices, OrderServices>();
-
-            services.AddTransient<IFileUploadService, FileUploadService>();
+            services.AddScoped<ICategoryServices, CategoryServices>();
+            services.AddScoped<ICartServices, CartServices>();
+            services.AddScoped<IWishlistServices, WishlistServices>();
+            services.AddScoped<IOrderServices, OrderServices>();
+            services.AddScoped<IHomePageProductServices, HomePageProductServices>();
+            services.AddScoped<IFileUploadService, FileUploadService>();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
 
+            services.AddMvc().AddNewtonsoftJson();
+
             services
-                .AddFluentEmail("defaultsender@test.test")
+                .AddFluentEmail("mongoshopemail@gmail.com")
                 .AddRazorRenderer()
-                .AddSmtpSender("localhost", 25);
+                .AddSmtpSender(new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("mongoshopemail@gmail.com", "passwordofmongoshopemail"),
+                    EnableSsl = true
+                });
+
+            services.AddAuthentication()
+              .AddGoogle(options =>
+              {
+                  options.ClientId = "140589299640-88d9fngq6s6ht88vpr1iktfl9fvnikgo.apps.googleusercontent.com";
+                  options.ClientSecret = "j_6UG2HEEst7fZvc-YDgidqZ";
+              })
+            .AddFacebook(options =>
+            {
+                options.AppId = "745814422783717";
+                options.AppSecret = "bd5da5bdfc0bd7e67fc2569aa96274c2";
+            });
+
+            services.AddSingleton<IElasticClient>(ElasticSearchConfiguration.GetClient());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,12 +140,19 @@ namespace MongoShop
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Lax
+            });
+
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

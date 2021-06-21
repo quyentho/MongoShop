@@ -21,6 +21,10 @@ namespace MongoShop.BusinessDomain.Categories
         [BsonElement("name")]
         public string Name { get; set; }
 
+        public bool IsMainCate { get; set; }
+
         public bool Status { get; set; }
+
+        public string ParentId { get; set; }
     }
 }

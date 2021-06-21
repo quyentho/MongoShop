@@ -2,27 +2,30 @@
     ViewData["Title"] = "Manage Products";
     Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
 }
-
+@using MongoShop.Utils;
 @using MongoShop.Areas.Admin.ViewModels.Product;
-@model IEnumerable<IndexProductViewModel>
+@model PaginatedList<IndexProductViewModel>
 
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Product List</h3>
-
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 200px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                        </div>
+                        <form class="input-group input-group-sm" method="get" asp-controller="ElasticSearch" asp-action="SearchAdmin" asp-area="">
+                            <input type="text" name="queryString" class="form-control float-right" placeholder="Search">
 
-                        <div class="input-group-append">
-                            <a type="button" class="btn btn-success" href="@Url.Action("Create","Product")">Create</a>
-                        </div>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+
+                        <br />
+                        <a type="button" style="width: 200px;" class="btn btn-success" asp-action="Create" asp-controller="Product" asp-area="Admin">
+                        Create
+                        </a>
                     </div>
                 </div>
             </div>
@@ -32,37 +35,54 @@
                 <table class="table table-head-fixed text-nowrap">
                     <thead>
                         <tr>
-                            <th>@Html.DisplayNameFor(model => model.Name)</th>
-                            <th>@Html.DisplayNameFor(model => model.Price)</th>
-                            <th>@Html.DisplayNameFor(model => model.StockQuantity)</th>
-                            <th>@Html.DisplayNameFor(model => model.Size)</th>
-                            <th>@Html.DisplayNameFor(model => model.Category)</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>StockQuantity</th>
+                            <th>Size</th>
+                            <th>Category</th>
+                            <th>Sub Category</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in @Model)
                         {
-                             <tr>
+                            <tr>
                                 <td>@Html.DisplayFor(model => item.Name)</td>
                                 <td>@String.Format("{0:c}", item.Price)</td>
                                 <td>@Html.DisplayFor(model => item.StockQuantity)</td>
                                 <td>@Html.DisplayFor(model => item.Size)</td>
                                 <td>@Html.DisplayFor(model => item.Category)</td>
+                                <td>@Html.DisplayFor(model => item.SubCategory)</td>
                                 <td>
                                     <div class="btn-group">
                                         @* TODO: This should be changed.*@
-                                        <a type="button" class="btn btn-default" href="@Url.Action("Detail","Product", new { id = item.Id})">Detail</a>
-                                        <a type="button" class="btn btn-primary" href="@Url.Action("Edit","Product", new { id = item.Id})">Edit</a>
-                                        <a type="button" class="btn btn-danger" href="@Url.Action("Delete","Product", new { id = item.Id})">Delete</a>
+                                        <a type="button" class="btn btn-default" href="@Url.Action("Detail","Product", new { Area = "Admin",id = item.Id})">Detail</a>
+                                        <a type="button" class="btn btn-primary" href="@Url.Action("Edit","Product", new { Area = "Admin", id = item.Id})">Edit</a>
+                                        <a type="button" class="btn btn-danger" href="@Url.Action("Delete","Product", new { Area = "Admin",id = item.Id})">Delete</a>
                                     </div>
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-            </div>        
+            </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           class="btn btn-info @prevDisabled">
+            Previous
+        </a>
+        <a asp-action="Index"
+           asp-route-currentPageNumber="@(Model.PageIndex + 1)"
+           class="btn btn-info @nextDisabled float-right">
+            Next
+        </a>
     </div>
 </div>

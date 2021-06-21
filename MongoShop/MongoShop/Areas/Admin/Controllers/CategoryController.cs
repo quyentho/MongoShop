@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoShop.Areas.Admin.ViewModels.Category;
 using MongoShop.BusinessDomain.Categories;
+using MongoShop.Utils;
 
 namespace MongoShop.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
     [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
     public class CategoryController : Controller
     {
         private readonly ICategoryServices _categoryServices;
@@ -24,14 +24,13 @@ namespace MongoShop.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int currentPageNumber = 1)
         {
             var categories = await _categoryServices.GetAllAsync();
 
             var indexCategoryViewModels = _mapper.Map<List<IndexCategoryViewModel>>(categories);
 
-            //return Ok()
-            return View(indexCategoryViewModels);
+            return View(PaginatedList<IndexCategoryViewModel>.CreateAsync(indexCategoryViewModels.AsQueryable(), currentPageNumber));
         }
 
         [HttpGet]
@@ -101,7 +100,7 @@ namespace MongoShop.Areas.Admin.Controllers
                 return await Index();
             }
 
-            await _categoryServices.DeleteAsync(id, category);
+            await _categoryServices.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

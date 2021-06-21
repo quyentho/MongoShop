@@ -3,53 +3,355 @@
 }
 
 @using MongoShop.Models.Customer;
-@model IEnumerable<IndexViewModel>
+@model CustomerMultipleList
+<script src="~/js/jquery.min.js"></script>
+<script type="text/javascript">
+        function AddToCart(productId) {
+            $.post("@Url.Action("Add", "Cart")", { productId: productId })
+                .done(function () {
+                    alert("product added to your cart");
+                });
+        };
+</script>
+<!-- Shirt Banner Section Begin -->
+<section class="man-banner spad">
+    <div class="container-fluid">
 
-@foreach (var item in Model)
-{
-    <div class="col-lg-4 product_col">
-        <div class="product">
-            <div class="product_image">
-                @try
-                {
-                    <img src=@item.Images[0] alt="">
-                }
-                catch (Exception)
-                {
-                    <img alt="Not available">
-                }
-            </div>
-            <div class="product_content clearfix">
-                <div class="product_info">
-                    <div class="product_name"><a href=@Url.Action("ProductDetail", new { id = item.Id })>@Html.DisplayFor(model => item.Name)</a></div>
-                    <div class="product_price">@String.Format("{0:c}", item.Price)</div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="filter-control">
+                    <ul>
+                        <li class="active">Áo</li>
+                    </ul>
                 </div>
-                <div class="product_options">
-                    <div class="product_buy product_option" onclick="AddToCart('@item.Id');"><img src="~/img/shopping-bag-white.svg" alt=""></div>
-                    <div onclick="AddToWishlist('@item.Id');" class="product_fav product_option">+</div>
+                <div class="product-slider owl-carousel">
+                    @foreach (var item in Model.ShirtCollection)
+                    {
+                        <div class="product-item">
+                            <div class="pi-pic">
+                                <img src="~/images/@item.Images[0]" alt="">
+                                <div class="sale">Sale</div>
+                                <div class="icon">
+                                    <i class="icon_heart_alt"></i>
+                                </div>
+                                <ul>
+                                    <li class="w-icon active"><a href="javascript:void(0)" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
+                                    <li class="quick-view"><a href="@Url.Action("ProductDetail", new { id = item.Id })">+ Quick View</a></li>
+                                    <li class="w-icon"><a href="javascript:void(0)"><i class="fa fa-random"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="pi-text">
+                                <div class="catagory-name">@item.Category</div>
+                                <a href="javascript:void(0)">
+                                    <h5>@item.Name</h5>
+                                </a>
+                                <div class="product-price">
+                                    @String.Format("{0:c}", item.Price)
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-3 offset-lg-1">
+                <div class="product-large set-bg m-large" data-setbg="Custom/img/products/man-large.jpg">
+                    <h2>Áo</h2>
+                    <a href="@Url.Action("MainCategoryProducts","Customer",new { categoryId = ViewData["shirtCateId"].ToString()})">Xem Thêm</a>
                 </div>
             </div>
         </div>
     </div>
+</section>
+<!-- Shirt Banner Section End -->
 
-}
+<section class="women-banner spad">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="product-large set-bg" data-setbg="/Custom/img/products/trouser-banner.jpg">
+                    <h2>Quần</h2>
+                    <a href="@Url.Action("MainCategoryProducts","Customer",new { categoryId = ViewData["trousersCateId"].ToString()})">Xem thêm</a>
+                </div>
+            </div>
+            <div class="col-lg-8 offset-lg-1">
+                <div class="filter-control">
+                    <ul>
+                        <li class="active">Quần</li>
+                        @*<li>HandBag</li>
+                            <li>Shoes</li>
+                            <li>Accessories</li>*@
+                    </ul>
+                </div>
+                <div class="product-slider owl-carousel">
+                    @foreach (var item in Model.TrouserCollection)
+                    {
+                        <div class="product-item">
+                            <div class="pi-pic">
+                                <img src="~/images/@item.Images[0]" alt="">
+                                <div class="sale">Sale</div>
+                                <div class="icon">
+                                    <i class="icon_heart_alt"></i>
+                                </div>
+                                <ul>
+                                    <li class="w-icon active"><a href="javascript:void(0)" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
+                                    <li class="quick-view"><a href="javascript:void(0)">+ Quick View</a></li>
+                                    <li class="w-icon"><a href="javascript:void(0)"><i class="fa fa-random"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="pi-text">
+                                <div class="catagory-name">@item.Category</div>
+                                <a href="javascript:void(0)">
+                                    <h5>@item.Name</h5>
+                                </a>
+                                <div class="product-price">
+                                    @String.Format("{0:c}", item.Price)
+                                    @*<span>$35.00</span>*@
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Trouser Banner Section End -->
+<!-- Accessories Banner Section Begin -->
+<section class="man-banner spad">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="filter-control">
+                    <ul>
+                        <li class="active">Phụ Kiện</li>
+                    </ul>
+                </div>
+                <div class="product-slider owl-carousel">
+                    @foreach (var item in Model.AccessoriesCollection)
+                    {
+                        <div class="product-item">
+                            <div class="pi-pic">
+                                <img src="~/images/@item.Images[0]" alt="">
+                                <div class="sale">Sale</div>
+                                <div class="icon">
+                                    <i class="icon_heart_alt"></i>
+                                </div>
+                                <ul>
+                                    <li class="w-icon active"><a href="javascript:void(0)" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
+                                    <li class="quick-view"><a href="@Url.Action("ProductDetail", new { id = item.Id })">+ Quick View</a></li>
+                                    <li class="w-icon"><a href="javascript:void(0)"><i class="fa fa-random"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="pi-text">
+                                <div class="catagory-name">@item.Category</div>
+                                <a href="javascript:void(0)">
+                                    <h5>@item.Name</h5>
+                                </a>
+                                <div class="product-price">
+                                    @String.Format("{0:c}", item.Price)
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-3 offset-lg-1">
+                <div class="product-large set-bg m-large" data-setbg="Custom/img/products/accessories-banner.jpg">
+                    <h2>Phụ Kiện</h2>
+                    <a href="@Url.Action("MainCategoryProducts","Customer",new { categoryId = ViewData["accessoriesCateId"].ToString()})">Xem Thêm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Accessories Banner Section End -->
 
-<script src="~/js/jquery.min.js"></script>
-<script type="text/javascript">
-    function AddToCart(productId) {
-        $.post("@Url.Action("Add", "Cart")", { productId: productId })
-            .done(function () {
-                alert("product added to your cart");
-            });
-    };
-    function AddToWishlist(productId) {
-        $.post("@Url.Action("Add","Wishlist")", { productId: productId })
-            .done(function () {
-                alert("product added to your wishlist");
-            });
-    };
-
-</script>
-
-
-
+<!-- Instagram Section Begin -->
+<div class="instagram-photo">
+    <div class="insta-item set-bg" data-setbg="Custom/img/insta-1.jpg">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="javascript:void(0)">colorlib_Collection</a></h5>
+        </div>
+    </div>
+    <div class="insta-item set-bg" data-setbg="Custom/img/insta-2.jpg">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="javascript:void(0)">colorlib_Collection</a></h5>
+        </div>
+    </div>
+    <div class="insta-item set-bg" data-setbg="Custom/img/insta-3.jpg">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="javascript:void(0)">colorlib_Collection</a></h5>
+        </div>
+    </div>
+    <div class="insta-item set-bg" data-setbg="Custom/img/insta-4.jpg">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="javascript:void(0)">colorlib_Collection</a></h5>
+        </div>
+    </div>
+    <div class="insta-item set-bg" data-setbg="Custom/img/insta-5.jpg">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="javascript:void(0)">colorlib_Collection</a></h5>
+        </div>
+    </div>
+    <div class="insta-item set-bg" data-setbg="Custom/img/insta-6.jpg">
+        <div class="inside-text">
+            <i class="ti-instagram"></i>
+            <h5><a href="javascript:void(0)">colorlib_Collection</a></h5>
+        </div>
+    </div>
+</div>
+<!-- Instagram Section End -->
+<!-- Latest Blog Section Begin -->
+<section class="latest-blog spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>From The Blog</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-blog">
+                    <img src="~/Custom/img/latest-1.jpg" alt="">
+                    <div class="latest-text">
+                        <div class="tag-list">
+                            <div class="tag-item">
+                                <i class="fa fa-calendar-o"></i>
+                                May 4,2019
+                            </div>
+                            <div class="tag-item">
+                                <i class="fa fa-comment-o"></i>
+                                5
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)">
+                            <h4>The Best Street Style From London Fashion Week</h4>
+                        </a>
+                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-blog">
+                    <img src="~/Custom/img/latest-2.jpg" alt="">
+                    <div class="latest-text">
+                        <div class="tag-list">
+                            <div class="tag-item">
+                                <i class="fa fa-calendar-o"></i>
+                                May 4,2019
+                            </div>
+                            <div class="tag-item">
+                                <i class="fa fa-comment-o"></i>
+                                5
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)">
+                            <h4>Vogue's Ultimate Guide To Autumn/Winter 2019 Shoes</h4>
+                        </a>
+                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-latest-blog">
+                    <img src="~/Custom/img/latest-3.jpg" alt="">
+                    <div class="latest-text">
+                        <div class="tag-list">
+                            <div class="tag-item">
+                                <i class="fa fa-calendar-o"></i>
+                                May 4,2019
+                            </div>
+                            <div class="tag-item">
+                                <i class="fa fa-comment-o"></i>
+                                5
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)">
+                            <h4>How To Brighten Your Wardrobe With A Dash Of Lime</h4>
+                        </a>
+                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="benefit-items">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="single-benefit">
+                        <div class="sb-icon">
+                            <img src="~/Custom/img/icon-1.png" alt="">
+                        </div>
+                        <div class="sb-text">
+                            <h6>Free Shipping</h6>
+                            <p>For all order over 99$</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="single-benefit">
+                        <div class="sb-icon">
+                            <img src="~/Custom/img/icon-2.png" alt="">
+                        </div>
+                        <div class="sb-text">
+                            <h6>Delivery On Time</h6>
+                            <p>If good have prolems</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="single-benefit">
+                        <div class="sb-icon">
+                            <img src="~/Custom/img/icon-1.png" alt="">
+                        </div>
+                        <div class="sb-text">
+                            <h6>Secure Payment</h6>
+                            <p>100% secure payment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Latest Blog Section End -->
+<!-- Partner Logo Section Begin -->
+<div class="partner-logo">
+    <div class="container">
+        <div class="logo-carousel owl-carousel">
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img src="~/Custom/img/logo-carousel/logo-1.png" alt="">
+                </div>
+            </div>
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img src="~/Custom/img/logo-carousel/logo-2.png" alt="">
+                </div>
+            </div>
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img src="~/Custom/img/logo-carousel/logo-3.png" alt="">
+                </div>
+            </div>
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img src="~/Custom/img/logo-carousel/logo-4.png" alt="">
+                </div>
+            </div>
+            <div class="logo-item">
+                <div class="tablecell-inner">
+                    <img src="~/Custom/img/logo-carousel/logo-5.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Partner Logo Section End -->

@@ -1,11 +1,11 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
+using MongoShop.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MongoShop.BusinessDomain.Orders
@@ -13,30 +13,33 @@ namespace MongoShop.BusinessDomain.Orders
     public class OrderServices : IOrderServices
     {
         private readonly IMongoCollection<Order> _collection;
-        private readonly IDatabaseSetting _databaseSetting;
         private readonly IProductServices _productServices;
-        private const string CollectionName = "order";
+        private readonly string _collectionName;
 
-        public OrderServices(IDatabaseSetting databaseSetting, IProductServices productServices)
+        public OrderServices(IMongoClient mongoClient, IOptions<DatabaseSetting> settings, IProductServices productServices)
         {
-            _databaseSetting = databaseSetting;
-            this._productServices = productServices;
-            var client = new MongoClient(_databaseSetting.ConnectionString);
-            var database = client.GetDatabase(_databaseSetting.DatabaseName);
 
-            _collection = database.GetCollection<Order>(CollectionName);
+            _collectionName = MongoDbHelper.GetCollectionName(this.GetType().Name);
+
+            var database =
+            mongoClient.GetDatabase(settings.Value.DatabaseName);
+
+            _collection = database.GetCollection<Order>(_collectionName);
+            _productServices = productServices;
         }
 
         /// <inheritdoc/>
-        public async Task AddAsync(Order order)
+        public async Task<Order> AddAsync(Order order)
         {
             await CheckProductQuantityInStockBeforeAdd(order);
 
             await ReduceProductQuantityInStockBasedOn(order);
 
-            CreateNewInvoice(order);
+            //CreateNewInvoice(order);
 
-           await _collection.InsertOneAsync(order);
+            await _collection.InsertOneAsync(order);
+
+            return order;
         }
 
         private static void CreateNewInvoice(Order order)
@@ -91,7 +94,7 @@ namespace MongoShop.BusinessDomain.Orders
         }
 
         ///<inheritdoc/>
-        public async Task<List<Order>> GetOrdersWithUnpaidInvoiceAsync()
+        public async Task<List<Order>> GetPendingOrderAsync()
         {
             var orders = await _collection.AsQueryable()
                 .Where(o => o.Invoice.Status.Equals(InvoiceStatus.Pending)).ToListAsync();
@@ -99,9 +102,17 @@ namespace MongoShop.BusinessDomain.Orders
             return orders;
         }
         ///<inheritdoc/>
-        public async Task<Order> GetOrderByIdAsync(string id)
+        public async Task<Order> GetByIdAsync(string id)
         {
             return await _collection.FindAsync(o => o.Id == id).GetAwaiter().GetResult().FirstOrDefaultAsync();
+        }
+
+        ///<inheritdoc/>
+        public async Task<List<Order>> GetByUserIdAsync(string userId)
+        {
+            var orders = await _collection.FindAsync(o => o.UserId == userId).GetAwaiter().GetResult().ToListAsync();
+
+            return orders;
         }
     }
 }

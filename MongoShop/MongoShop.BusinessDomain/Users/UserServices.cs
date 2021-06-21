@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoShop.Infrastructure.Helpers;
 
 namespace MongoShop.BusinessDomain.Users
 {
     public class UserServices : IUserServices
     {
         private readonly IMongoCollection<ApplicationUser> _collection;
-        private readonly IDatabaseSetting _databaseSetting;
-        private const string CollectionName = "user";
+        private readonly string _collectionName;
 
-        public UserServices(IDatabaseSetting databaseSetting)
+        public UserServices(IMongoClient mongoClient, IOptions<DatabaseSetting> settings)
         {
-            _databaseSetting = databaseSetting;
+            _collectionName = MongoDbHelper.GetCollectionName(this.GetType().Name);
 
-            var client = new MongoClient(_databaseSetting.ConnectionString);
-            var database = client.GetDatabase(_databaseSetting.DatabaseName);
+            var database =
+            mongoClient.GetDatabase(settings.Value.DatabaseName);
 
-            _collection = database.GetCollection<ApplicationUser>(CollectionName);
+            _collection = database.GetCollection<ApplicationUser>(_collectionName);
         }
 
         /// <inheritdoc/>

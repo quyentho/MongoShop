@@ -3,230 +3,413 @@
 }
 
 @using MongoShop.Models.Customer;
-@model CustomerProductDetailViewModel
-<!-- Product -->
+@model CustomerProductDetailViewModel;
 
-<div class="product">
-    <div class="container">
-        @*<div class="row">
-                <div class="col">
-                    <div class="current_page">
-                        <ul>
-                            <li><a href="categories.html">Woman's Fashion</a></li>
-                            <li><a href="categories.html">Swimsuits</a></li>
-                            <li>2 Piece Swimsuits</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>*@
-        <div class="row product_row">
-
-            <!-- Product Image -->
-            <div class="col-lg-7">
-                <div class="product_image">
-                    @try
-                    {
-                        <div class="product_image_large"><img src=@Html.DisplayFor(model => model.Images[0]) alt=""></div>
-
-                    }
-                    catch (Exception)
-                    {
-                        <img alt="None" />
-                    }
-                    <div class="product_image_thumbnails d-flex flex-row align-items-start justify-content-start">
-                        @for (int i = 0; i <= Model.Images.Count-1; i++)
-                        {
-                            @try
-                            {
-                                <div class="product_image_thumbnail" style="background-image:url(@Html.DisplayFor(model => model.Images[i]))" data-image=@Html.DisplayFor(model => model.Images[i])></div>
-
-                            }
-                            catch (Exception)
-                            {
-                                <img alt="None" />
-                            }
-                        }
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product Content -->
-            <div class="col-lg-5">
-                <div class="product_content">
-                    <div class="product_name">@Html.DisplayFor(model => model.Name)</div>
-                    <div class="product_price">@String.Format("{0:c}", Model.Price)</div>
-                    <div>@Html.DisplayFor(model => model.Category)</div>
-
-                    <!-- In Stock -->
-                    @*<div class="in_stock_container">
-                            <div class="in_stock in_stock_true"></div>
-                            <span>in stock</span>
-                        </div>*@
-                    <div class="product_text">
-                        @*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis quam ipsum. Pellentesque consequat tellus non tortor tempus, id egestas elit iaculis. Proin eu dui porta, pretium metus vitae, pharetra odio. Sed ac mi commodo, pellentesque erat eget, accumsan justo. Etiam sed placerat felis. Proin non rutrum ligula.</p>*@
-                    </div>
-                    <!-- Product Quantity -->
-                    <div class="product_quantity_container" style="width: 100%;text-align: left;">
-                        <span>Quantity</span>
-                        <div class="product_quantity clearfix">
-                            <input id="quantity_input" type="text" pattern="[0-9]*" value="1">
-                            <div class="quantity_buttons">
-                                <div id="quantity_inc_button" class="quantity_inc quantity_control"><i class="fa fa-caret-up" aria-hidden="true"></i></div>
-                                <div id="quantity_dec_button" class="quantity_dec quantity_control"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Product Size -->
-                    <div class="product_size_container">
-                        <span>Size</span>
-                        <div class="product_size">
-                            <ul class="d-flex flex-row align-items-start justify-content-start">
-                                <li>
-
-                                    @if (Model.Size == "XS")
-                                    {
-                                        <input type="radio" id="radio_1" name="product_radio" class="regular_radio radio_1" checked>
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" id="radio_1" name="product_radio" class="regular_radio radio_1">
-
-                                    }
-                                    <label for="radio_1">XS</label>
-
-                                </li>
-                                <li>
-                                    @if (Model.Size == "S")
-                                    {
-                                        <input type="radio" id="radio_2" name="product_radio" class="regular_radio radio_2" checked>
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" id="radio_2" name="product_radio" class="regular_radio radio_2">
-
-                                    }
-                                    <label for="radio_2">S</label>
-                                </li>
-                                <li>
-                                    @if (Model.Size == "M")
-                                    {
-                                        <input type="radio" id="radio_3" name="product_radio" class="regular_radio radio_3" checked>
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" id="radio_3" name="product_radio" class="regular_radio radio_3">
-
-                                    }
-                                    <label for="radio_3">M</label>
-                                </li>
-                                <li>
-                                    @if (Model.Size == "L")
-                                    {
-                                        <input type="radio" id="radio_4" name="product_radio" class="regular_radio radio_4" checked>
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" id="radio_4" name="product_radio" class="regular_radio radio_4">
-
-                                    }
-                                    <label for="radio_4">L</label>
-                                </li>
-                                <li>
-                                    @if (Model.Size == "XL")
-                                    {
-                                        <input type="radio" id="radio_5" name="product_radio" class="regular_radio radio_5" checked>
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" id="radio_5" name="product_radio" class="regular_radio radio_5">
-
-                                    }
-                                    <label for="radio_5">XL</label>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="button cart_button">add to cart</div>
+    <!-- Breadcrumb Section Begin -->
+    <div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text product-more">
+                        <a href="./home.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="./shop.html">Shop</a>
+                        <span>Detail</span>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Reviews -->
-        <!--<div class="row">
-            <div class="col">
-                <div class="reviews">
-                    <div class="reviews_title">reviews</div>
-                    <div class="reviews_container">
-                        <ul>-->
-        <!-- Review -->
-        <!--<li class=" review clearfix">
-            <div class="review_image"><img src="images/review_1.jpg" alt=""></div>
-            <div class="review_content">
-                <div class="review_name"><a href="#">Maria Smith</a></div>
-                <div class="review_date">Nov 29, 2017</div>
-                <div class="rating rating_4 review_rating" data-rating="4">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                </div>
-                <div class="review_text">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis quam ipsum. Pellentesque consequat tellus non tortor tempus, id egestas elit iaculis. Proin eu dui porta, pretium metus vitae, pharetra odio. Sed ac mi commodo, pellentesque erat eget, accumsan justo. Etiam sed placerat felis. Proin non rutrum ligula. </p>
-                </div>
-            </div>
-        </li>-->
-        <!-- Review -->
-        <!--<li class=" review clearfix">
-                                <div class="review_image"><img src="images/review_2.jpg" alt=""></div>
-                                <div class="review_content">
-                                    <div class="review_name"><a href="#">Maria Smith</a></div>
-                                    <div class="review_date">Nov 29, 2017</div>
-                                    <div class="rating rating_4 review_rating" data-rating="4">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <div class="review_text">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis quam ipsum. Pellentesque consequat tellus non tortor tempus, id egestas elit iaculis. Proin eu dui porta, pretium metus vitae, pharetra odio. Sed ac mi commodo, pellentesque erat eget, accumsan justo. Etiam sed placerat felis. Proin non rutrum ligula. </p>
-                                    </div>
-                                </div>
-                            </li>
+    </div>
+    <!-- Breadcrumb Section Begin -->
+    <!-- Product Shop Section Begin -->
+    <section class="product-shop spad page-details">
+        <div class="container">
+            <div class="row">
+                @*<div class="col-lg-3">
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Categories</h4>
+                        <ul class="filter-catagories">
+                            <li><a href="javascript:void(0)">Men</a></li>
+                            <li><a href="javascript:void(0)">Women</a></li>
+                            <li><a href="javascript:void(0)">Kids</a></li>
                         </ul>
                     </div>
-                </div>
-            </div>
-        </div>-->
-        <!-- Leave a Review -->
-        <!--<div class="row">
-            <div class="col">
-                <div class="review_form_container">
-                    <div class="review_form_title">leave a review</div>
-                    <div class="review_form_content">
-                        <form action="#" id="review_form" class="review_form">
-                            <div class="d-flex flex-md-row flex-column align-items-start justify-content-between">
-                                <input type="text" class="review_form_input" placeholder="Name" required="required">
-                                <input type="email" class="review_form_input" placeholder="E-mail" required="required">
-                                <input type="text" class="review_form_input" placeholder="Subject">
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Brand</h4>
+                        <div class="fw-brand-check">
+                            <div class="bc-item">
+                                <label for="bc-calvin">
+                                    Calvin Klein
+                                    <input type="checkbox" id="bc-calvin">
+                                    <span class="checkmark"></span>
+                                </label>
                             </div>
-                            <textarea class="review_form_text" name="review_form_text" placeholder="Message"></textarea>
-                            <button type="submit" class="review_form_button">leave a review</button>
-                        </form>
+                            <div class="bc-item">
+                                <label for="bc-diesel">
+                                    Diesel
+                                    <input type="checkbox" id="bc-diesel">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="bc-item">
+                                <label for="bc-polo">
+                                    Polo
+                                    <input type="checkbox" id="bc-polo">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="bc-item">
+                                <label for="bc-tommy">
+                                    Tommy Hilfiger
+                                    <input type="checkbox" id="bc-tommy">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Price</h4>
+                        <div class="filter-range-wrap">
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <input type="text" id="minamount">
+                                    <input type="text" id="maxamount">
+                                </div>
+                            </div>
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                 data-min="33" data-max="98">
+                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" class="filter-btn">Filter</a>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Color</h4>
+                        <div class="fw-color-choose">
+                            <div class="cs-item">
+                                <input type="radio" id="cs-black">
+                                <label class="cs-black" for="cs-black">Black</label>
+                            </div>
+                            <div class="cs-item">
+                                <input type="radio" id="cs-violet">
+                                <label class="cs-violet" for="cs-violet">Violet</label>
+                            </div>
+                            <div class="cs-item">
+                                <input type="radio" id="cs-blue">
+                                <label class="cs-blue" for="cs-blue">Blue</label>
+                            </div>
+                            <div class="cs-item">
+                                <input type="radio" id="cs-yellow">
+                                <label class="cs-yellow" for="cs-yellow">Yellow</label>
+                            </div>
+                            <div class="cs-item">
+                                <input type="radio" id="cs-red">
+                                <label class="cs-red" for="cs-red">Red</label>
+                            </div>
+                            <div class="cs-item">
+                                <input type="radio" id="cs-green">
+                                <label class="cs-green" for="cs-green">Green</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Size</h4>
+                        <div class="fw-size-choose">
+                            <div class="sc-item">
+                                <input type="radio" id="s-size">
+                                <label for="s-size">s</label>
+                            </div>
+                            <div class="sc-item">
+                                <input type="radio" id="m-size">
+                                <label for="m-size">m</label>
+                            </div>
+                            <div class="sc-item">
+                                <input type="radio" id="l-size">
+                                <label for="l-size">l</label>
+                            </div>
+                            <div class="sc-item">
+                                <input type="radio" id="xs-size">
+                                <label for="xs-size">xs</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-widget">
+                        <h4 class="fw-title">Tags</h4>
+                        <div class="fw-tags">
+                            <a href="javascript:void(0)">Towel</a>
+                            <a href="javascript:void(0)">Shoes</a>
+                            <a href="javascript:void(0)">Coat</a>
+                            <a href="javascript:void(0)">Dresses</a>
+                            <a href="javascript:void(0)">Trousers</a>
+                            <a href="javascript:void(0)">Men's hats</a>
+                            <a href="javascript:void(0)">Backpack</a>
+                        </div>
+                    </div>
+                </div>*@
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="product-pic-zoom">
+                                <img class="product-big-img" src="~/images/@Model.Images[0]" alt="">
+                                <div class="zoom-icon">
+                                    <i class="fa fa-search-plus"></i>
+                                </div>
+                            </div>
+                            @*<div class="product-thumbs">
+                                <div class="product-thumbs-track ps-slider owl-carousel">
+                                    <div class="pt active" data-imgbigurl="/Custom/img/product-single/product-1.jpg">
+                                        <img src="~/Custom/img/product-single/product-1.jpg" alt="">
+                                    </div>
+                                    <div class="pt " data-imgbigurl="/Custom/img/product-single/product-2.jpg">
+                                        <img src="~/Custom/img/product-single/product-2.jpg" alt="">
+                                    </div> 
+                                    <div class="pt " data-imgbigurl="/Custom/img/product-single/product-3.jpg">
+                                        <img src="~/Custom/img/product-single/product-3.jpg" alt="">
+                                    </div>
+                                    <div class="pt " data-imgbigurl="/Custom/img/product-single/product-3.jpg">
+                                        <img src="~/Custom/img/product-single/product-3.jpg" alt="">
+                                    </div>
+                                </div>
+                            </div>*@
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="product-details">
+                                <div class="pd-title">
+                                    <span>@Model.Category</span>
+                                    <h3>@Model.Name</h3>
+                                    <a href="javascript:void(0)" class="heart-icon"><i class="icon_heart_alt"></i></a>
+                                </div>
+                                <div class="pd-rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <span>(5)</span>
+                                </div>
+                                <div class="pd-desc">
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur ing elit, sed do eiusmod tempor sum dolor
+                                        sit amet, consectetur adipisicing elit, sed do mod tempor
+                                    </p>
+                                    <h4>@String.Format("{0:c}", Model.Price) @*<span>629.99</span>*@</h4>
+                                </div>
+                                <div class="pd-color">
+                                    <h6>Color</h6>
+                                    <div class="pd-color-choose">
+                                        <div class="cc-item">
+                                            <input type="radio" id="cc-black">
+                                            <label for="cc-black"></label>
+                                        </div>
+                                        <div class="cc-item">
+                                            <input type="radio" id="cc-yellow">
+                                            <label for="cc-yellow" class="cc-yellow"></label>
+                                        </div>
+                                        <div class="cc-item">
+                                            <input type="radio" id="cc-violet">
+                                            <label for="cc-violet" class="cc-violet"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pd-size-choose">
+                                    <div class="sc-item">
+                                        <input type="radio" id="sm-size">
+                                        <label for="sm-size">s</label>
+                                    </div>
+                                    <div class="sc-item">
+                                        <input type="radio" id="md-size">
+                                        <label for="md-size">m</label>
+                                    </div>
+                                    <div class="sc-item">
+                                        <input type="radio" id="lg-size">
+                                        <label for="lg-size">l</label>
+                                    </div>
+                                    <div class="sc-item">
+                                        <input type="radio" id="xl-size">
+                                        <label for="xl-size">xs</label>
+                                    </div>
+                                </div>
+                                <div class="quantity">
+                                    @* <div class="pro-qty">
+                                        <input id="prod-ordered-qty" type="text" value="1">
+                                    </div> *@
+                                    <a href="javascript:void(0)" class="primary-btn pd-cart" onclick="AddToCart('@Model.Id');">Add To Cart</a>
+                                </div>
+                                <ul class="pd-tags">
+                                    <li><span>CATEGORIES</span>: More Accessories, Wallets & Cases</li>
+                                    <li><span>TAGS</span>: Clothing, T-shirt, Woman</li>
+                                </ul>
+                                <div class="pd-share">
+                                    <div class="p-code">Sku : 00012</div>
+                                    <div class="pd-social">
+                                        <a href="javascript:void(0)"><i class="ti-facebook"></i></a>
+                                        <a href="javascript:void(0)"><i class="ti-twitter-alt"></i></a>
+                                        <a href="javascript:void(0)"><i class="ti-linkedin"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>-->
+        </div>
+    </section>
+    <!-- Product Shop Section End -->
+    <!-- Related Products Section End -->
+    <!--<div class="related-products spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>Related Products</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="~/Custom/img/products/women-1.jpg" alt="">
+                            <div class="sale">Sale</div>
+                            <div class="icon">
+                                <i class="icon_heart_alt"></i>
+                            </div>
+                            <ul>
+                                <li class="w-icon active"><a href="javascript:void(0)"><i class="icon_bag_alt"></i></a></li>
+                                <li class="quick-view"><a href="javascript:void(0)">+ Quick View</a></li>
+                                <li class="w-icon"><a href="javascript:void(0)"><i class="fa fa-random"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="pi-text">
+                            <div class="catagory-name">Coat</div>
+                            <a href="javascript:void(0)">
+                                <h5>Pure Pineapple</h5>
+                            </a>
+                            <div class="product-price">
+                                $14.00
+                                <span>$35.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="~/Custom/img/products/women-2.jpg" alt="">
+                            <div class="icon">
+                                <i class="icon_heart_alt"></i>
+                            </div>
+                            <ul>
+                                <li class="w-icon active"><a href="javascript:void(0)"><i class="icon_bag_alt"></i></a></li>
+                                <li class="quick-view"><a href="javascript:void(0)">+ Quick View</a></li>
+                                <li class="w-icon"><a href="javascript:void(0)"><i class="fa fa-random"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="pi-text">
+                            <div class="catagory-name">Shoes</div>
+                            <a href="javascript:void(0)">
+                                <h5>Guangzhou sweater</h5>
+                            </a>
+                            <div class="product-price">
+                                $13.00
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="~/Custom/img/products/women-3.jpg" alt="">
+                            <div class="icon">
+                                <i class="icon_heart_alt"></i>
+                            </div>
+                            <ul>
+                                <li class="w-icon active"><a href="javascript:void(0)"><i class="icon_bag_alt"></i></a></li>
+                                <li class="quick-view"><a href="javascript:void(0)">+ Quick View</a></li>
+                                <li class="w-icon"><a href="javascript:void(0)"><i class="fa fa-random"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="pi-text">
+                            <div class="catagory-name">Towel</div>
+                            <a href="javascript:void(0)">
+                                <h5>Pure Pineapple</h5>
+                            </a>
+                            <div class="product-price">
+                                $34.00
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="~/Custom/img/products/women-4.jpg" alt="">
+                            <div class="icon">
+                                <i class="icon_heart_alt"></i>
+                            </div>
+                            <ul>
+                                <li class="w-icon active"><a href="javascript:void(0)"><i class="icon_bag_alt"></i></a></li>
+                                <li class="quick-view"><a href="javascript:void(0)">+ Quick View</a></li>
+                                <li class="w-icon"><a href="javascript:void(0)"><i class="fa fa-random"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="pi-text">
+                            <div class="catagory-name">Towel</div>
+                            <a href="javascript:void(0)">
+                                <h5>Converse Shoes</h5>
+                            </a>
+                            <div class="product-price">
+                                $34.00
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Related Products Section End -->
+    <!-- Partner Logo Section Begin -->
+    <div class="partner-logo">
+        <div class="container">
+            <div class="logo-carousel owl-carousel">
+                <div class="logo-item">
+                    <div class="tablecell-inner">
+                        <img src="~/Custom/img/logo-carousel/logo-1.png" alt="">
+                    </div>
+                </div>
+                <div class="logo-item">
+                    <div class="tablecell-inner">
+                        <img src="~/Custom/img/logo-carousel/logo-2.png" alt="">
+                    </div>
+                </div>
+                <div class="logo-item">
+                    <div class="tablecell-inner">
+                        <img src="~/Custom/img/logo-carousel/logo-3.png" alt="">
+                    </div>
+                </div>
+                <div class="logo-item">
+                    <div class="tablecell-inner">
+                        <img src="~/Custom/img/logo-carousel/logo-4.png" alt="">
+                    </div>
+                </div>
+                <div class="logo-item">
+                    <div class="tablecell-inner">
+                        <img src="~/Custom/img/logo-carousel/logo-5.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+    <!-- Partner Logo Section End -->
 
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
-    $(".button.cart_button").click(function () {
-        $.post("/Cart/AddToCart", { productId: "@Model.Id" })
-            .done(function () {
-                alert("product added to your cart");
-            });
-    });
+        
+        function AddToCart(productId) {
+            $.post("@Url.Action("Add", "Cart")", { productId: productId})
+                .done(function () {
+                    alert("product added to your cart");
+                });
+        };
 </script>

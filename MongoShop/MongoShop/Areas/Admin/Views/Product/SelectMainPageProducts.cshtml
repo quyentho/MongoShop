@@ -1,0 +1,134 @@
+@{
+    ViewData["Title"] = "Manage Products";
+    Layout = "~/Views/Shared/AdminLTE/_Layout.cshtml";
+}
+@using Newtonsoft.Json;
+@using MongoShop.Areas.Admin.ViewModels.Product;
+@model AdminMainPageProductsViewModel
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item btn-tab">
+        <a class="nav-link active" id="shirt-tab" data-toggle="tab" href="#shirt" role="tab" aria-controls="shirt" aria-selected="true">Áo</a>
+    </li>
+    <li class="nav-item btn-tab">
+        <a class="nav-link" id="accessories-tab" data-toggle="tab" href="#accessories" role="tab" aria-controls="accessories" aria-selected="false">Phụ Kiện</a>
+    </li>
+    <li class="nav-item btn-tab">
+        <a class="nav-link" id="trousers-tab" data-toggle="tab" href="#trousers" role="tab" aria-controls="trousers" aria-selected="false">Quần</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="shirt" role="tabpanel" aria-labelledby="shirt-tab">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-success">
+                Submit
+            </button>
+        </div>
+        @await Html.PartialAsync("_ProductList", Model.ListProduct[0])
+    </div>
+    <div class="tab-pane fade" id="accessories" role="tabpanel" aria-labelledby="accessories-tab">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-success">
+                Submit
+            </button>
+        </div>
+        @await Html.PartialAsync("_ProductList", Model.ListProduct[1])
+    </div>
+    <div class="tab-pane fade" id="trousers" role="tabpanel" aria-labelledby="trousers-tab">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-success">
+                Submit
+            </button>
+        </div>
+        @await Html.PartialAsync("_ProductList", Model.ListProduct[2])
+
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var tableShirt = ImplementDataTables(@Html.Raw(JsonConvert.SerializeObject(Model.ListProduct[1].First().CategoryId)));
+            SelectedRows(tableShirt);
+
+            var tableAccessories = ImplementDataTables(@Html.Raw(JsonConvert.SerializeObject(Model.ListProduct[2].First().CategoryId)));
+            SelectedRows(tableAccessories);
+            
+            var tableTrouser = ImplementDataTables(@Html.Raw(JsonConvert.SerializeObject(Model.ListProduct[0].First().CategoryId)));
+            SelectedRows(tableTrouser);
+
+            $('button').click(function (e) {
+                e.preventDefault();
+                var selectedRowsShirt = tableShirt.rows({ selected: true });
+                var selectedRowsAccessories = tableAccessories.rows({ selected: true });
+                var selectedRowsTrouser = tableTrouser.rows({ selected: true });
+
+                var productIds = [];
+                var categoryId = "";
+
+                selectedRowsShirt.data().each(function (value, key) {
+                    productIds.push($.parseHTML(value[6])[0].value);
+                    categoryId = $.parseHTML(value[7])[0].value;
+                });
+                selectedRowsAccessories.data().each(function (value, key) {
+                    productIds.push($.parseHTML(value[6])[0].value);
+                    categoryId = $.parseHTML(value[7])[0].value;
+                });
+                selectedRowsTrouser.data().each(function (value, key) {
+                    productIds.push($.parseHTML(value[6])[0].value);
+                    categoryId = $.parseHTML(value[7])[0].value;
+                });
+
+                if (productIds.length <= 0) {
+                    alert("select at least 1");
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/Product/SelectMainPageProducts",
+                        data: {
+                            categoryId: categoryId,
+                            productIds: productIds
+                        },
+                        success: function (result) {
+                            alert('ok');
+                        },
+                        error: function (result) {
+                            alert('error');
+                        }
+                    });
+                }
+            });
+
+        });
+        function ImplementDataTables(categoryId) {
+            var table = $(`#table-${categoryId}`).DataTable({
+                columnDefs: [{
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 0
+                }],
+                select: {
+                    style: 'multi+shift',
+                    selector: 'td:first-child'
+                },
+                order: [[1, 'asc']]
+            });
+            return table;
+        }
+        function SelectedRows(table) {
+            console.log("asdf");
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                console.log($.parseHTML(this.data()[8])[0].value);
+                if ($.parseHTML(this.data()[8])[0].value === "true")
+                    this.select();
+            });
+        }
+
+    </script>
+    <script src="~/plugins/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-select/js/dataTables.select.min.js"></script>
+}
+
+@section Styles{
+    <link href="~/plugins/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="~/plugins/datatables-select/css/select.dataTables.min.css" rel="stylesheet">
+}

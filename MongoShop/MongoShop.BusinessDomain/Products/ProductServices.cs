@@ -1,38 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoShop.BusinessDomain.Categories;
+using MongoShop.Infrastructure.Helpers;
 
 namespace MongoShop.BusinessDomain.Products
 {
     public class ProductServices : IProductServices
     {
         private readonly IMongoCollection<Product> _collection;
-        private readonly IDatabaseSetting _databaseSetting;
-        private readonly ICategoryServices _categoryServices;
-        private const string CollectionName = "product";
+        private readonly string _collectionName;
 
-        public ProductServices(IDatabaseSetting databaseSetting, ICategoryServices categoryServices)
+        public ProductServices(IMongoClient mongoClient, IOptions<DatabaseSetting> settings)
         {
-            _databaseSetting = databaseSetting;
-            this._categoryServices = categoryServices;
-            var client = new MongoClient(_databaseSetting.ConnectionString);
-            var database = client.GetDatabase(_databaseSetting.DatabaseName);
+            _collectionName = MongoDbHelper.GetCollectionName(this.GetType().Name);
 
-            _collection = database.GetCollection<Product>(CollectionName);
+            var database =
+            mongoClient.GetDatabase(settings.Value.DatabaseName);
+
+            _collection = database.GetCollection<Product>(_collectionName);
         }
 
         /// <inheritdoc/>     
-        public async Task AddAsync(Product product)
+        public async Task<Product> AddAsync(Product product)
         {
             product.Status = true;
             product.CreatedAt = DateTime.Now;
             product.UpdatedAt = product.CreatedAt;
 
             await _collection.InsertOneAsync(product);
+            return product;
         }
 
         /// <inheritdoc/>  
@@ -56,37 +57,48 @@ namespace MongoShop.BusinessDomain.Products
         public async Task<List<Product>> GetAllAsync()
         {
 
-            var resultOfJoin = _collection.Aggregate()
-                .Match(p => p.Status == true)
-                .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
-                .Unwind("Category")
-                .As<Product>();
-
-            return await resultOfJoin.ToListAsync();
+            var list = await _collection.FindAsync(c => c.Status == true);
+            return await list.ToListAsync();
         }
 
         /// <inheritdoc/>  
+        public async Task<List<Product>> GetByMainCategoryAsync(Category mainCategory)
+        {
+            var list = await _collection.FindAsync(c => c.Status == true && c.Category == mainCategory);
+            return await list.ToListAsync();
+        }
+
+        /// <inheritdoc/>  
+        public async Task<List<Product>> GetBySubCategoryAsync(Category subCategory)
+        {
+
+            var list = await _collection.FindAsync(c => c.Status == true && c.SubCategory == subCategory);
+            return await list.ToListAsync();
+        }
+        /// <inheritdoc/>  
         public async Task<Product> GetByIdAsync(string id)
         {
-            var product = _collection.Aggregate()
-                .Match(p => p.Id == id && p.Status == true)
-                .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
-                .Unwind("Category")
-                .As<Product>();
-
+            var product = await _collection.FindAsync(c => c.Id == id && c.Status == true);
             return await product.SingleOrDefaultAsync();
         }
 
         /// <inheritdoc/>  
-        public async Task<List<Product>> GetByNameAsync(string name)
+        public async Task<List<Product>> GetByNameAsync(string productName)
         {
-            var product = _collection.Aggregate()
-               .Match(p => p.Name == name && p.Status == true)
-               .Lookup(foreignCollectionName: "category", localField: "CategoryId", foreignField: "_id", @as: "Category")
-               .Unwind("Category")
-               .As<Product>();
+            productName = Regex.Escape(productName);
 
-            return await product.ToListAsync();
+            var filter = Builders<Product>.Filter.Regex("name", new BsonRegularExpression(productName, "i"));
+
+            return await _collection.Find(filter).ToListAsync();
         }
+
+        public async Task<Product> GetByImageAsync(string imgPath)
+        {
+            //var filter = Builders<Product>.Filter.Regex("images", new BsonRegularExpression(imgPath, "i"));
+            var trimPath = imgPath.Substring(imgPath.IndexOf("full"));
+            var trimreplace = trimPath.Replace("\\", "/");
+            return await _collection.Find(c => c.Images[0] == trimreplace).FirstOrDefaultAsync();
+        }
+
     }
 }

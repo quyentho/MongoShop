@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -7,11 +8,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoShop.Areas.Admin.ViewModels.Product;
 using MongoShop.BusinessDomain.Categories;
 using MongoShop.BusinessDomain.Products;
-using MongoShop.Services.FileUpload;
+using MongoShop.Infrastructure.Services.FileUpload;
+using MongoShop.Utils;
+using Nest;
 
 namespace MongoShop.Areas.Admin.Controllers
 {
-
     [Area("Admin")]
     [Authorize]
 
@@ -19,28 +21,90 @@ namespace MongoShop.Areas.Admin.Controllers
     {
         private readonly IProductServices _productServices;
         private readonly ICategoryServices _categoryServices;
+        private readonly IHomePageProductServices _homePageProductServices;
         private readonly IMapper _mapper;
         private readonly IFileUploadService _fileUploadService;
+        private readonly IElasticClient _elasticSearchClient;
 
         public ProductController(IProductServices productServices,
             IMapper mapper,
             ICategoryServices categoryServices,
-            IFileUploadService fileUploadService)
+            IHomePageProductServices homePageProductServices,
+            IFileUploadService fileUploadService, IElasticClient client)
         {
             _productServices = productServices;
             _mapper = mapper;
             _categoryServices = categoryServices;
+            this._homePageProductServices = homePageProductServices;
             _fileUploadService = fileUploadService;
+            _elasticSearchClient = client;
+        }
+        [HttpGet]
+        public async Task<IActionResult> SelectMainPageProducts()
+        {
+            var mainCategories = await _categoryServices.GetAllMainCategoryAsync();
+            mainCategories = (List<Category>)mainCategories.OrderBy(c => c.Name).ToList();
+
+            AdminMainPageProductsViewModel adminMainPageProductsViewModel = new AdminMainPageProductsViewModel();
+            foreach (var category in mainCategories)
+            {
+                var products = await _productServices.GetByMainCategoryAsync(category);
+                var homePageProducts = await _homePageProductServices.GetByMainCategoryAsync(category);
+
+                List<MainPageProductList> productViewModels = GetViewModel(products, homePageProducts);
+
+                adminMainPageProductsViewModel.ListProduct.Add(productViewModels);
+            }
+            return View(adminMainPageProductsViewModel);
+
+        }
+
+        private List<MainPageProductList> GetViewModel(List<Product> products, List<Product> homePageProducts)
+        {
+            List<MainPageProductList> productViewModels = _mapper.Map<List<MainPageProductList>>(products);
+            for (int i = 0; i < homePageProducts.Count; i++)
+            {
+                var selectedProduct = productViewModels.Find(c => c.ProductId == homePageProducts[i].Id);
+                selectedProduct.IsSelected = true;
+            }
+
+            return productViewModels;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SelectMainPageProducts(string categoryId, string[] productIds)
+        {
+            if (string.IsNullOrEmpty(categoryId))
+            {
+                var mainCategories = await _categoryServices.GetAllMainCategoryAsync();
+                categoryId = mainCategories.FirstOrDefault(c => c.Name.Contains("Áo"))?.Id;
+            }
+
+            if (productIds is null)
+            {
+                return BadRequest();
+            }
+
+            Category category = await _categoryServices.GetByIdAsync(categoryId);
+            List<Product> products = new List<Product>();
+            for (int i = 0; i < productIds.Length; i++)
+            {
+                products.Add(await _productServices.GetByIdAsync(productIds[i]));
+            }
+
+            await _homePageProductServices.AddAsync(products);
+
+            return Ok();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int currentPageNumber = 1)
         {
             var products = await _productServices.GetAllAsync();
 
-            var indexProductViewModel = _mapper.Map<List<IndexProductViewModel>>(products);
+            var indexProductViewModels = _mapper.Map<List<IndexProductViewModel>>(products);
 
-            return View(indexProductViewModel);
+            return View(PaginatedList<IndexProductViewModel>.CreateAsync(indexProductViewModels.AsQueryable(), currentPageNumber));
         }
 
         [HttpGet]
@@ -48,7 +112,7 @@ namespace MongoShop.Areas.Admin.Controllers
         {
             var createProductViewModel = new CreateProductViewModel();
 
-            List<Category> categories = await _categoryServices.GetAllAsync();
+            List<Category> categories = await _categoryServices.GetAllMainCategoryAsync();
 
             createProductViewModel.CategoryList = _mapper.Map<List<SelectListItem>>(categories);
 
@@ -72,6 +136,8 @@ namespace MongoShop.Areas.Admin.Controllers
 
             await _productServices.AddAsync(product);
 
+            _elasticSearchClient.IndexDocument<Product>(product);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -79,11 +145,11 @@ namespace MongoShop.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var product = await _productServices.GetByIdAsync(id);
-            
-            
+
+
             var editProductViewModel = _mapper.Map<EditProductViewModel>(product);
 
-            var categories = await _categoryServices.GetAllAsync();
+            var categories = await _categoryServices.GetAllMainCategoryAsync();
 
             editProductViewModel.CategoryList = _mapper.Map<List<SelectListItem>>(categories);
 
@@ -98,7 +164,9 @@ namespace MongoShop.Areas.Admin.Controllers
                 return await Edit(id);
             }
 
-            var editedProduct = _mapper.Map<Product>(editProductViewModel);
+            var editedProduct = await _productServices.GetByIdAsync(id);
+
+            _mapper.Map(editProductViewModel, editedProduct);
 
             if (editProductViewModel.ImagesUpload != null)
             {
@@ -107,6 +175,8 @@ namespace MongoShop.Areas.Admin.Controllers
             }
 
             await _productServices.EditAsync(id, editedProduct);
+
+            await _elasticSearchClient.UpdateAsync<Product, dynamic>(new DocumentPath<Product>(id), u => u.Index("mongoshop").Doc(editedProduct));
 
             return RedirectToAction(nameof(Index));
         }
@@ -133,7 +203,13 @@ namespace MongoShop.Areas.Admin.Controllers
             }
 
             await _productServices.DeleteAsync(id, product);
+            
+            _elasticSearchClient.Delete<Product>(id);
+
             return RedirectToAction(nameof(Index));
         }
+
+
+
     }
 }

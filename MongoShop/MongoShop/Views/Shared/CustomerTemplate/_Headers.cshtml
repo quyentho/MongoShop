@@ -1,69 +1,174 @@
 ﻿@using Microsoft.AspNetCore.Http;
-@using MongoShop.Extensions;
+@using MongoShop.Infrastructure.Extensions;
 @using System.Collections.Generic;
+@using MongoShop.BusinessDomain.Categories;
 @inject IHttpContextAccessor HttpContextAccessor
 
-<header class="header">
-    <div class="header_inner d-flex flex-row align-items-center justify-content-start">
-        <div class="logo"><a href="#">Wish</a></div>
-        <nav class="main_nav">
-            <ul>
-                <li><a href="#">home</a></li>
-                <li><a href="@Url.Action("Category","Customer")">clothes</a></li>
-                <li><a href="categories.html">accessories</a></li>
-                <li><a href="categories.html">lingerie</a></li>
-                <li><a href="contact.html">contact</a></li>
-            </ul>
-        </nav>
-        <div class="header_content ml-auto">
-            <div class="search header_search">
-                <form action="#">
-                    <input type="search" class="search_input" required="required">
-                    <button type="submit" id="search_button" class="search_button"><img src="~/img/magnifying-glass.svg" alt=""></button>
-                </form>
+@using MongoShop.BusinessDomain.Users;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject ICategoryServices CategoryService
+@{
+    var mainCategories = await CategoryService.GetAllMainCategoryAsync();
+    var subCategories = await CategoryService.GetAllSubCategoryAsync();
+}
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section Begin -->
+<header class="header-section">
+    <div class="header-top">
+        <div class="container">
+            <div class="ht-left">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <div class="mail-service">
+                        <i class=" fa fa-envelope"></i>
+                        <a asp-action="UpdateInformation" asp-controller="Account">hello @User.Identity.Name!</a>
+                    </div>
+                    <div class="phone-service">
+                        <i class="bi bi-book"></i>
+                        <a href="@Url.Action("GetMyOrders","Account")">Đơn hàng của tôi</a>
+                    </div>
+                    if (User.IsInRole("Admin"))
+                    {
+                        <div class="phone-service">
+                            <i class="bi bi-book"></i>
+                            <a asp-area="Admin" asp-action="Index" asp-controller="Product">Trang Quản Trị</a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="mail-service">
+                        <i class=" fa fa-envelope"></i>
+                        hello anonymous!
+                    </div>
+                }
             </div>
-            <div class="shopping">
-                <!-- Cart -->
-                <a href="@Url.Action("Index","Cart")">
-                    <div class="cart">
-                        <img src="~/img/shopping-bag.svg" alt="">
-                        <div class="cart_num_container">
-                            <div class="cart_num_inner">
-                                @if (HttpContextAccessor.HttpContext.Session.Get<List<string>>("ssShoppingCart") != null)
-                                {
+            <div class="ht-right">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form style="display: inline-flex;" asp-controller="Account" asp-action="Logout">
 
-                                    var count = HttpContextAccessor.HttpContext.Session.Get<List<string>>("ssShoppingCart").Count().ToString();
-                                    <div class="cart_num">@count</div>
-                                }
-                                else
-                                {
-                                    <div class="cart_num">0</div>
-                                }
+                        <button type="submit" class="btn btn-link login-panel"><i class="fa fa-user"></i>Logout</button>
 
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <!-- Star -->
-                <a href="@Url.Action("Index","Wishlist")">
-                    <div class="star">
-                        <img src="~/img/star.svg" alt="">
-                        <div class="star_num_container">
-                            <div class="star_num_inner">
-                                <div class="star_num">0</div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <!-- Avatar -->
-                <a href="@Url.Action("Profile","Account")">
-                    <div class="avatar">
-                        <img src="~/img/avatar.svg" alt="">
-                    </div>
-                </a>
+                    </form>
+
+                }
+                else
+                {
+                    <a href="@Url.Action("Login","Account")" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                    <a href="@Url.Action("Register","Account")" class="login-panel"><i class="fa fa-user"></i>Register</a>
+                }
+
+                <div class="top-social">
+                    <a href="#"><i class="ti-facebook"></i></a>
+                    <a href="#"><i class="ti-twitter-alt"></i></a>
+                    <a href="#"><i class="ti-linkedin"></i></a>
+                    <a href="#"><i class="ti-pinterest"></i></a>
+                </div>
             </div>
         </div>
-
-        <div class="burger_container d-flex flex-column align-items-center justify-content-around menu_mm"><div></div><div></div><div></div></div>
+    </div>
+    <div class="container">
+        <div class="inner-header">
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <div class="logo">
+                        <a asp-controller="Customer" asp-action="Index">
+                            <img src="~/Custom/img/logo.png" alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-7">
+                    <div class="advanced-search">
+                        <button type="button" class="category-btn">Search for all</button>
+                        <form method="get" asp-controller="ElasticSearch" asp-action="Search" class="input-group">
+                            <input name="queryString" type="text" placeholder="What do you need?">
+                            <button type="submit"><i class="ti-search"></i></button>
+                        </form>
+                    </div>
+                    <form id="imageSearchForm" enctype="multipart/form-data" method="post" asp-controller="ImagesSearch" asp-action="SearchForSimilar">
+                        <div>
+                            <label for="imageUpload" class="drop-files-container">Drag Image Here To Search</label>
+                            <input id="imageUpload" type="file" name="imageUpload" style="visibility:hidden;">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 text-right col-md-3">
+                    <ul class="nav-right">
+                        <li class="heart-icon">
+                            <a href="@Url.Action("Index", "WishList")">
+                                <i class="icon_heart_alt"></i>
+                                @*<span>1</span>*@
+                            </a>
+                        </li>
+                        <li class="cart-icon">
+                            <a href="@Url.Action("Index","Cart")">
+                                <i class="icon_bag_alt"></i>
+                                @* <span>3</span> *@
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-item">
+        <div class="container">
+            <div class="nav-depart">
+                <div class="depart-btn">
+                    <i class="ti-menu"></i>
+                    <span>All categories</span>
+                    <ul class="depart-hover">
+                        @foreach (var category in subCategories)
+                        {
+                            <li>
+                                <a href="@Url.Action("SubCategoryProducts","Customer",new { categoryId=category.Id})">@category.Name</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <nav class="nav-menu mobile-menu">
+                <ul>
+                    @foreach (var category in mainCategories)
+                    {
+                        <li>
+                            <a asp-action="MainCategoryProducts" asp-controller="Customer" asp-route-categoryId="@category.Id">@category.Name</a>
+                            <ul class="dropdown">
+                                @foreach (var subCategory in subCategories)
+                                {
+                                    if (subCategory.ParentId.Equals(category.Id))
+                                    {
+                                        <li><a asp-action="SubCategoryProducts" asp-controller="Customer" asp-route-categoryId="@subCategory.Id">@subCategory.Name</a></li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                    }
+                    @*<li><a asp-action="Category" asp-controller="Customer">Tất Cả</a></li>*@
+                </ul>
+            </nav>
+            <div id="mobile-menu-wrap"></div>
+        </div>
     </div>
 </header>
+<!-- Header End -->
+
+<script>
+
+    $("a[data-form-method='post']").click(function (event) {
+        event.preventDefault();
+        var element = $(this);
+        var action = element.attr("href");
+        element.closest("form").each(function () {
+            var form = $(this);
+            form.attr("Logout", action);
+            form.submit();
+        });
+    });
+</script>

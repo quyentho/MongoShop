@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Nullable>annotations</Nullable>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,14 +15,29 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MongoShop.BusinessDomain\MongoShop.BusinessDomain.csproj" />
+    <ProjectReference Include="..\MongoShop.ElasticSearch.Indexer\MongoShop.ElasticSearch.Indexer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\js\pages\dashboards\" />
-    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Custom\fonts\ElegantIcons.svg" />
+    <None Include="wwwroot\Custom\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\Custom\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\Custom\fonts\themify.svg" />
+    <None Include="wwwroot\Custom\js\bootstrap.min.js" />
+    <None Include="wwwroot\Custom\js\imagesloaded.pkgd.min.js" />
+    <None Include="wwwroot\Custom\js\jquery-3.3.1.min.js" />
+    <None Include="wwwroot\Custom\js\jquery-ui.min.js" />
+    <None Include="wwwroot\Custom\js\jquery.countdown.min.js" />
+    <None Include="wwwroot\Custom\js\jquery.dd.min.js" />
+    <None Include="wwwroot\Custom\js\jquery.nice-select.min.js" />
+    <None Include="wwwroot\Custom\js\jquery.slicknav.js" />
+    <None Include="wwwroot\Custom\js\jquery.zoom.min.js" />
+    <None Include="wwwroot\Custom\js\main.js" />
+    <None Include="wwwroot\Custom\js\owl.carousel.min.js" />
     <None Include="wwwroot\js\adminlte.js" />
     <None Include="wwwroot\js\adminlte.js.map" />
     <None Include="wwwroot\js\adminlte.min.js" />
@@ -31,6 +47,9 @@
     <None Include="wwwroot\js\pages\dashboard2.js" />
     <None Include="wwwroot\js\pages\dashboard3.js" />
     <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\plugins\bootstrap4-toggle-3.6.1\js\bootstrap4-toggle.js" />
+    <None Include="wwwroot\plugins\bootstrap4-toggle-3.6.1\js\bootstrap4-toggle.min.js" />
+    <None Include="wwwroot\plugins\bootstrap4-toggle-3.6.1\js\bootstrap4-toggle.min.js.map" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,7 +60,16 @@
     <PackageReference Include="FluentEmail.Core" Version="2.8.0" />
     <PackageReference Include="FluentEmail.Razor" Version="2.8.0" />
     <PackageReference Include="FluentEmail.Smtp" Version="2.8.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.14" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="PayPal" Version="2.0.0-rc2" />
+    <PackageReference Include="PayPalCheckoutSdk" Version="1.0.3" />
+    <PackageReference Include="PayPalHttp" Version="1.0.0" />
+    <PackageReference Include="RestSharp" Version="106.11.7" />
   </ItemGroup>
 
 </Project>

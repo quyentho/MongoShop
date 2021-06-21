@@ -12,7 +12,6 @@ using MongoShop.BusinessDomain.Wishlists;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
-using MongoShop.Extensions;
 using MongoShop.Models.Wishlist;
 
 namespace MongoShop.Controllers
@@ -57,7 +56,7 @@ namespace MongoShop.Controllers
 
             var wishlistIndexViewModel = _mapper.Map<WishlistIndexViewModel>(wishlistFromDb);
 
-            return View(wishlistIndexViewModel);
+            return View("Index", wishlistIndexViewModel);
         }
 
         private string GetCurrentLoggedInUserId()
@@ -68,7 +67,7 @@ namespace MongoShop.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<IActionResult> Add(string productId)
         {
             string userId = GetCurrentLoggedInUserId();

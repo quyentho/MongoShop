@@ -55,7 +55,8 @@
         <div class="card-body">
             @foreach (var item in Model.Images)
             {
-                <img src=@Html.DisplayFor(model => item) width="45%"/>
+                <img src="@Html.DisplayFor(model => item)" alt="..." class="img-thumbnail">
+                @*<img src=@Html.DisplayFor(model => item) width="45%" />*@
             }
         </div>
     </div>

@@ -1,9 +1,9 @@
-﻿@using static MongoShop.Helpers.NavigationIndicatorHelper;
+﻿@using MongoShop.Infrastructure.Helpers;
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="~/Home" class="brand-link">
+    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="brand-link">
         <img src="~/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <span class="brand-text font-weight-light">Admin</span>
     </a>
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -11,13 +11,13 @@
                 <img src="~/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="@Url.Action("UpdateInformation", "Account")" class="d-block">@User.Identity.Name</a>
             </div>
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item ">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link @Url.MakeActiveClass("home","index")">
+                    <a href="/" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
@@ -40,6 +40,12 @@
                     <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link @Url.MakeActiveClass("Order","Index")">
                         <i class="nav-icon fas fa-lock"></i>
                         <p>Order</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a asp-area="Admin" asp-controller="Product" asp-action="SelectMainPageProducts" class="nav-link @Url.MakeActiveClass("Product","SelectMainPageProducts")">
+                        <i class="nav-icon fas fa-lock"></i>
+                        <p>Main Page Products</p>
                     </a>
                 </li>
             </ul>

@@ -1,6 +1,6 @@
 ﻿namespace MongoShop.BusinessDomain
 {
-    public class DatabaseSetting : IDatabaseSetting
+    public class DatabaseSetting 
     {
         public string ConnectionString { get; set; }
 
