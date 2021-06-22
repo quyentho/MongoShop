@@ -199,9 +199,10 @@ namespace MongoShop.Controllers
         {
             try
             {
+
                 var order = new BusinessDomain.Orders.Order();
 
-                    order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
+                order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
 
                 string userId = GetCurrentLoggedInUserId();
                 order.UserId = userId;

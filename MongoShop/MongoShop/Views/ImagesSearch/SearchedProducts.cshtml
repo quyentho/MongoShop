@@ -64,7 +64,7 @@
                     }
                 <div class="pagination justify-content-center">
                    
-                    <a asp-action = "DisplaySearchResult"
+                    <a asp-action = "SearchForSimilar"
                        asp-controller="ImagesSearch"
                        asp-route-products="@ViewData["products"]"
                        asp-route-pageNumber="@(Model.PageIndex - 1)"
@@ -72,7 +72,7 @@
                         Previous
                     </a>
                     
-                    <a asp-action="DisplaySearchResult"
+                    <a asp-action="SearchForSimilar"
                        asp-controller="ImagesSearch"
                        asp-route-products="@ViewData["products"]"
                        asp-route-pageNumber="@(Model.PageIndex + 1)"

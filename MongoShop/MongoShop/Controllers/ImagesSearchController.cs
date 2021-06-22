@@ -35,11 +35,11 @@ namespace MongoShop.Controllers
             var products = JsonConvert.DeserializeObject<List<Product>>(TempData["products"].ToString());
             ViewData["products"] = products;
             var viewModels = _mapper.Map<List<IndexViewModel>>(products);
-            return View("SearchedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), pageNumber));
+            return View("SearchedProducts", PaginatedList<IndexViewModel>.CreateAsync(viewModels.AsQueryable(), pageNumber, viewModels.Count));
         }
 
         [HttpPost]
-        public async Task<IActionResult> SearchForSimilar([FromForm] IFormFile imageUpload)
+        public async Task<IActionResult> SearchForSimilar([FromForm] IFormFile imageUpload, int pageNumber = 1)
         {
             // upload image
             List<string> imagePaths = await _fileUploadService.Upload(new List<IFormFile>() { imageUpload });
@@ -81,7 +81,7 @@ namespace MongoShop.Controllers
             TempData["products"] = JsonConvert.SerializeObject(products);
             // return view
             
-            return RedirectToAction(nameof(DisplaySearchResult));
+            return RedirectToAction(nameof(DisplaySearchResult), pageNumber);
         }
     }
 
