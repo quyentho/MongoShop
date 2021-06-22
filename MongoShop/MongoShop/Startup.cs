@@ -124,11 +124,23 @@ namespace MongoShop
               {
                   options.ClientId = "140589299640-88d9fngq6s6ht88vpr1iktfl9fvnikgo.apps.googleusercontent.com";
                   options.ClientSecret = "j_6UG2HEEst7fZvc-YDgidqZ";
+                  options.Events.OnRemoteFailure = (context) =>
+                  {
+                      context.Response.Redirect("/account/login");
+                      context.HandleResponse();
+                      return System.Threading.Tasks.Task.CompletedTask;
+                  };
               })
             .AddFacebook(options =>
             {
                 options.AppId = "745814422783717";
                 options.AppSecret = "bd5da5bdfc0bd7e67fc2569aa96274c2";
+                options.Events.OnRemoteFailure = (context) =>
+                {
+                    context.Response.Redirect("/account/login");
+                    context.HandleResponse();
+                    return System.Threading.Tasks.Task.CompletedTask;
+                };
             });
 
             services.AddSingleton<IElasticClient>(ElasticSearchConfiguration.GetClient());
@@ -139,7 +151,8 @@ namespace MongoShop
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/Home/Error");
+                //app.UseDeveloperExceptionPage();
 
             }
             else
