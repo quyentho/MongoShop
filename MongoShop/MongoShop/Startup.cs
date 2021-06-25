@@ -144,6 +144,9 @@ namespace MongoShop
             });
 
             services.AddSingleton<IElasticClient>(ElasticSearchConfiguration.GetClient());
+            
+         
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
