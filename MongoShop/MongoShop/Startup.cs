@@ -144,8 +144,12 @@ namespace MongoShop
             });
 
             services.AddSingleton<IElasticClient>(ElasticSearchConfiguration.GetClient());
-            
-         
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
 
         }
 
@@ -155,12 +159,14 @@ namespace MongoShop
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseForwardedHeaders();
                 //app.UseDeveloperExceptionPage();
 
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseForwardedHeaders();
             }
 
             app.UseCookiePolicy(new CookiePolicyOptions
