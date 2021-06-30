@@ -356,3 +356,8 @@ MongoShop/MongoShop/hemstore_dataset.json
 MongoShop/MongoShop/owen_dataset.json
 MongoShop/MongoShop/wwwroot/images/
 MongoShop/MongoShop.PerformDBTask/
+
+.git/
+.gitignore
+docker-compose.yml
+README.md
