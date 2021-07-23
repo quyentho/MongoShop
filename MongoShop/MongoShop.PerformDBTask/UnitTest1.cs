@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 namespace MongoShop.PerformDBTask
 {
@@ -22,7 +23,7 @@ namespace MongoShop.PerformDBTask
         [SetUp]
         public void SetUp()
         {
-            MongoClient dbClient = new MongoClient("mongodb://localhost:27017");
+            MongoClient dbClient = new MongoClient("mongodb://mongo:27017");
             var database =
                 dbClient.GetDatabase("MongoShop");
             _productCollection = database.GetCollection<Product>("product");
@@ -34,8 +35,8 @@ namespace MongoShop.PerformDBTask
         {
 
             JArray owen_obj = new JArray();
-            //using (StreamReader file = File.OpenText(@"D:\MyFolder\Programming\C#\MongoShop\MongoShop\MongoShop\owen_dataset.json"))
-            using (StreamReader file = File.OpenText(@"E:\Tieu Luan\MongoShop\MongoShop\owen_dataset.json"))
+            using (StreamReader file = File.OpenText(@"./hemstore_dataset.json"))
+            //using (StreamReader file = File.OpenText(@"E:\Tieu Luan\MongoShop\MongoShop\owen_dataset.json"))
             using (JsonTextReader reader = new JsonTextReader(file))
             {
                 owen_obj = (JArray)JToken.ReadFrom(reader);
@@ -206,6 +207,8 @@ namespace MongoShop.PerformDBTask
                 product.Name = item.GetValue("name").ToString();
                 product.Price = double.Parse(item.GetValue("price").ToString().Replace(".", ","), CultureInfo.InvariantCulture);
                 product.Images.Add(item.SelectToken("images[0].path").ToString());
+		JArray description = (JArray)item["description"];
+		IList<string> descriptionText = description?.Select(c => (string)c)?.ToList();
                 if (item.GetValue("name").ToString().Contains(ClothesCategory.SoMi, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = SoMi;
@@ -324,8 +327,8 @@ namespace MongoShop.PerformDBTask
             }
 
             JArray hem_obj = new JArray();
-            //using (StreamReader file = File.OpenText(@"D:\MyFolder\Programming\C#\MongoShop\MongoShop\MongoShop\hemstore_dataset.json"))
-            using (StreamReader file = File.OpenText(@"E:\Tieu Luan\MongoShop\MongoShop\hemstore_dataset.json"))
+            using (StreamReader file = File.OpenText(@"./owen_dataset.json"))
+            //using (StreamReader file = File.OpenText(@"E:\Tieu Luan\MongoShop\MongoShop\hemstore_dataset.json"))
             using (JsonTextReader reader = new JsonTextReader(file))
             {
                 hem_obj = (JArray)JToken.ReadFrom(reader);
@@ -335,7 +338,14 @@ namespace MongoShop.PerformDBTask
                 Product product = new Product();
                 product.Id = ObjectId.GenerateNewId().ToString();
                 product.Name = item.GetValue("name").ToString();
-                product.Price = double.Parse(item.GetValue("price").ToString(), CultureInfo.InvariantCulture);
+                try
+								{
+
+								product.Price = double.Parse(item.GetValue("price").ToString().Replace(".",""), CultureInfo.InvariantCulture);
+								}
+								catch(Exception){
+
+								}
                 product.Images.Add(item.SelectToken("images[0].path").ToString());
                 if (item.GetValue("name").ToString().Contains(ClothesCategory.SoMi, StringComparison.InvariantCultureIgnoreCase))
                 {
