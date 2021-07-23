@@ -229,10 +229,10 @@ namespace MongoShop.PerformDBTask
                 else if (item.GetValue("name").ToString().Contains(ClothesCategory.Jacket, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Jacket;
-                    product.Category = Quan;
+                    product.Category = Ao;
 
                 }
-                else if (item.GetValue("name").ToString().Contains(ClothesCategory.Veston, StringComparison.InvariantCultureIgnoreCase))
+                else if (item.GetValue("name").ToString().Contains("VE", StringComparison.InvariantCultureIgnoreCase) || item.GetValue("name").ToString().Contains("VO", StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Veston;
                     product.Category = Ao;
@@ -247,6 +247,7 @@ namespace MongoShop.PerformDBTask
                 else if (item.GetValue("name").ToString().Contains(ClothesCategory.Polo, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = Polo;
+                    product.Category = Ao;
                 }
                 else if (item.GetValue("name").ToString().Contains(ClothesCategory.AoThun, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -449,7 +450,7 @@ namespace MongoShop.PerformDBTask
             public const string Blazor = "Blazor";
             public const string AoLen = "len";
             public const string Jacket = "Jacket";
-            public const string Veston = "Veston";
+            public const string Veston = "Bộ Veston";
             public const string Tshirt = "shirt";
             public const string Polo = "Polo";
             public const string AoThun = "Thun";
