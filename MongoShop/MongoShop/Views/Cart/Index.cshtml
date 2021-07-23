@@ -6,19 +6,7 @@
 
 
 <!-- Breadcrumb Section Begin -->
-<div class="breacrumb-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb-text product-more">
-                    <a href="./home.html"><i class="fa fa-home"></i> Home</a>
-                    <a href="./shop.html">Shop</a>
-                    <span>Shopping Cart</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- Breadcrumb Section Begin -->
 <!-- Shopping Cart Section Begin -->
 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -33,11 +21,11 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Image</th>
-                                    <th class="p-name">Product Name</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
+                                    <th>Hình ảnh</th>
+                                    <th class="p-name">Tên</th>
+                                    <th>Giá</th>
+                                    <th>Số Lượng</th>
+                                    <th>Tổng</th>
                                     <th><i class="ti-close"></i></th>
                                 </tr>
                             </thead>
@@ -74,11 +62,7 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="cart-buttons">
-                                @*<a href="#" class="primary-btn continue-shop">Continue shopping</a>
-                                <a href="#" class="primary-btn up-cart">Update cart</a>*@
-
-                                <a href="@Url.Action("Index","Customer")" class="primary-btn continue-shop">Continue shopping</a>
-                                <a href="@Url.Action("Index","Cart")" class="primary-btn up-cart">Update cart</a>
+                                <a href="@Url.Action("Index","Customer")" class="primary-btn continue-shop">Tiếp tục mua hàng</a>
                             </div>
                             <div class="discount-coupon">
                                 @* <h6>Discount Codes</h6> *@
@@ -93,10 +77,9 @@
                                 <input type="hidden" asp-for="@Model.Total" />
                                 <ul>
                                     @* <li class="subtotal">Subtotal <span>$240.00</span></li> *@
-                                    <li class="cart-total">Total <span id="all-prod-total">@String.Format("{0:c}", Model.Total)</span></li>
+                                    <li class="cart-total">Tổng <span id="all-prod-total">@String.Format("{0:c}", Model.Total)</span></li>
                                 </ul>
-                                @* <a href="@Url.Action("Checkout","Cart");" class="proceed-btn">PROCEED TO CHECK OUT</a> *@
-                                <a><button asp-controller="Cart" asp-action="Checkout" type="submit" value="submit" class="proceed-btn">proceed to checkout</button></a>
+                                <a><button asp-controller="Cart" asp-action="Checkout" type="submit" value="submit" class="proceed-btn">Đi đến thanh toán</button></a>
                             </div>
                         </div>
                     </div>
