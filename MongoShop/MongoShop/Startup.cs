@@ -32,7 +32,14 @@ namespace MongoShop
     {
         public Startup(IConfiguration configuration)
         {
+		_env = env;
             Configuration = configuration;
+
+            var config = new ConfigurationBuilder()
+               .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+               .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+               .AddEnvironmentVariables()
+               .Build();
         }
 
         public IConfiguration Configuration { get; }

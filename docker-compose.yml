@@ -1,0 +1,44 @@
+---
+version: "3.9"
+services:
+  mongo:
+    container_name: mongodb
+    image: mongo
+    restart: always
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - mongoshop
+    ports:
+      - 27017:27017
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    depends_on:
+      - mongo
+    ports:
+      - 8081:8081
+    networks:
+      - mongoshop
+  mongoshop:
+    container_name: mongoshop
+    image: mongoshop
+    build: ./MongoShop
+    ports:
+      - 5000:5000
+      - 5001:5001
+    depends_on:
+      - mongo
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      DatabaseSetting__ConnectionString: "mongodb://mongo:27017"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "quyen123"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+    networks:
+      - mongoshop
+    volumes:
+      - ${HOME}/.aspnet/https:/https:ro
+volumes:
+  mongodb:
+networks:
+  mongoshop:

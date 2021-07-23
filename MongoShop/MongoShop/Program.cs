@@ -26,6 +26,13 @@ namespace MongoShop
 
                 try
                 {
+		    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+		    if(!roleManager.RoleExistsAsync(UserRole.Admin).GetAwaiter().GetResult()){
+			
+			var role = new IdentityRole();
+			role.Name = UserRole.Admin;
+			await _roleManager.CreateAsync(role);
+		    }
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     if(userManager.FindByEmailAsync("admin@mongoshop.com").GetAwaiter().GetResult() is null)
                     {
