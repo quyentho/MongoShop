@@ -38,6 +38,7 @@ services:
       - mongoshop
     volumes:
       - ${HOME}/.aspnet/https:/https:ro
+
 volumes:
   mongodb:
 networks:

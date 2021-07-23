@@ -1,10 +1,12 @@
 using System;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using AspNetCore.Identity.MongoDbCore.Extensions;
+using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -26,16 +28,10 @@ namespace MongoShop
 
                 try
                 {
-		    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-		    if(!roleManager.RoleExistsAsync(UserRole.Admin).GetAwaiter().GetResult()){
-			
-			var role = new IdentityRole();
-			role.Name = UserRole.Admin;
-			await _roleManager.CreateAsync(role);
-		    }
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     if(userManager.FindByEmailAsync("admin@mongoshop.com").GetAwaiter().GetResult() is null)
                     {
+
                         var user = new ApplicationUser { UserName = "admin@mongoshop.com", Email = "admin@mongoshop.com", Status = true };
 
                         userManager.CreateAsync(user, "1234567").GetAwaiter().GetResult();

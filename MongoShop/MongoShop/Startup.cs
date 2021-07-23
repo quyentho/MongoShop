@@ -30,9 +30,8 @@ namespace MongoShop
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
-		_env = env;
             Configuration = configuration;
 
             var config = new ConfigurationBuilder()
