@@ -30,7 +30,7 @@ services:
     depends_on:
       - mongo
     environment:
-      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_ENVIRONMENT: Development
       DatabaseSetting__ConnectionString: "mongodb://mongo:27017"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "quyen123"
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx

@@ -207,8 +207,7 @@ namespace MongoShop.PerformDBTask
                 product.Name = item.GetValue("name").ToString();
                 product.Price = double.Parse(item.GetValue("price").ToString().Replace(".", ","), CultureInfo.InvariantCulture);
                 product.Images.Add(item.SelectToken("images[0].path").ToString());
-		JArray description = (JArray)item["description"];
-		IList<string> descriptionText = description?.Select(c => (string)c)?.ToList();
+		IList<string> descriptionText = item.SelectToken("description")?.Select(c => (string)c.ToString())?.ToList();
                 if (item.GetValue("name").ToString().Contains(ClothesCategory.SoMi, StringComparison.InvariantCultureIgnoreCase))
                 {
                     product.SubCategory = SoMi;
