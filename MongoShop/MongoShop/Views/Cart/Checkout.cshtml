@@ -3,6 +3,7 @@
 }
 @using MongoShop.Models.Cart;
 @model CartCheckoutViewModel
+
 <!-- Breadcrumb Section Begin -->
 <div class="breacrumb-section">
     <div class="container">
@@ -69,14 +70,14 @@
                                 <li>Product <span>Total</span></li>
                                 @foreach (var item in Model.Products)
                                 {
-                                    <li class="fw-normal">@item.Product.Name x @item.OrderedQuantity <span>@String.Format("{0:c}", @item.Product.Price * @item.OrderedQuantity)</span></li>
+                                    <li class="fw-normal">@item.Product.Name x @item.OrderedQuantity <span>@String.Format("{0:0,0 vnđ}", @item.Product.Price * @item.OrderedQuantity)</span></li>
                                 }
-                                <input asp-for="Total" type="hidden">
-                                <li class="fw-normal">Subtotal <span>@String.Format("{0:c}", @Model.Total)</span></li>
-                                <li class="total-price">Total <span>@String.Format("{0:c}", @Model.Total)</span></li>
+
+                                <li class="fw-normal">Subtotal <span>@String.Format("{0:0,0 vnđ}", @Model.Total)</span></li>
+                                <li class="total-price">Total <span>@String.Format("{0:0,0 vnđ}", @Model.Total)</span></li>
                             </ul>
                             <div class="order-btn">
-                                <button type="submit" value="submit" class="site-btn place-btn">Place Order</button>
+                                <button type="submit" value="submit" class="site-btn place-btn">Ship COD</button>
                                 @*<button type="submit" asp-action="PaypalCheckout" asp-controller="Cart" class="site-btn place-btn">Paypal</button>*@
                                 <p></p>
                                 <p>--- OR ---</p>
@@ -88,6 +89,7 @@
                     </div>
                 </div>
             </div>
+            <input asp-for=Total type="hidden">
         </form>
     </div>
 </section>

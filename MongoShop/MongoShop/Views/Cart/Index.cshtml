@@ -53,7 +53,7 @@
                                         <td class="cart-title first-row">
                                             <h5>@Model.Products[i].Product.Name</h5>
                                         </td>
-                                        <td class="p-price first-row">@String.Format("{0:c}", Model.Products[i].Product.Price)</td>
+                                        <td class="p-price first-row">@String.Format("{0:0,0 vnđ}", Model.Products[i].Product.Price)</td>
                                         <td class="qua-col first-row">
                                             <div class="quantity">
                                                 <div class="pro-qty">
@@ -61,7 +61,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="total-price first-row" id="prod-total">@String.Format("{0:c}", Model.Products[i].Product.Price * @Model.Products[i].OrderedQuantity)</td>
+                                        <td class="total-price first-row" id="prod-total">@String.Format("{0:0,0 vnđ}", Model.Products[i].Product.Price * @Model.Products[i].OrderedQuantity)</td>
                                         <td class="close-td first-row">
                                             <i class="ti-close" onclick="RemoveFromCart('@Model.Products[i].Product.Id');"></i>
                                         </td>
@@ -93,7 +93,7 @@
                                 <input type="hidden" asp-for="@Model.Total" />
                                 <ul>
                                     @* <li class="subtotal">Subtotal <span>$240.00</span></li> *@
-                                    <li class="cart-total">Total <span id="all-prod-total">@String.Format("{0:c}", Model.Total)</span></li>
+                                    <li class="cart-total">Total <span id="all-prod-total">@String.Format("{0:0,0 vnđ}", Model.Total)</span></li>
                                 </ul>
                                 @* <a href="@Url.Action("Checkout","Cart");" class="proceed-btn">PROCEED TO CHECK OUT</a> *@
                                 <a><button asp-controller="Cart" asp-action="Checkout" type="submit" value="submit" class="proceed-btn">proceed to checkout</button></a>

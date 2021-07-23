@@ -77,37 +77,13 @@
                                 <li>Product <span>Total</span></li>
                                 @foreach (var item in Model.OrderedProducts)
                                 {
-                                    <li class="fw-normal">@item.Product.Name x @item.OrderedQuantity <span>@String.Format("{0:c}", @item.Product.Price * @item.OrderedQuantity)</span></li>
+                                    <li class="fw-normal">@item.Product.Name x @item.OrderedQuantity <span>@String.Format("{0:0,0 vnđ}", @item.Product.Price * @item.OrderedQuantity)</span></li>
                                 }
                                 @*<input asp-for="Total" type="hidden">*@
-                                <li class="fw-normal">Subtotal <span>@String.Format("{0:c}", @Model.Total)</span></li>
-                                <li class="total-price">Total <span>@String.Format("{0:c}", @Model.Total)</span></li>
+                                <li class="fw-normal">Subtotal <span>@String.Format("{0:0,0 vnđ}", @Model.Total)</span></li>
+                                <li class="fw-normal">Shipping <span>@String.Format("{0:0,0 vnđ}", @Model.ShipppingFee)</span></li>
+                                <li class="total-price">Total <span>@String.Format("{0:0,0 vnđ}", @Model.Total + @Model.ShipppingFee)</span></li>
                             </ul>
-                            @*<div class="payment-check">
-                                    <div class="pc-item">
-                                        <label for="pc-check">
-                                            Cheque Payment
-                                            <input type="checkbox" id="pc-check">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div class="pc-item">
-                                        <label for="pc-paypal">
-                                            Paypal
-                                            <input type="checkbox" id="pc-paypal">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                </div>*@
-                            <!--<div class="order-btn">
-                                <button type="submit" value="submit" class="site-btn place-btn">Place Order</button>-->
-                                @*<button type="submit" asp-action="PaypalCheckout" asp-controller="Cart" class="site-btn place-btn">Paypal</button>*@
-                                <!--<p></p>
-                                <p>--- OR ---</p>
-                                <p></p>
-                                <div id="paypal-button-container"></div>
-                            </div>-->
-
                         </div>
                     </div>
                 </div>

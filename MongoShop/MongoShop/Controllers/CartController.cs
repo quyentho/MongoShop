@@ -182,12 +182,13 @@ namespace MongoShop.Controllers
         {
             var cartCheckoutViewModel = _mapper.Map<CartCheckoutViewModel>(viewModel);
             cartCheckoutViewModel.Total = CalculateTotalPrice(cartCheckoutViewModel.Products);
-            string userId = GetCurrentLoggedInUserId();
-            Cart cart = await _cartServices.GetByUserIdAsync(userId);
 
-            
+            string userId = GetCurrentLoggedInUserId();
+
+            Cart cart = await _cartServices.GetByUserIdAsync(userId);
             cart.Products = cartCheckoutViewModel.Products;
             cart.Total = cartCheckoutViewModel.Total;
+
             // update product order quantity.
             await _cartServices.AddOrUpdateAsync(userId, cart);
 
@@ -199,35 +200,52 @@ namespace MongoShop.Controllers
         {
             try
             {
-
                 var order = new BusinessDomain.Orders.Order();
-
+    
+                //Không hiểu sao cái Total đã tính r lại ko lưu dc, khó hiểu vl
                 order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
+                order.PhoneNumber = cartCheckoutViewModel.PhoneNumber;
+                order.ShipAddress.City = cartCheckoutViewModel.City;
+                order.ShipAddress.Number = cartCheckoutViewModel.AddressNumber;
+                order.ShipAddress.Street = cartCheckoutViewModel.Street;
 
                 string userId = GetCurrentLoggedInUserId();
                 order.UserId = userId;
-                order.CreatedTime = DateTime.Now;
 
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
                 order.OrderedProducts = cartItems;
 
+                //Tính tổng
+                var total = CalculateTotalPrice(cartItems);
+                order.Total = (double)total;
+
                 order.CreatedTime = DateTime.Now;
+
                 order.Invoice = new Invoice()
                 {
                     PaymentMethod = BusinessDomain.Orders.PaymentMethod.ShipCod,
                     Status = BusinessDomain.Orders.InvoiceStatus.Pending
                 };
-
+                order.ShipppingFee = 45000.00;
+                
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
-                return RedirectToAction(nameof(Index));
+                return Redirect("/Cart/CheckoutSuccess/" + order.Id);
             }
             catch (ArgumentOutOfRangeException ex)
             {
                 ModelState.AddModelError(string.Empty,ex.Message);
                 return await Index();
             }
+        }
+
+        [Route("/Cart/CheckoutSuccess/{orderId}")]
+        public async Task<IActionResult> CheckoutSuccess(string orderID)
+        {
+            var order = await _orderServices.GetByIdAsync(orderID);
+
+            return View(order);
         }
 
         public async Task<SmartButtonHttpResponse> PaypalCheckout()
@@ -238,16 +256,11 @@ namespace MongoShop.Controllers
             string userId = GetCurrentLoggedInUserId();
             Cart cartFromDb = await _cartServices.GetByUserIdAsync(userId);
 
-            //var total = Math.Round((double)(cartFromDb.Total / 22000), 2);
-            //var total = cartFromDb.Total.ToString();
             var paypal_orderId = DateTime.Now.Ticks;
 
-            //var itemList = new ItemList()
-            //{
-            //    Items = new List<Item>()
-            //};
             double total = 0;
             var ItemList = new List<Item>();
+
             foreach (var item in cartFromDb.Products)
             {
                 var usd_value = Math.Round(item.Product.Price / 22000, 2);
@@ -259,7 +272,6 @@ namespace MongoShop.Controllers
                     UnitAmount = new Money
                     {
                         CurrencyCode = "USD",
-                        //Value = item.Product.Price.ToString()
                         Value = usd_value.ToString()
                     },
                     Quantity = item.OrderedQuantity.ToString(),
@@ -269,9 +281,10 @@ namespace MongoShop.Controllers
                         CurrencyCode = "USD",
                         Value = "0"
                     },
-                    //Category = item.Product.Category.Name.ToString()
                 });
             }
+
+            var shipping_fee = Math.Round(45000.00 / 22000, 2);
 
             OrderRequest orderRequest = new OrderRequest()
             {
@@ -291,27 +304,27 @@ namespace MongoShop.Controllers
                     {
                         ReferenceId = paypal_orderId.ToString(),
                         Description = $"Invoice #{paypal_orderId}",
-                        //InvoiceId = paypal_orderId.ToString(),
-                        //CustomId = paypal_orderId.ToString(),
                         SoftDescriptor = "Clothings",
                         AmountWithBreakdown = new AmountWithBreakdown
                         {
                             CurrencyCode = "USD",
-                            Value = Math.Round(total,2).ToString(),
+                            Value = (Math.Round(total,2) + shipping_fee).ToString(),
                             AmountBreakdown = new AmountBreakdown
                             {
                                 ItemTotal = new Money
                                 {
                                     CurrencyCode = "USD",
                                     Value = Math.Round(total,2).ToString()
+                                },
+                                Shipping = new Money
+                                {
+                                    CurrencyCode = "USD",
+                                    Value = shipping_fee.ToString()
                                 }
                             }
-
                         },
                         Items = ItemList
-
                     }
-
                 },
             };
 
@@ -321,22 +334,14 @@ namespace MongoShop.Controllers
 
             var response = await client.Execute(request);
 
-                PayPalCheckoutSdk.Orders.Order result = response.Result<PayPalCheckoutSdk.Orders.Order>();
+            PayPalCheckoutSdk.Orders.Order result = response.Result<PayPalCheckoutSdk.Orders.Order>();
 
-                var payPalHttpResponse = new SmartButtonHttpResponse(response)
-                {
-                    orderID = result.Id
-                };
+            var payPalHttpResponse = new SmartButtonHttpResponse(response)
+            {
+                orderID = result.Id
+            };
 
-                return payPalHttpResponse;
-
-
-
-        }
-
-        public IActionResult CheckoutFailed()
-        {
-            return View();
+            return payPalHttpResponse;
         }
 
         [Route("/Cart/CheckoutSuccess/{orderId}/{captureId}")]
@@ -362,7 +367,6 @@ namespace MongoShop.Controllers
                 string userId = GetCurrentLoggedInUserId();
                 order.UserId = userId;
 
-
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
 
                 order.OrderedProducts = cartItems;
@@ -375,7 +379,9 @@ namespace MongoShop.Controllers
 
                 order.CreatedTime = Convert.ToDateTime(result.CreateTime);
 
-                order.Total = Math.Round(Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.Value) * 22000, 0);
+                order.Total = Math.Round(Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.AmountBreakdown.ItemTotal.Value) * 22000, 0);
+                order.ShipppingFee = Math.Round(Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.AmountBreakdown.Shipping.Value) * 22000, 0);
+
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
@@ -384,10 +390,6 @@ namespace MongoShop.Controllers
             catch(ArgumentOutOfRangeException ex)
             {
                 //Execute Refund Procedure
-
-
-                //"94500092JB986153M"
-
                 PayPalCheckoutSdk.Payments.CapturesRefundRequest newrequest = new PayPalCheckoutSdk.Payments.CapturesRefundRequest(captureId);
                 PayPalCheckoutSdk.Payments.RefundRequest refundRequest = new PayPalCheckoutSdk.Payments.RefundRequest()
                 {
@@ -407,5 +409,9 @@ namespace MongoShop.Controllers
 
         }
 
+        public IActionResult CheckoutFailed()
+        {
+            return View();
+        }
     }
 }

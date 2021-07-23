@@ -34,6 +34,9 @@ namespace MongoShop.BusinessDomain.Orders
         [BsonElement("comment")]
         public string Comment { get; set; }
 
+        [BsonElement("shipping_fee")]
+        public double ShipppingFee { get; set; }
+
         [BsonElement("created_time")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreatedTime { get; set; }
