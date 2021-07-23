@@ -196,7 +196,7 @@
                                     <h4>@String.Format("{0:c}", Model.Price) @*<span>629.99</span>*@</h4>
                                 </div>
 																<div>
-																	<a href="~/img/Size.jpg">Hướng dẫn chọn size</a>
+																	<a class="image-link" href="~/img/Size.jpg">Hướng dẫn chọn size</a>
 																</div>
                                 <div class="pd-size-choose">
                                     <div class="sc-item">
@@ -391,7 +391,6 @@
 
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
-        
         function AddToCart(productId) {
             $.post("@Url.Action("Add", "Cart")", { productId: productId})
                 .done(function () {
@@ -399,3 +398,19 @@
                 });
         };
 </script>
+
+@section Scripts{
+<script src="~/js/jquery.magnific-popup.min.js"></script>
+	<script>
+				 $(document).ready(function() {
+					$('.image-link').magnificPopup({
+
+					type: 'image',
+					closeOnContentClick: true,
+					closeBtnInside: false
+
+
+					});
+				});
+	</script>
+}
