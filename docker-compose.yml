@@ -14,6 +14,7 @@ services:
   mongo-express:
     container_name: mongo-express
     image: mongo-express
+    restart: always
     depends_on:
       - mongo
     ports:
@@ -38,6 +39,8 @@ services:
       - mongoshop
     volumes:
       - ${HOME}/.aspnet/https:/https:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   mongodb:

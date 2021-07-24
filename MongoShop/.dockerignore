@@ -284,3 +284,4 @@ Dockerfile
 .env
 .git/
 {"mode":"full","isActive":false}
+.vscode/

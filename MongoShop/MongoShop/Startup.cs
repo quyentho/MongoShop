@@ -121,6 +121,7 @@ namespace MongoShop
                 .AddSmtpSender(new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
+                    UseDefaultCredentials = false,
                     Credentials = new NetworkCredential("mongoshopemail@gmail.com", "passwordofmongoshopemail"),
                     EnableSsl = true
                 });

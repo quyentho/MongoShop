@@ -353,3 +353,5 @@ MongoShop/MongoShop/wwwroot/uploads/*
 MongoShop/MongoShop.Server/uploads/*
 MongoShop/MongoShop.Server/logs/*
 
+.devcontainer
+.vscode
