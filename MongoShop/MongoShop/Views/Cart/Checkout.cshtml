@@ -5,19 +5,7 @@
 @model CartCheckoutViewModel
 
 <!-- Breadcrumb Section Begin -->
-<div class="breacrumb-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb-text product-more">
-                    <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                    <a href="./shop.html">Shop</a>
-                    <span>Check Out</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- Breadcrumb Section Begin -->
 <!-- Shopping Cart Section Begin -->
 <section class="checkout-section spad">
@@ -31,11 +19,11 @@
                     <div class="checkout-content">
                         <a href="javascript:void(0)" class="content-btn">Dùng địa chỉ của tôi</a>
                     </div>
-                    <h4>Billing Details</h4>
+                    <h4>Thông tin giao hàng</h4>
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="fir">Tên người nhận<span></span></label>
-                            <input type="text" id="fir">
+                            <input asp-for="RecipientName" type="text" id="fir">
                         </div>
                         <div class="col-lg-12">
                             <label for="zip">Đường</label>
@@ -64,14 +52,15 @@
                         @*<input type="text" placeholder="Enter Your Coupon Code">*@
                     </div>
                     <div class="place-order">
-                        <h4>Your Order</h4>
+                        <h4>Thông tin đơn hàng</h4>
                         <div class="order-total">
                             <ul class="order-table">
-                                <li>Product <span>Total</span></li>
+                                <li>Sản phẩm <span>Tổng</span></li>
                                 @foreach (var item in Model.Products)
                                 {
                                     <li class="fw-normal">@item.Product.Name x @item.OrderedQuantity <span>@String.Format("{0:0,0 vnđ}", @item.Product.Price * @item.OrderedQuantity)</span></li>
                                 }
+<<<<<<< HEAD
 
                                 <li class="fw-normal">Subtotal <span>@String.Format("{0:0,0 vnđ}", @Model.Total)</span></li>
                                 <li class="fw-normal">Ship <span>@String.Format("{0:0,0 vnđ}", 45000)</span></li>
@@ -79,6 +68,14 @@
                             </ul>
                             <div class="order-btn">
                                 <button type="submit" value="submit" class="site-btn place-btn">Ship COD</button>
+=======
+                                <input asp-for="Total" type="hidden">
+                                <li class="fw-normal">Subtotal <span>@String.Format("{0:c}", @Model.Total)</span></li>
+                                <li class="total-price">Tổng <span>@String.Format("{0:c}", @Model.Total)</span></li>
+                            </ul>
+                            <div class="order-btn">
+                                <button  type="submit" value="submit" class="site-btn place-btn">Thanh toán Ship COD</button>
+>>>>>>> origin/master
                                 @*<button type="submit" asp-action="PaypalCheckout" asp-controller="Cart" class="site-btn place-btn">Paypal</button>*@
                                 <p></p>
                                 <p>--- OR ---</p>

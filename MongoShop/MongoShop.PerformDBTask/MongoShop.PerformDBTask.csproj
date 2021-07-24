@@ -16,5 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\MongoShop.BusinessDomain\MongoShop.BusinessDomain.csproj" />
   </ItemGroup>
-
+				<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+					<None Update="hemstore_dataset.json" CopyToOutputDirectory="PreserveNewest" />
+					<None Update="owen_dataset.json" CopyToOutputDirectory="PreserveNewest" />
+				</ItemGroup>
 </Project>

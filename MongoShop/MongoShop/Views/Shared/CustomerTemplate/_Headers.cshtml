@@ -85,15 +85,19 @@
                 </div>
                 <div class="col-lg-7 col-md-7">
                     <div class="advanced-search">
-                        <button type="button" class="category-btn">Search for all</button>
+                        <button type="button" class="category-btn">Mọi thứ ở đây</button>
                         <form method="get" asp-controller="ElasticSearch" asp-action="Search" class="input-group">
-                            <input name="queryString" type="text" placeholder="What do you need?">
+                            <input name="queryString" type="text" placeholder="Bạn cần tìm gì?">
                             <button type="submit"><i class="ti-search"></i></button>
                         </form>
                     </div>
                     <form id="imageSearchForm" enctype="multipart/form-data" method="post" asp-controller="ImagesSearch" asp-action="SearchForSimilar">
                         <div>
+<<<<<<< HEAD
                             <label for="imageUpload" class="drop-files-container">Upload Image Here To Search</label>
+=======
+                            <label for="imageUpload" class="drop-files-container">Tải ảnh lên để tìm kiếm</label>
+>>>>>>> origin/master
                             <input id="imageUpload" type="file" name="imageUpload" style="visibility:hidden;">
                         </div>
                     </form>

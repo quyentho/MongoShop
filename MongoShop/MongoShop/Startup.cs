@@ -30,9 +30,15 @@ namespace MongoShop
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+
+            var config = new ConfigurationBuilder()
+               .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+               .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+               .AddEnvironmentVariables()
+               .Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -115,6 +121,7 @@ namespace MongoShop
                 .AddSmtpSender(new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
+                    UseDefaultCredentials = false,
                     Credentials = new NetworkCredential("mongoshopemail@gmail.com", "passwordofmongoshopemail"),
                     EnableSsl = true
                 });

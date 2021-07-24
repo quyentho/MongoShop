@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-//using BraintreeHttp;
+using FluentEmail.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -37,6 +37,8 @@ namespace MongoShop.Controllers
         private readonly string _clientId;
         private readonly string _secretKey;
 
+        private readonly IFluentEmail _emailSender;
+
         //public double tyGiaUSD = 23300;
 
         public CartController(IProductServices productServices, 
@@ -44,12 +46,14 @@ namespace MongoShop.Controllers
             UserManager<ApplicationUser> userManager, 
             IMapper mapper,
             IOrderServices orderServices,
+            IFluentEmail emailSender,
             IConfiguration config)
         {
             _productServices = productServices;
             _cartServices = cartServices;
             _userManager = userManager;
             this._mapper = mapper;
+            _emailSender = emailSender;
             this._orderServices = orderServices;
             _clientId = config["PaypalSettings:ClientID"];
             _secretKey = config["PaypalSettings:SecretKey"];
@@ -201,6 +205,7 @@ namespace MongoShop.Controllers
             try
             {
                 var order = new BusinessDomain.Orders.Order();
+<<<<<<< HEAD
     
                 //Không hiểu sao cái Total đã tính r lại ko lưu dc, khó hiểu vl
                 order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
@@ -208,6 +213,10 @@ namespace MongoShop.Controllers
                 order.ShipAddress.City = cartCheckoutViewModel.City;
                 order.ShipAddress.Number = cartCheckoutViewModel.AddressNumber;
                 order.ShipAddress.Street = cartCheckoutViewModel.Street;
+=======
+
+                order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
+>>>>>>> origin/master
 
                 string userId = GetCurrentLoggedInUserId();
                 order.UserId = userId;
@@ -231,7 +240,14 @@ namespace MongoShop.Controllers
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
+<<<<<<< HEAD
                 return Redirect("/Cart/CheckoutSuccess/" + order.Id);
+=======
+
+                await SendOrderEmail(order);
+
+                return RedirectToAction(nameof(Index));
+>>>>>>> origin/master
             }
             catch (ArgumentOutOfRangeException ex)
             {
@@ -240,12 +256,37 @@ namespace MongoShop.Controllers
             }
         }
 
+<<<<<<< HEAD
         [Route("/Cart/CheckoutSuccess/{orderId}")]
         public async Task<IActionResult> CheckoutSuccess(string orderID)
         {
             var order = await _orderServices.GetByIdAsync(orderID);
 
             return View(order);
+=======
+        private async Task SendOrderEmail(BusinessDomain.Orders.Order order)
+        {
+            var email = HttpContext.User.Identity.Name;
+
+            // clear datetime cached
+            System.Globalization.CultureInfo.CurrentCulture.ClearCachedData();
+            var body = "<div>"
+                    + $"<h1>Bạn đã đặt hàng thành công vào lúc {DateTime.Now}</h1>"
+                    + "</div>"
+                    + "<div>"
+                    + "<h2>Đơn hàng gồm</h2>"
+                    + "<ul>";
+            foreach (var item in order.OrderedProducts)
+            {
+                body += $"<li>{item.Product.Name}&nbsp;:{item.Product.Price}x{item.OrderedQuantity}&nbsp;={item.Product.Price * item.OrderedQuantity}</li>";
+            }
+            body += "</ul>";
+            body += $"<h2>Tổng giá trị đơn hàng: <b>{order.Total}</b></h2></div>";
+            await _emailSender
+                    .To(email).Subject("Xác nhận đặt hàng tại MongoShop")
+                    .Body(body, true)
+                    .SendAsync();
+>>>>>>> origin/master
         }
 
         public async Task<SmartButtonHttpResponse> PaypalCheckout()
@@ -385,6 +426,9 @@ namespace MongoShop.Controllers
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
+
+                SendOrderEmail(order);
+
                 return View(order);
             }
             catch(ArgumentOutOfRangeException ex)

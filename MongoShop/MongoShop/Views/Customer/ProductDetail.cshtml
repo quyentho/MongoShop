@@ -195,6 +195,7 @@
                                     </p>
                                     <h4>@String.Format("{0:0,0 vnđ}", Model.Price) @*<span>629.99</span>*@</h4>
                                 </div>
+<<<<<<< HEAD
                                 @*<div class="pd-color">
                                     <h6>Color</h6>
                                     <div class="pd-color-choose">
@@ -212,6 +213,11 @@
                                         </div>
                                     </div>
                                 </div>*@
+=======
+																<div>
+																	<a class="image-link" href="~/img/Size.jpg">Hướng dẫn chọn size</a>
+																</div>
+>>>>>>> origin/master
                                 <div class="pd-size-choose">
                                     <div class="sc-item">
                                         <input type="radio" id="sm-size">
@@ -405,7 +411,6 @@
 
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
-        
         function AddToCart(productId) {
             $.post("@Url.Action("Add", "Cart")", { productId: productId})
                 .done(function () {
@@ -413,3 +418,19 @@
                 });
         };
 </script>
+
+@section Scripts{
+<script src="~/js/jquery.magnific-popup.min.js"></script>
+	<script>
+				 $(document).ready(function() {
+					$('.image-link').magnificPopup({
+
+					type: 'image',
+					closeOnContentClick: true,
+					closeBtnInside: false
+
+
+					});
+				});
+	</script>
+}
