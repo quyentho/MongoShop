@@ -1,4 +1,4 @@
-/*  ---------------------------------------------------
+﻿/*  ---------------------------------------------------
     Template Name: Fashi
     Description: Fashi eCommerce HTML Template
     Author: Colorlib
@@ -249,7 +249,7 @@
             }
         }
         $button.parent().find('input').val(newVal);
-        $(this).parent().parent().parent().parent().children('#prod-total').text((newVal * productPrice));
+        $(this).parent().parent().parent().parent().children('#prod-total').text((newVal * productPrice) + " vnđ");
         Calculate();
 
 
@@ -266,7 +266,7 @@
                 subtotal += parseFloat(parseFloat($(this).text().replace(',', '').replace('$','')));
             })
         });
-        $('#all-prod-total').text(subtotal.toFixed(2));
+        $('#all-prod-total').text(subtotal.toFixed(0)+ " vnđ");
     }
 
 })(jQuery);

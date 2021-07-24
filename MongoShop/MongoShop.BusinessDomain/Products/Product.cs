@@ -40,6 +40,9 @@ namespace MongoShop.BusinessDomain.Products
         [BsonElement("images")]
         public List<string> Images { get; set;}
 
+        [BsonElement("description")]
+        public string Description { get; set; }
+
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreatedAt { get; set; }
 

@@ -308,7 +308,7 @@ namespace MongoShop.Controllers
                         AmountWithBreakdown = new AmountWithBreakdown
                         {
                             CurrencyCode = "USD",
-                            Value = (Math.Round(total,2) + shipping_fee).ToString(),
+                            Value = Math.Round(Math.Round(total,2) + shipping_fee,2).ToString(),
                             AmountBreakdown = new AmountBreakdown
                             {
                                 ItemTotal = new Money
@@ -319,7 +319,7 @@ namespace MongoShop.Controllers
                                 Shipping = new Money
                                 {
                                     CurrencyCode = "USD",
-                                    Value = shipping_fee.ToString()
+                                    Value = Math.Round(shipping_fee,2).ToString()
                                 }
                             }
                         },

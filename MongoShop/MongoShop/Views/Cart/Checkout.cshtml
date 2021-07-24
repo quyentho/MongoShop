@@ -74,7 +74,8 @@
                                 }
 
                                 <li class="fw-normal">Subtotal <span>@String.Format("{0:0,0 vnđ}", @Model.Total)</span></li>
-                                <li class="total-price">Total <span>@String.Format("{0:0,0 vnđ}", @Model.Total)</span></li>
+                                <li class="fw-normal">Ship <span>@String.Format("{0:0,0 vnđ}", 45000)</span></li>
+                                <li class="total-price">Total <span>@String.Format("{0:0,0 vnđ}", @Model.Total + 45000)</span></li>
                             </ul>
                             <div class="order-btn">
                                 <button type="submit" value="submit" class="site-btn place-btn">Ship COD</button>
