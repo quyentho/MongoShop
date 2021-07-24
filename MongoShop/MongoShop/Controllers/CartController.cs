@@ -359,9 +359,6 @@ namespace MongoShop.Controllers
                 };
 
                 return payPalHttpResponse;
-
-
-
         }
 
         public IActionResult CheckoutFailed()
