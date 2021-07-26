@@ -28,8 +28,8 @@ namespace MongoShop.BusinessDomain.Products
         [BsonElement("price")]
         public double Price { get; set; }
 
-	[BsonElement("description")]
-	public List<string> Description {get;set;}
+	    //[BsonElement("description")]
+	    //public List<string> Description {get;set;}
 
         [BsonElement("stock_quantity")]
         public int StockQuantity { get; set; }

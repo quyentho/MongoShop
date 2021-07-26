@@ -20,5 +20,7 @@ namespace MongoShop.Models.Customer
         public string Category { get; set; }
 
         public List<string> Images { get; set; }
+
+        public string Description { get; set; }
     }
 }

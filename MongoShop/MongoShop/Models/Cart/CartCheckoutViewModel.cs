@@ -13,7 +13,7 @@ namespace MongoShop.Models.Cart
         [Required(ErrorMessage="Tên người nhận là bắt buôc")]
         public string RecipientName {get;set;}
         public double? Total { get; set; }
-<<<<<<< HEAD
+        /*
         [Required]
         public string Street { get; set; }
         [Required]
@@ -24,7 +24,7 @@ namespace MongoShop.Models.Cart
         public string PhoneNumber { get; set; }
 
         public string Comment { get; set; }
-=======
+        */
 
         [Required(ErrorMessage="Tên đường là bắt buộc")]
         public string Street { get; set; }
@@ -38,6 +38,5 @@ namespace MongoShop.Models.Cart
         public string PhoneNumber { get; set; }
 
         public string Comment{get;set;}
->>>>>>> origin/master
     }
 }

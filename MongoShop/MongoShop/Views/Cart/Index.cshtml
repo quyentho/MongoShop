@@ -77,11 +77,7 @@
                                 <input type="hidden" asp-for="@Model.Total" />
                                 <ul>
                                     @* <li class="subtotal">Subtotal <span>$240.00</span></li> *@
-<<<<<<< HEAD
                                     <li class="cart-total">Total <span id="all-prod-total">@String.Format("{0:0,0 vnđ}", Model.Total)</span></li>
-=======
-                                    <li class="cart-total">Tổng <span id="all-prod-total">@String.Format("{0:c}", Model.Total)</span></li>
->>>>>>> origin/master
                                 </ul>
                                 <a><button asp-controller="Cart" asp-action="Checkout" type="submit" value="submit" class="proceed-btn">Đi đến thanh toán</button></a>
                             </div>

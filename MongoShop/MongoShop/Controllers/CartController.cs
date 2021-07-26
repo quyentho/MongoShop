@@ -205,18 +205,15 @@ namespace MongoShop.Controllers
             try
             {
                 var order = new BusinessDomain.Orders.Order();
-<<<<<<< HEAD
-    
+
                 //Không hiểu sao cái Total đã tính r lại ko lưu dc, khó hiểu vl
                 order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
                 order.PhoneNumber = cartCheckoutViewModel.PhoneNumber;
                 order.ShipAddress.City = cartCheckoutViewModel.City;
                 order.ShipAddress.Number = cartCheckoutViewModel.AddressNumber;
                 order.ShipAddress.Street = cartCheckoutViewModel.Street;
-=======
 
                 order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
->>>>>>> origin/master
 
                 string userId = GetCurrentLoggedInUserId();
                 order.UserId = userId;
@@ -240,14 +237,9 @@ namespace MongoShop.Controllers
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
-<<<<<<< HEAD
+                //await SendOrderEmail(order);
+
                 return Redirect("/Cart/CheckoutSuccess/" + order.Id);
-=======
-
-                await SendOrderEmail(order);
-
-                return RedirectToAction(nameof(Index));
->>>>>>> origin/master
             }
             catch (ArgumentOutOfRangeException ex)
             {
@@ -256,22 +248,23 @@ namespace MongoShop.Controllers
             }
         }
 
-<<<<<<< HEAD
+
         [Route("/Cart/CheckoutSuccess/{orderId}")]
         public async Task<IActionResult> CheckoutSuccess(string orderID)
         {
             var order = await _orderServices.GetByIdAsync(orderID);
 
             return View(order);
-=======
+        }
+
         private async Task SendOrderEmail(BusinessDomain.Orders.Order order)
         {
             var email = HttpContext.User.Identity.Name;
 
             // clear datetime cached
-            System.Globalization.CultureInfo.CurrentCulture.ClearCachedData();
+            //System.Globalization.CultureInfo.CurrentCulture.ClearCachedData();
             var body = "<div>"
-                    + $"<h1>Bạn đã đặt hàng thành công vào lúc {DateTime.Now}</h1>"
+                    + $"<h1>Bạn đã đặt hàng thành công vào lúc {order.CreatedTime}</h1>"
                     + "</div>"
                     + "<div>"
                     + "<h2>Đơn hàng gồm</h2>"
@@ -286,7 +279,7 @@ namespace MongoShop.Controllers
                     .To(email).Subject("Xác nhận đặt hàng tại MongoShop")
                     .Body(body, true)
                     .SendAsync();
->>>>>>> origin/master
+
         }
 
         public async Task<SmartButtonHttpResponse> PaypalCheckout()
@@ -427,7 +420,7 @@ namespace MongoShop.Controllers
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
 
-                SendOrderEmail(order);
+                //await SendOrderEmail(order);
 
                 return View(order);
             }
