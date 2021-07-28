@@ -381,8 +381,8 @@ namespace MongoShop.Controllers
             return payPalHttpResponse;
         }
 
-        [Route("/Cart/CheckoutSuccess/{orderId}/{captureId}/{AddressNumber}/{Street}/{Town}/{Phone}")]
-        public async Task<IActionResult> CheckoutSuccess(string orderId ,string captureId, string AddressNumber, string Street, string Town, string Phone, [FromForm] CartCheckoutViewModel cartCheckoutViewModel)
+        [Route("/Cart/CheckoutSuccess/{orderId}/{captureId}")]
+        public async Task<IActionResult> CheckoutSuccess(string orderId ,string captureId, [FromForm] CartCheckoutViewModel cartCheckoutViewModel)
         {
             var environment = new SandboxEnvironment(_clientId, _secretKey);
             var client = new PayPalHttpClient(environment);
@@ -402,24 +402,20 @@ namespace MongoShop.Controllers
                 //var contact = user.Contact;
                 order.UserId = userId;
 
-                /*
-                if(contact == null)
+                
+                if(TempData["Street"] == null || TempData["AddressNumber"] == null || TempData["Town"] == null || TempData["Phone"] == null)
                 {
                     order.ShipAddress.Street = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1;
                     order.ShipAddress.City = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AdminArea2;
                 }
                 else
                 {
-                    order.ShipAddress.Number = contact.Address.Street;
-                    order.ShipAddress.Street = contact.Address.Number;
-                    order.ShipAddress.City = contact.Address.City;
-                }*/
-
-                order.ShipAddress.Number = Street;
-                order.ShipAddress.Street = AddressNumber;
-                order.ShipAddress.City = Town;
-                order.PhoneNumber = Phone;
-
+                    order.ShipAddress.Number = TempData["Street"].ToString();
+                    order.ShipAddress.Street = TempData["AddressNumber"].ToString();
+                    order.ShipAddress.City = TempData["Town"].ToString();
+                    order.PhoneNumber = TempData["Phone"].ToString();
+                }
+                
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
                 order.OrderedProducts = cartItems;
 

@@ -111,9 +111,24 @@
             }).then(function (details) {
                 if (details.status === "COMPLETED") {
                     alert('Transaction funds captured from ' + details.purchase_units[0].payments.captures[0].id);
-                    document.location.href = '/Cart/CheckoutSuccess/' + data.orderID + '/' + details.purchase_units[0].payments.captures[0].id + '/' + document.getElementById("address-number").value +'/' + document.getElementById("street").value + '/' + document.getElementById("town").value + '/' + document.getElementById("phone").value;
+                    document.location.href = '/Cart/CheckoutSuccess/' + data.orderID + '/' + details.purchase_units[0].payments.captures[0].id;
                 }
             });
+        },
+
+        onClick: function () {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("TempAddress","Cart")",
+                data: {
+                    AddressNumber: document.getElementById("address-number").value,
+                    Street: document.getElementById("street").value,
+                    Town: document.getElementById("town").value,
+                    Phone: document.getElementById("phone").value
+                },
+                success: function () {
+                }
+            })
         },
 
         onCancel: function (data, actions) {
