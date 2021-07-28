@@ -381,8 +381,8 @@ namespace MongoShop.Controllers
             return payPalHttpResponse;
         }
 
-        [Route("/Cart/CheckoutSuccess/{orderId}/{captureId}")]
-        public async Task<IActionResult> CheckoutSuccess(string orderId ,string captureId,[FromForm] CartCheckoutViewModel cartCheckoutViewModel)
+        [Route("/Cart/CheckoutSuccess/{orderId}/{captureId}/{AddressNumber}/{Street}/{Town}/{Phone}")]
+        public async Task<IActionResult> CheckoutSuccess(string orderId ,string captureId, string AddressNumber, string Street, string Town, string Phone, [FromForm] CartCheckoutViewModel cartCheckoutViewModel)
         {
             var environment = new SandboxEnvironment(_clientId, _secretKey);
             var client = new PayPalHttpClient(environment);
@@ -397,14 +397,12 @@ namespace MongoShop.Controllers
                 //Mapper doesn't work because haven't call any asp-action via Paypal Checkout Button, cartCheckoutViewModel will be null
                 order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
 
-
-
                 string userId = GetCurrentLoggedInUserId();
-                var user = await _userServices.GetActiveUserByIdAsync(userId);
-                var contact = user.Contact;
+                //var user = await _userServices.GetActiveUserByIdAsync(userId);
+                //var contact = user.Contact;
                 order.UserId = userId;
-                
-                //order.PhoneNumber = result.Payer;
+
+                /*
                 if(contact == null)
                 {
                     order.ShipAddress.Street = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1;
@@ -415,7 +413,12 @@ namespace MongoShop.Controllers
                     order.ShipAddress.Number = contact.Address.Street;
                     order.ShipAddress.Street = contact.Address.Number;
                     order.ShipAddress.City = contact.Address.City;
-                }
+                }*/
+
+                order.ShipAddress.Number = Street;
+                order.ShipAddress.Street = AddressNumber;
+                order.ShipAddress.City = Town;
+                order.PhoneNumber = Phone;
 
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
                 order.OrderedProducts = cartItems;
@@ -465,5 +468,17 @@ namespace MongoShop.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult TempAddress(string AddressNumber, string Street, string Town, string Phone)
+        {
+            TempData["AddressNumber"] = AddressNumber;
+            TempData["Street"] = Street;
+            TempData["Town"] = Town;
+            TempData["Phone"] = Phone;
+
+            return Ok();
+        }
+
     }
 }

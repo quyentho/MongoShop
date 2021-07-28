@@ -27,21 +27,21 @@
                         </div>
                         <div class="col-lg-12">
                             <label for="zip">Đường</label>
-                            <input asp-for="AddressNumber" type="text" id="address-number" required>
+                            <input asp-for="AddressNumber" type="text" id="address-number" name="address-number" required>
                         </div>
                         <span asp-validation-for="AddressNumber" class="text-danger"></span>
 
                         <div class="col-lg-12">
                             <label for="street">Phường/xã<span>*</span></label>
-                            <input asp-for="Street" type="text" id="street" class="street-first" required>
+                            <input asp-for="Street" type="text" id="street" class="street-first" name="street" required>
                         </div>
                         <div class="col-lg-12">
                             <label for="town">Thành Phố<span>*</span></label>
-                            <input asp-for="City" type="text" id="town" required>
+                            <input asp-for="City" type="text" id="town" name="town" required>
                         </div>
                         <div class="col-lg-12">
                             <label for="phone">SĐT<span>*</span></label>
-                            <input asp-for="PhoneNumber" type="text" id="phone" required>
+                            <input asp-for="PhoneNumber" type="text" id="phone" name="phone" required>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                                 <p></p>
                                 <p>--- Hoặc ---</p>
                                 <p></p>
-                                <div id="paypal-button-container"></div>
+                                <div  id="paypal-button-container"></div>
                             </div>
 
                         </div>
@@ -88,6 +88,8 @@
 <script>
 
     var orderID;
+
+
 
     paypal.Buttons({
         createOrder: function (data, actions) {
@@ -109,7 +111,7 @@
             }).then(function (details) {
                 if (details.status === "COMPLETED") {
                     alert('Transaction funds captured from ' + details.purchase_units[0].payments.captures[0].id);
-                    document.location.href = '/Cart/CheckoutSuccess/' + data.orderID + '/' + details.purchase_units[0].payments.captures[0].id;
+                    document.location.href = '/Cart/CheckoutSuccess/' + data.orderID + '/' + details.purchase_units[0].payments.captures[0].id + '/' + document.getElementById("address-number").value +'/' + document.getElementById("street").value + '/' + document.getElementById("town").value + '/' + document.getElementById("phone").value;
                 }
             });
         },
@@ -131,7 +133,9 @@
             tagline: true
         },
     }).render('#paypal-button-container');
-  
+
+
+
 </script>
 
 @section Scripts{ 
@@ -149,5 +153,27 @@
 
             });
         })
+
+        @*$("").click(function () {
+            var AddressNumber = $("#address-number").val();
+            var Street = $("#street").val();
+            var Town = $("#town").val();
+            var Phone = $("#phone").val();
+            console.log(AddressNumber);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("TempAddress","Cart")",
+                data: JSON.stringify({
+                    AddressNumber: AddressNumber,
+                    Street: Street,
+                    Town: Town,
+                    Phone: Phone
+                }),
+                success: function () {
+                    alert("Data has been added successfully.");
+                }
+            })
+        });*@
     </script>
 }
+
