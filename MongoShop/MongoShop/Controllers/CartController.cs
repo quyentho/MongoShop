@@ -32,6 +32,7 @@ namespace MongoShop.Controllers
         private readonly IProductServices _productServices;
         private readonly ICartServices _cartServices;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserServices _userServices;//Mới thêm vào
         private readonly IMapper _mapper;
         private readonly IOrderServices _orderServices;
         private readonly string _clientId;
@@ -43,7 +44,8 @@ namespace MongoShop.Controllers
 
         public CartController(IProductServices productServices, 
             ICartServices cartServices, 
-            UserManager<ApplicationUser> userManager, 
+            UserManager<ApplicationUser> userManager,
+            IUserServices userServices,
             IMapper mapper,
             IOrderServices orderServices,
             IFluentEmail emailSender,
@@ -52,6 +54,7 @@ namespace MongoShop.Controllers
             _productServices = productServices;
             _cartServices = cartServices;
             _userManager = userManager;
+            _userServices = userServices;//Mới thêm vào
             this._mapper = mapper;
             _emailSender = emailSender;
             this._orderServices = orderServices;
@@ -262,7 +265,7 @@ namespace MongoShop.Controllers
             var email = HttpContext.User.Identity.Name;
 
             // clear datetime cached
-            //System.Globalization.CultureInfo.CurrentCulture.ClearCachedData();
+            System.Globalization.CultureInfo.CurrentCulture.ClearCachedData();
             var body = "<div>"
                     + $"<h1>Bạn đã đặt hàng thành công vào lúc {order.CreatedTime}</h1>"
                     + "</div>"
@@ -379,7 +382,7 @@ namespace MongoShop.Controllers
         }
 
         [Route("/Cart/CheckoutSuccess/{orderId}/{captureId}")]
-        public async Task<IActionResult> CheckoutSuccess(string orderId ,string captureId, [FromForm] CartCheckoutViewModel cartCheckoutViewModel)
+        public async Task<IActionResult> CheckoutSuccess(string orderId ,string captureId,[FromForm] CartCheckoutViewModel cartCheckoutViewModel)
         {
             var environment = new SandboxEnvironment(_clientId, _secretKey);
             var client = new PayPalHttpClient(environment);
@@ -394,15 +397,27 @@ namespace MongoShop.Controllers
                 //Mapper doesn't work because haven't call any asp-action via Paypal Checkout Button, cartCheckoutViewModel will be null
                 order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
 
-                //order.PhoneNumber = result.Payer;
-                order.ShipAddress.Street = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1;
-                order.ShipAddress.City = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AdminArea2;
+
 
                 string userId = GetCurrentLoggedInUserId();
+                var user = await _userServices.GetActiveUserByIdAsync(userId);
+                var contact = user.Contact;
                 order.UserId = userId;
+                
+                //order.PhoneNumber = result.Payer;
+                if(contact == null)
+                {
+                    order.ShipAddress.Street = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1;
+                    order.ShipAddress.City = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AdminArea2;
+                }
+                else
+                {
+                    order.ShipAddress.Number = contact.Address.Street;
+                    order.ShipAddress.Street = contact.Address.Number;
+                    order.ShipAddress.City = contact.Address.City;
+                }
 
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
-
                 order.OrderedProducts = cartItems;
 
                 order.Invoice = new Invoice
