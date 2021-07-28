@@ -9,7 +9,7 @@ using MongoShop.BusinessDomain.Categories;
 
 namespace MongoShop.BusinessDomain.Products
 {
-    [BsonIgnoreExtraElements]
+    //[BsonIgnoreExtraElements]
     public class Product
     {
 
@@ -28,8 +28,8 @@ namespace MongoShop.BusinessDomain.Products
         [BsonElement("price")]
         public double Price { get; set; }
 
-	[BsonElement("description")]
-	public List<string> Description {get;set;}
+        [BsonElement("description")]
+        public List<string> Description {get;set;}
 
         [BsonElement("stock_quantity")]
         public int StockQuantity { get; set; }
@@ -43,12 +43,17 @@ namespace MongoShop.BusinessDomain.Products
         [BsonElement("images")]
         public List<string> Images { get; set;}
 
+        [BsonElement("CreatedAt")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreatedAt { get; set; }
 
+        [BsonElement("UpdatedAt")]
         public DateTime UpdatedAt { get; set; }
        
+        [BsonElement("Category")]
         public Category Category { get; set; }
+
+        [BsonElement("SubCategory")]
         public Category SubCategory { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace MongoShop.BusinessDomain.Carts
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
+        [BsonElement("Products")]
         public List<OrderedProduct> Products { get; set; } = new List<OrderedProduct>();
 
         public double? Total { get; set; }
