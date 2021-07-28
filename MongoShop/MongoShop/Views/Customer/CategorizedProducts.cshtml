@@ -87,15 +87,6 @@
 
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
-
-    function AddToCart(productId) {
-        $.post("@Url.Action("Add", "Cart")", { productId: productId})
-            .done(function () {
-                            alert("product added to your cart");
-        });
-    };
-
-
     function AddToWishList(productId) {
         $.post("@Url.Action("Add", "Wishlist")", { productId: productId})
             .done(function () {

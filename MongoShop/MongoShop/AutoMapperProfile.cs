@@ -90,7 +90,6 @@ namespace MongoShop
                .ForPath(dest => dest.ShipAddress.Street, opt => opt.MapFrom(scr => scr.Street))
                .ForPath(dest => dest.ShipAddress.Number, opt => opt.MapFrom(scr => scr.AddressNumber))
                .ForPath(dest => dest.ShipAddress.City, opt => opt.MapFrom(scr => scr.City));
-
             #endregion
 
             #region Cart
