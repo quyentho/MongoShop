@@ -62,6 +62,7 @@ namespace MongoShop.Controllers
                 AccessoriesCollection = accessoriesViewModel
             };
 
+            
             return View(model);
         }
 
