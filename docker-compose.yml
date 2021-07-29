@@ -21,26 +21,26 @@ services:
       - 8081:8081
     networks:
       - mongoshop
-  mongoshop:
-    container_name: mongoshop
-    image: mongoshop
-    build: ./MongoShop
-    ports:
-      - 5000:5000
-      - 5001:5001
-    depends_on:
-      - mongo
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      DatabaseSetting__ConnectionString: "mongodb://mongo:27017"
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "quyen123"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
-    networks:
-      - mongoshop
-    volumes:
-      - ${HOME}/.aspnet/https:/https:ro
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+        #  mongoshop:
+        #    container_name: mongoshop
+        #    image: mongoshop
+        #    build: ./MongoShop
+        #    ports:
+        #      - 5000:5000
+        #      - 5001:5001
+        #    depends_on:
+        #      - mongo
+        #    environment:
+        #      ASPNETCORE_ENVIRONMENT: Development
+        #      DatabaseSetting__ConnectionString: "mongodb://mongo:27017"
+        #      ASPNETCORE_Kestrel__Certificates__Default__Password: "quyen123"
+        #      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+        #    networks:
+        #      - mongoshop
+        #    volumes:
+        #      - ${HOME}/.aspnet/https:/https:ro
+        #      - /etc/timezone:/etc/timezone:ro
+        #      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   mongodb:

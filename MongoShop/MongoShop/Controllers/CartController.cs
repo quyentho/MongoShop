@@ -17,6 +17,7 @@ using MongoShop.BusinessDomain.Products;
 using MongoShop.BusinessDomain.Users;
 using MongoShop.Infrastructure.Extensions;
 using MongoShop.Models.Cart;
+using MongoShop.Utils;
 //using PayPal.Core;
 //using PayPal.v1.Payments;
 using PayPalCheckoutSdk.Core;
@@ -78,7 +79,7 @@ namespace MongoShop.Controllers
                 cartFromDb.Products = new List<OrderedProduct>();
             }
 
-            Cart cartFromSession = await GetCartFromSession();
+            Cart cartFromSession = await CartHelper.GetCartFromSession(HttpContext, _productServices);
 
             if (cartFromSession != null && cartFromSession.Products.Count > 0)
             {
@@ -117,32 +118,6 @@ namespace MongoShop.Controllers
         {
             // sum price * quantity for each product. If product is null then total = 0.
             return products?.Sum(o => o.Product.Price * o.OrderedQuantity) ?? 0;
-        }
-
-        private async Task<Cart> GetCartFromSession()
-        {
-            Cart cart = new Cart();
-
-            List<string> listShoppingCart = HttpContext.Session.Get<List<string>>("ssShoppingCart");
-
-            
-            if (listShoppingCart != null)
-            {
-                foreach (var productId in listShoppingCart)
-                {
-                    var productFromDb = await _productServices.GetByIdAsync(productId);
-
-                    cart.Products.Add(new OrderedProduct()
-                    {
-                        OrderedQuantity = 1,
-                        Product = productFromDb
-                    });
-
-                    cart.Total += productFromDb.Price;
-                }
-            }
-
-            return cart;
         }
 
         private string GetCurrentLoggedInUserId()
@@ -440,7 +415,7 @@ namespace MongoShop.Controllers
 
                 return View(order);
             }
-            catch(ArgumentOutOfRangeException ex)
+            catch(ArgumentOutOfRangeException)
             {
                 //Execute Refund Procedure
                 PayPalCheckoutSdk.Payments.CapturesRefundRequest newrequest = new PayPalCheckoutSdk.Payments.CapturesRefundRequest(captureId);
@@ -460,6 +435,22 @@ namespace MongoShop.Controllers
                 return Redirect("/Cart/CheckoutFailed");
             }
 
+
+        }
+
+
+        public async Task<ActionResult> GetCurrentCartCountAsync()
+        {   
+            await CartHelper.SetCartCount(HttpContext, _productServices, _userManager, _cartServices, ViewData);
+
+            return PartialView("Views/Shared/CustomerTemplate/CartSummary.cshtml");
+        }
+
+        public ActionResult IncreaseCartCount(int currentCount = 0)
+        {   
+            ViewData["CartCount"] = ++currentCount;
+
+            return PartialView("Views/Shared/CustomerTemplate/CartSummary.cshtml");
         }
 
         public IActionResult CheckoutFailed()

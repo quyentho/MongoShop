@@ -9,6 +9,10 @@ using MongoShop.Models.Customer;
 using MongoShop.Infrastructure.Services.FileUpload;
 using MongoShop.Utils;
 using System;
+using MongoShop.BusinessDomain.Carts;
+using Microsoft.AspNetCore.Identity;
+using MongoShop.BusinessDomain.Users;
+using MongoShop.BusinessDomain.Orders;
 
 namespace MongoShop.Controllers
 {
@@ -20,26 +24,33 @@ namespace MongoShop.Controllers
         private readonly IMapper _mapper;
         private readonly IFileUploadService _fileUploadService;
 
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ICartServices _cartServices;
+
         public CustomerController(IProductServices productServices,
             IMapper mapper,
             ICategoryServices categoryServices,
-            IFileUploadService fileUploadService, 
-            IHomePageProductServices homePageProductServices)
+            IFileUploadService fileUploadService,
+            IHomePageProductServices homePageProductServices,
+            ICartServices cartServices, 
+            UserManager<ApplicationUser> userManager)
         {
             _productServices = productServices;
             _mapper = mapper;
             _categoryServices = categoryServices;
             _fileUploadService = fileUploadService;
             _homePageProductServices = homePageProductServices;
+            _cartServices = cartServices;
+            _userManager = userManager;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var shirtCate =await _categoryServices.GetByNameAsync("Áo");
-            var trouserCate =await _categoryServices.GetByNameAsync("Quần");
-            var accessoriesCate =await _categoryServices.GetByNameAsync("Phụ Kiện");
-            
+            var shirtCate = await _categoryServices.GetByNameAsync("Áo");
+            var trouserCate = await _categoryServices.GetByNameAsync("Quần");
+            var accessoriesCate = await _categoryServices.GetByNameAsync("Phụ Kiện");
+
             var shirts = await _homePageProductServices.GetByMainCategoryAsync(shirtCate);
             ViewData["shirtCateId"] = shirtCate.Id;
 
@@ -81,7 +92,10 @@ namespace MongoShop.Controllers
         {
             var product = await _productServices.GetByIdAsync(id);
 
+
             var customerProductDetailViewModel = _mapper.Map<CustomerProductDetailViewModel>(product);
+             
+            
 
             return View(customerProductDetailViewModel);
         }
@@ -91,6 +105,9 @@ namespace MongoShop.Controllers
         {
             ViewData["categoryId"] = categoryId;
             ViewData["isMainCate"] = true;
+            
+            
+            
             var category = await _categoryServices.GetByIdAsync(categoryId);
             
             var products = await _productServices.GetByMainCategoryAsync(category);
@@ -105,6 +122,7 @@ namespace MongoShop.Controllers
         {
             ViewData["categoryId"] = categoryId;
             ViewData["isMainCate"] = false;
+
             var category = await _categoryServices.GetByIdAsync(categoryId);
 
             var products = await _productServices.GetBySubCategoryAsync(category);

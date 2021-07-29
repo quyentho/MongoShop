@@ -10,11 +10,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="breadcrumb-text product-more">
-                        <a href="./home.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./shop.html">Shop</a>
-                        <span>Chi tiết</span>
-                    </div>
+                   
                 </div>
             </div>
         </div>
@@ -24,6 +20,7 @@
     <section class="product-shop spad page-details">
         <div class="container">
             <div class="row">
+               
                 <div class="col-lg-9">
                     <div class="row">
                         <div class="col-lg-6">
@@ -33,22 +30,6 @@
                                     <i class="fa fa-search-plus"></i>
                                 </div>
                             </div>
-                            @*<div class="product-thumbs">
-                                <div class="product-thumbs-track ps-slider owl-carousel">
-                                    <div class="pt active" data-imgbigurl="/Custom/img/product-single/product-1.jpg">
-                                        <img src="~/Custom/img/product-single/product-1.jpg" alt="">
-                                    </div>
-                                    <div class="pt " data-imgbigurl="/Custom/img/product-single/product-2.jpg">
-                                        <img src="~/Custom/img/product-single/product-2.jpg" alt="">
-                                    </div> 
-                                    <div class="pt " data-imgbigurl="/Custom/img/product-single/product-3.jpg">
-                                        <img src="~/Custom/img/product-single/product-3.jpg" alt="">
-                                    </div>
-                                    <div class="pt " data-imgbigurl="/Custom/img/product-single/product-3.jpg">
-                                        <img src="~/Custom/img/product-single/product-3.jpg" alt="">
-                                    </div>
-                                </div>
-                            </div>*@
                         </div>
                         <div class="col-lg-6">
                             <div class="product-details">
@@ -111,9 +92,6 @@
                                     </div>
                                 </div>
                                 <div class="quantity">
-                                    @* <div class="pro-qty">
-                                        <input id="prod-ordered-qty" type="text" value="1">
-                                    </div> *@
                                     <a href="javascript:void(0)" class="primary-btn pd-cart" onclick="AddToCart('@Model.Id');">Thêm vào giỏ hàng</a>
                                 </div>
                                 <ul class="pd-tags">
@@ -286,15 +264,30 @@
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
         function AddToCart(productId) {
-            $.post("@Url.Action("Add", "Cart")", { productId: productId})
+            var selectedSize;
+            
+            if($('label.active').text() != "") {
+                selectedSize = $('label.active').text();
+                $.post("@Url.Action("Add", "Cart")", { productId: productId, size: selectedSize})
                 .done(function () {
-                    alert("product added to your cart");
+                    alert("Thêm vào giỏ hàng thành công");
+
+                    var currentCount = $("#lblCartCount").text();
+                    
+                    $.get('@Url.Action("IncreaseCartCount", "Cart")', {currentCount : currentCount}, function(content){
+                        $("#lblCartCount").html(content);
+                    });
+                    
                 });
+            }else{
+                alert("Mời chọn size");
+            }
         };
+
         function AddToWishList(productId) {
         $.post("@Url.Action("Add", "Wishlist")", { productId: productId})
             .done(function () {
-                            alert("product added to your wishlist");
+                            alert("Thêm vào yêu thích thành công");
         });
         };
 </script>

@@ -38,7 +38,6 @@
                                             <a href="javascript:void(0)" onclick="AddToWishList('@item.Id');"><i class="icon_heart_alt"></i></a>
                                         </div>
                                         <ul>
-                                            <li class="w-icon active"><a href="javascript:void(0)" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
                                             <li class="quick-view"><a href="@Url.Action("ProductDetail", new { id = item.Id })">+ Chi Tiết</a></li>
                                         </ul>
                                     </div>
@@ -88,15 +87,6 @@
 
 <script src="~/js/jquery.min.js"></script>
 <script type="text/javascript">
-
-    function AddToCart(productId) {
-        $.post("@Url.Action("Add", "Cart")", { productId: productId})
-            .done(function () {
-                            alert("product added to your cart");
-        });
-    };
-
-
     function AddToWishList(productId) {
         $.post("@Url.Action("Add", "Wishlist")", { productId: productId})
             .done(function () {

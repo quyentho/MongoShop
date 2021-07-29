@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MongoShop.BusinessDomain.Orders;
 using MongoShop.BusinessDomain.Users;
+using System.Linq;
 
 namespace MongoShop.BusinessDomain.Carts
 {
@@ -18,7 +19,7 @@ namespace MongoShop.BusinessDomain.Carts
         public async Task<List<OrderedProduct>> GetItemsByUserIdAsync(string userId)
         {
             var user = await _userServices.GetActiveUserByIdAsync(userId);
-
+            
             if (user is null)
             {
                 throw new KeyNotFoundException("user is not exists");
@@ -26,6 +27,7 @@ namespace MongoShop.BusinessDomain.Carts
 
             var cartItems = user.Cart.Products;
 
+            
             return cartItems;
         }
         
@@ -38,6 +40,8 @@ namespace MongoShop.BusinessDomain.Carts
             {
                 throw new KeyNotFoundException("user is not exists");
             }
+
+          
 
             var cart = user.Cart;
 
@@ -55,7 +59,7 @@ namespace MongoShop.BusinessDomain.Carts
             }
 
             user.Cart = cart;
-
+            
             await _userServices.UpdateUserAsync(userId, user);
         }
 

@@ -9,7 +9,7 @@ using MongoShop.BusinessDomain.Categories;
 
 namespace MongoShop.BusinessDomain.Products
 {
-    [BsonIgnoreExtraElements]
+    //[BsonIgnoreExtraElements]
     public class Product
     {
 
@@ -49,9 +49,13 @@ namespace MongoShop.BusinessDomain.Products
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreatedAt { get; set; }
 
+        [BsonElement("UpdatedAt")]
         public DateTime UpdatedAt { get; set; }
        
+        [BsonElement("Category")]
         public Category Category { get; set; }
+
+        [BsonElement("SubCategory")]
         public Category SubCategory { get; set; }
     }
 }

@@ -60,9 +60,9 @@ namespace MongoShop.BusinessDomain.Users
         {
             var id = Guid.Parse(userId);
             
-            var user = await _collection.FindAsync(u => u.Id == id && u.Status == true);
+            var user = await _collection.Find(u => u.Id == id && u.Status == true).FirstAsync();
 
-            return user.SingleOrDefault();
+            return user;
         }
 
         /// <inheritdoc/>

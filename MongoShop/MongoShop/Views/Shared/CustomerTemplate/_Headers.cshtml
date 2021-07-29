@@ -109,7 +109,7 @@
                         <li class="cart-icon">
                             <a href="@Url.Action("Index","Cart")">
                                 <i class="icon_bag_alt"></i>
-                                @* <span>3</span> *@
+                                <span class='badge-warning' id='lblCartCount'>@(ViewData["CartCount"] != null ? ViewData["CartCount"] : 0)</span>
                             </a>
                         </li>
                     </ul>
@@ -122,7 +122,7 @@
             <div class="nav-depart">
                 <div class="depart-btn">
                     <i class="ti-menu"></i>
-                    <span>All categories</span>
+                    <span>Danh mục</span>
                     <ul class="depart-hover">
                         @foreach (var category in subCategories)
                         {
