@@ -110,20 +110,23 @@ namespace MongoShop
                  .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Contact.Address.Street))
                  .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Contact.Address.City))
                  .ForMember(dest => dest.BirthDay, opt => opt.MapFrom(src => src.BirthDay))
-                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Contact.PhoneNumber));
+                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Contact.PhoneNumber))
+                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 
             CreateMap<ApplicationUser, GetMyInformationViewModel>()
                  .ForMember(dest => dest.AddressNumber, opt => opt.MapFrom(src => src.Contact.Address.Number))
                  .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Contact.Address.Street))
                  .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Contact.Address.City))
-                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Contact.PhoneNumber));
+                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Contact.PhoneNumber))
+                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 
             CreateMap<UpdateInformationViewModel, ApplicationUser>(MemberList.Source)
                  .ForPath(dest => dest.Contact.Address.Number, opt => opt.MapFrom(src => src.AddressNumber))
                  .ForPath(dest => dest.Contact.Address.Street, opt => opt.MapFrom(src => src.Street))
                  .ForPath(dest => dest.Contact.Address.City, opt => opt.MapFrom(src => src.City))
                  .ForPath(dest => dest.BirthDay, opt => opt.MapFrom(src => src.BirthDay))
-                 .ForPath(dest => dest.Contact.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber));
+                 .ForPath(dest => dest.Contact.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+                 .ForPath(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
             #endregion
         }
     }

@@ -27,21 +27,21 @@
                         </div>
                         <div class="col-lg-12">
                             <label for="zip">Đường</label>
-                            <input asp-for="AddressNumber" type="text" id="address-number" name="address-number" required>
+                            <input asp-for="AddressNumber" type="text" id="address-number" required>
                         </div>
                         <span asp-validation-for="AddressNumber" class="text-danger"></span>
 
                         <div class="col-lg-12">
                             <label for="street">Phường/xã<span>*</span></label>
-                            <input asp-for="Street" type="text" id="street" class="street-first" name="street" required>
+                            <input asp-for="Street" type="text" id="street" class="street-first" required>
                         </div>
                         <div class="col-lg-12">
                             <label for="town">Thành Phố<span>*</span></label>
-                            <input asp-for="City" type="text" id="town" name="town" required>
+                            <input asp-for="City" type="text" id="town" required>
                         </div>
                         <div class="col-lg-12">
                             <label for="phone">SĐT<span>*</span></label>
-                            <input asp-for="PhoneNumber" type="text" id="phone" name="phone" required>
+                            <input asp-for="PhoneNumber" type="text" id="phone" required>
                         </div>
                     </div>
                 </div>
@@ -58,9 +58,9 @@
                                 {
                                     <li class="fw-normal">@item.Product.Name x @item.OrderedQuantity <span>@String.Format("{0:0,0 vnđ}", @item.Product.Price * @item.OrderedQuantity)</span></li>
                                 }
-                                <li class="fw-normal">Subtotal <span>@String.Format("{0:0,0 vnđ}", @Model.Total)</span></li>
-                                <li class="fw-normal">Ship <span>@String.Format("{0:0,0 vnđ}", 45000)</span></li>
-                                <li class="total-price">Total <span>@String.Format("{0:0,0 vnđ}", @Model.Total + 45000)</span></li>
+                                <li class="fw-normal">Tổng giá tiền <span>@String.Format("{0:0,0 vnđ}", @Model.Total)</span></li>
+                                <li class="fw-normal">Phí giao hàng <span>@String.Format("{0:0,0 vnđ}", 45000)</span></li>
+                                <li class="total-price">Tổng cộng <span>@String.Format("{0:0,0 vnđ}", @Model.Total + 45000)</span></li>
                             </ul>
                             <div class="order-btn">
                                 <button type="submit" value="submit" class="site-btn place-btn">Ship COD</button>
@@ -89,8 +89,6 @@
 
     var orderID;
 
-
-
     paypal.Buttons({
         createOrder: function (data, actions) {
             orderID = data.orderID;
@@ -110,7 +108,7 @@
                 return actions.order.capture();
             }).then(function (details) {
                 if (details.status === "COMPLETED") {
-                    alert('Transaction funds captured from ' + details.purchase_units[0].payments.captures[0].id);
+                    //alert('Transaction funds captured from ' + details.purchase_units[0].payments.captures[0].id);
                     document.location.href = '/Cart/CheckoutSuccess/' + data.orderID + '/' + details.purchase_units[0].payments.captures[0].id;
                 }
             });
@@ -124,7 +122,8 @@
                     AddressNumber: document.getElementById("address-number").value,
                     Street: document.getElementById("street").value,
                     Town: document.getElementById("town").value,
-                    Phone: document.getElementById("phone").value
+                    Phone: document.getElementById("phone").value,
+                    Recipient: document.getElementById("fir").value
                 },
                 success: function () {
                 }
@@ -155,15 +154,15 @@
 
 @section Scripts{ 
     <script>
-        $(".content-btn").click(function () {
+        $(".content-btn").ready(function () {
             $.getJSON("@Url.Action("GetMyInformation","Account")", function (data) {
                 console.log(data);
-                console.log(data.street);
+                console.log(data.name);
                 $("#street").val(data.street);
                 $("#address-number").val(data.addressNumber);
                 $("#town").val(data.city);
                 $("#phone").val(data.phoneNumber);
-                $("#fir").val(data.firstName);
+                $("#fir").val(data.name);
                 $("#last").val(data.lastName);
 
             });

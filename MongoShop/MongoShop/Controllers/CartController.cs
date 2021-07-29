@@ -240,7 +240,7 @@ namespace MongoShop.Controllers
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
-                //await SendOrderEmail(order);
+                await SendOrderEmail(order);
 
                 return Redirect("/Cart/CheckoutSuccess/" + order.Id);
             }
@@ -263,6 +263,7 @@ namespace MongoShop.Controllers
         private async Task SendOrderEmail(BusinessDomain.Orders.Order order)
         {
             var email = HttpContext.User.Identity.Name;
+            var grand_total = order.Total + order.ShipppingFee;
 
             // clear datetime cached
             System.Globalization.CultureInfo.CurrentCulture.ClearCachedData();
@@ -274,10 +275,11 @@ namespace MongoShop.Controllers
                     + "<ul>";
             foreach (var item in order.OrderedProducts)
             {
-                body += $"<li>{item.Product.Name}&nbsp;:{item.Product.Price}x{item.OrderedQuantity}&nbsp;={item.Product.Price * item.OrderedQuantity}</li>";
+                body += $"<li>{item.Product.Name}&nbsp;:{String.Format("{0:0,0 vnđ}", item.Product.Price)} X {item.OrderedQuantity}&nbsp;= {String.Format("{0:0,0 vnđ}", item.Product.Price * item.OrderedQuantity)}</li>";
             }
             body += "</ul>";
-            body += $"<h2>Tổng giá trị đơn hàng: <b>{order.Total}</b></h2></div>";
+            body += $"<h3>Phí giao hàng: {String.Format("{0:0,0 vnđ}", order.ShipppingFee)}</h3>";
+            body += $"<h2>Tổng giá trị đơn hàng: <b>{String.Format("{0:0,0 vnđ}",grand_total)}</b></h2></div>";
             await _emailSender
                     .To(email).Subject("Xác nhận đặt hàng tại MongoShop")
                     .Body(body, true)
@@ -401,20 +403,20 @@ namespace MongoShop.Controllers
                 //var user = await _userServices.GetActiveUserByIdAsync(userId);
                 //var contact = user.Contact;
                 order.UserId = userId;
+                string name = result.Payer.Name.GivenName + " " + result.Payer.Name.Surname;
 
-                
-                if(TempData["Street"] == null || TempData["AddressNumber"] == null || TempData["Town"] == null || TempData["Phone"] == null)
-                {
-                    order.ShipAddress.Street = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1;
-                    order.ShipAddress.City = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AdminArea2;
-                }
-                else
-                {
-                    order.ShipAddress.Number = TempData["Street"].ToString();
-                    order.ShipAddress.Street = TempData["AddressNumber"].ToString();
-                    order.ShipAddress.City = TempData["Town"].ToString();
-                    order.PhoneNumber = TempData["Phone"].ToString();
-                }
+                //{
+                //    order.ShipAddress.Street = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1;
+                //    order.ShipAddress.City = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AdminArea2;
+                //}
+                //else
+                //{
+                order.RecipientName = (TempData["Recipient"] == null) ? name : TempData["Recipient"]?.ToString();
+                order.ShipAddress.Number = TempData["Street"]?.ToString() ;
+                order.ShipAddress.Street = (TempData["AddressNumber"] == null) ? result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1 : TempData["AddressNumber"]?.ToString();
+                order.ShipAddress.City = (TempData["Town"] == null) ? result.PurchaseUnits[0].ShippingDetail.AddressPortable.AdminArea2 : TempData["Town"]?.ToString();
+                order.PhoneNumber = TempData["Phone"]?.ToString();
+                //}
                 
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
                 order.OrderedProducts = cartItems;
@@ -434,7 +436,7 @@ namespace MongoShop.Controllers
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
 
-                //await SendOrderEmail(order);
+                await SendOrderEmail(order);
 
                 return View(order);
             }
@@ -466,12 +468,13 @@ namespace MongoShop.Controllers
         }
 
         [HttpPost]
-        public IActionResult TempAddress(string AddressNumber, string Street, string Town, string Phone)
+        public IActionResult TempAddress(string AddressNumber, string Street, string Town, string Phone, string Recipient)
         {
             TempData["AddressNumber"] = AddressNumber;
             TempData["Street"] = Street;
             TempData["Town"] = Town;
             TempData["Phone"] = Phone;
+            TempData["Recipient"] = Recipient;
 
             return Ok();
         }

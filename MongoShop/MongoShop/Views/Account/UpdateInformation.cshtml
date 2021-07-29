@@ -33,6 +33,10 @@
                     <h2>Update Information</h2>
                     <form method="post" asp-action="UpdateInformation" asp-controller="Account" class="row">
                         <div class="group-input col-6">
+                            <label for="username">Họ tên</label>
+                            <input asp-for="@Model.Name" type="text" id="fullname">
+                        </div>
+                        <div class="group-input col-6">
                             <label for="username">Đường</label>
                             <input asp-for="@Model.AddressNumber" type="text" id="username">
                         </div>

@@ -11,5 +11,7 @@ namespace MongoShop.Models.Account
 
         public string? City { get; set; }
         public string? PhoneNumber { get; set; }
+
+        public string? Name { get; set; }
     }
 }
