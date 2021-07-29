@@ -38,7 +38,10 @@
                                         <input type="hidden" asp-for="@Model.Products[i].Product.Id" />
                                         <input type="hidden" asp-for="@Model.Products[i].Product.Name" />
                                         <input type="hidden" asp-for="@Model.Products[i].Product.Images[0]" />
+                                        <input type="hidden" asp-for="@Model.Products[i].Product.StockQuantity"/>
+                                        <input type="hidden" asp-for="@Model.Products[i].Product.Size"/>
                                         <input id="prod-price" type="hidden" asp-for="@Model.Products[i].Product.Price" />
+                                        <input type="hidden" asp-for="@Model.Products[i].Size" />
                                         <td class="cart-pic first-row"><img src="~/images/@Model.Products[i].Product.Images[0]" alt=""></td>
                                         <td class="cart-title first-row">
                                             <h5>@Model.Products[i].Product.Name</h5>
