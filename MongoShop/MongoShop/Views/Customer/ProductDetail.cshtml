@@ -13,7 +13,7 @@
                     <div class="breadcrumb-text product-more">
                         <a href="./home.html"><i class="fa fa-home"></i> Home</a>
                         <a href="./shop.html">Shop</a>
-                        <span>Detail</span>
+                        <span>Chi tiết</span>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,8 @@
                                 <div class="pd-title">
                                     <span>@Model.Category</span>
                                     <h3>@Model.Name</h3>
-                                    <a href="javascript:void(0)" class="heart-icon"><i class="icon_heart_alt"></i></a>
+
+                                    <a href="javascript:void(0)" class="heart-icon"  onclick="AddToWishList('@Model.Id');"><i class="icon_heart_alt"></i></a>
                                 </div>
                                 <div class="pd-rating">
                                     <i class="fa fa-star"></i>
@@ -289,6 +290,12 @@
                 .done(function () {
                     alert("product added to your cart");
                 });
+        };
+        function AddToWishList(productId) {
+        $.post("@Url.Action("Add", "Wishlist")", { productId: productId})
+            .done(function () {
+                            alert("product added to your wishlist");
+        });
         };
 </script>
 

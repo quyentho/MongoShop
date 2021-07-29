@@ -31,7 +31,7 @@
                                 <img src="~/images/@item.Images[0]" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
-                                    <i class="icon_heart_alt"></i>
+                                    <a href="javascript:void(0)" onclick="AddToWishList('@item.Id');"><i class="icon_heart_alt"></i></a>
                                 </div>
                                 <ul>
                                     <li class="w-icon active"><a href="javascript:void(0)" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
@@ -88,7 +88,7 @@
                                 <img src="~/images/@item.Images[0]" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
-                                    <i class="icon_heart_alt"></i>
+                                    <a href="javascript:void(0)" onclick="AddToWishList('@item.Id');"><i class="icon_heart_alt"></i></a>
                                 </div>
                                 <ul>
                                     <li class="w-icon active"><a href="javascript:void(0)" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
@@ -132,7 +132,7 @@
                                 <img src="~/images/@item.Images[0]" alt="">
                                 <div class="sale">Sale</div>
                                 <div class="icon">
-                                    <i class="icon_heart_alt"></i>
+                                    <a href="javascript:void(0)" onclick="AddToWishList('@item.Id');"><i class="icon_heart_alt"></i></a>
                                 </div>
                                 <ul>
                                     <li class="w-icon active"><a href="javascript:void(0)" onclick="AddToCart('@item.Id');"><i class="icon_bag_alt"></i></a></li>
@@ -163,7 +163,6 @@
     </div>
 </section>
 <!-- Accessories Banner Section End -->
-
 <!-- Instagram Section Begin -->
 <div class="instagram-photo">
     <div class="insta-item set-bg" data-setbg="Custom/img/insta-1.jpg">
@@ -352,3 +351,15 @@
     </div>
 </div>
 <!-- Partner Logo Section End -->
+
+
+<script src="~/js/jquery.min.js"></script>
+<script type="text/javascript">
+
+    function AddToWishList(productId) {
+        $.post("@Url.Action("Add", "Wishlist")", { productId: productId})
+            .done(function () {
+                            alert("product added to your wishlist");
+        });
+    };
+</script>
