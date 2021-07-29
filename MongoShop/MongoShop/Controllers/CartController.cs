@@ -33,7 +33,6 @@ namespace MongoShop.Controllers
         private readonly IProductServices _productServices;
         private readonly ICartServices _cartServices;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserServices _userServices;//Mới thêm vào
         private readonly IMapper _mapper;
         private readonly IOrderServices _orderServices;
         private readonly string _clientId;
@@ -45,8 +44,7 @@ namespace MongoShop.Controllers
 
         public CartController(IProductServices productServices, 
             ICartServices cartServices, 
-            UserManager<ApplicationUser> userManager,
-            IUserServices userServices,
+            UserManager<ApplicationUser> userManager, 
             IMapper mapper,
             IOrderServices orderServices,
             IFluentEmail emailSender,
@@ -55,7 +53,6 @@ namespace MongoShop.Controllers
             _productServices = productServices;
             _cartServices = cartServices;
             _userManager = userManager;
-            _userServices = userServices;//Mới thêm vào
             this._mapper = mapper;
             _emailSender = emailSender;
             this._orderServices = orderServices;
@@ -93,11 +90,7 @@ namespace MongoShop.Controllers
                     }
                     else
                     {
-                        cartFromDb.Products.Add(new OrderedProduct
-                        {
-                            Product = _product.Product,
-                            OrderedQuantity = _product.OrderedQuantity
-                        });
+                        cartFromDb.Products.Add(_product);
                     }
                 }               
             }
@@ -129,14 +122,16 @@ namespace MongoShop.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Add(string productId)
+        public IActionResult Add(string productId, string size)
         {
-            List<string> lstShoppingCart = HttpContext.Session.Get<List<string>>("ssShoppingCart");
+            List<Session> lstShoppingCart = HttpContext.Session.Get<List<Session>>("ssShoppingCart");
             if (lstShoppingCart == null)
             {
-                lstShoppingCart = new List<string>();
+                lstShoppingCart = new List<Session>();
             }
-            lstShoppingCart.Add(productId);
+            
+            lstShoppingCart.Add(new Session(){ Key = productId, Value = size});
+
             HttpContext.Session.Set("ssShoppingCart", lstShoppingCart);
             return RedirectToAction("Index", "Customer");
         }
@@ -164,13 +159,12 @@ namespace MongoShop.Controllers
         {
             var cartCheckoutViewModel = _mapper.Map<CartCheckoutViewModel>(viewModel);
             cartCheckoutViewModel.Total = CalculateTotalPrice(cartCheckoutViewModel.Products);
-
             string userId = GetCurrentLoggedInUserId();
-
             Cart cart = await _cartServices.GetByUserIdAsync(userId);
+
+            
             cart.Products = cartCheckoutViewModel.Products;
             cart.Total = cartCheckoutViewModel.Total;
-
             // update product order quantity.
             await _cartServices.AddOrUpdateAsync(userId, cart);
 
@@ -184,40 +178,29 @@ namespace MongoShop.Controllers
             {
                 var order = new BusinessDomain.Orders.Order();
 
-                //Không hiểu sao cái Total đã tính r lại ko lưu dc, khó hiểu vl
-                order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
-                order.PhoneNumber = cartCheckoutViewModel.PhoneNumber;
-                order.ShipAddress.City = cartCheckoutViewModel.City;
-                order.ShipAddress.Number = cartCheckoutViewModel.AddressNumber;
-                order.ShipAddress.Street = cartCheckoutViewModel.Street;
-
                 order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
 
                 string userId = GetCurrentLoggedInUserId();
                 order.UserId = userId;
+                order.CreatedTime = DateTime.Now;
 
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
                 order.OrderedProducts = cartItems;
 
-                //Tính tổng
-                var total = CalculateTotalPrice(cartItems);
-                order.Total = (double)total;
-
                 order.CreatedTime = DateTime.Now;
-
                 order.Invoice = new Invoice()
                 {
                     PaymentMethod = BusinessDomain.Orders.PaymentMethod.ShipCod,
                     Status = BusinessDomain.Orders.InvoiceStatus.Pending
                 };
-                order.ShipppingFee = 45000.00;
-                
+
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
+
                 await SendOrderEmail(order);
 
-                return Redirect("/Cart/CheckoutSuccess/" + order.Id);
+                return RedirectToAction(nameof(Index));
             }
             catch (ArgumentOutOfRangeException ex)
             {
@@ -226,40 +209,28 @@ namespace MongoShop.Controllers
             }
         }
 
-
-        [Route("/Cart/CheckoutSuccess/{orderId}")]
-        public async Task<IActionResult> CheckoutSuccess(string orderID)
-        {
-            var order = await _orderServices.GetByIdAsync(orderID);
-
-            return View(order);
-        }
-
         private async Task SendOrderEmail(BusinessDomain.Orders.Order order)
         {
             var email = HttpContext.User.Identity.Name;
-            var grand_total = order.Total + order.ShipppingFee;
 
             // clear datetime cached
             System.Globalization.CultureInfo.CurrentCulture.ClearCachedData();
             var body = "<div>"
-                    + $"<h1>Bạn đã đặt hàng thành công vào lúc {order.CreatedTime}</h1>"
+                    + $"<h1>Bạn đã đặt hàng thành công vào lúc {DateTime.Now}</h1>"
                     + "</div>"
                     + "<div>"
                     + "<h2>Đơn hàng gồm</h2>"
                     + "<ul>";
             foreach (var item in order.OrderedProducts)
             {
-                body += $"<li>{item.Product.Name}&nbsp;:{String.Format("{0:0,0 vnđ}", item.Product.Price)} X {item.OrderedQuantity}&nbsp;= {String.Format("{0:0,0 vnđ}", item.Product.Price * item.OrderedQuantity)}</li>";
+                body += $"<li>{item.Product.Name}&nbsp;:{item.Product.Price}x{item.OrderedQuantity}&nbsp;={item.Product.Price * item.OrderedQuantity}</li>";
             }
             body += "</ul>";
-            body += $"<h3>Phí giao hàng: {String.Format("{0:0,0 vnđ}", order.ShipppingFee)}</h3>";
-            body += $"<h2>Tổng giá trị đơn hàng: <b>{String.Format("{0:0,0 vnđ}",grand_total)}</b></h2></div>";
+            body += $"<h2>Tổng giá trị đơn hàng: <b>{order.Total}</b></h2></div>";
             await _emailSender
                     .To(email).Subject("Xác nhận đặt hàng tại MongoShop")
                     .Body(body, true)
                     .SendAsync();
-
         }
 
         public async Task<SmartButtonHttpResponse> PaypalCheckout()
@@ -270,11 +241,16 @@ namespace MongoShop.Controllers
             string userId = GetCurrentLoggedInUserId();
             Cart cartFromDb = await _cartServices.GetByUserIdAsync(userId);
 
+            //var total = Math.Round((double)(cartFromDb.Total / 22000), 2);
+            //var total = cartFromDb.Total.ToString();
             var paypal_orderId = DateTime.Now.Ticks;
 
+            //var itemList = new ItemList()
+            //{
+            //    Items = new List<Item>()
+            //};
             double total = 0;
             var ItemList = new List<Item>();
-
             foreach (var item in cartFromDb.Products)
             {
                 var usd_value = Math.Round(item.Product.Price / 22000, 2);
@@ -286,6 +262,7 @@ namespace MongoShop.Controllers
                     UnitAmount = new Money
                     {
                         CurrencyCode = "USD",
+                        //Value = item.Product.Price.ToString()
                         Value = usd_value.ToString()
                     },
                     Quantity = item.OrderedQuantity.ToString(),
@@ -295,10 +272,9 @@ namespace MongoShop.Controllers
                         CurrencyCode = "USD",
                         Value = "0"
                     },
+                    //Category = item.Product.Category.Name.ToString()
                 });
             }
-
-            var shipping_fee = Math.Round(45000.00 / 22000, 2);
 
             OrderRequest orderRequest = new OrderRequest()
             {
@@ -318,27 +294,27 @@ namespace MongoShop.Controllers
                     {
                         ReferenceId = paypal_orderId.ToString(),
                         Description = $"Invoice #{paypal_orderId}",
+                        //InvoiceId = paypal_orderId.ToString(),
+                        //CustomId = paypal_orderId.ToString(),
                         SoftDescriptor = "Clothings",
                         AmountWithBreakdown = new AmountWithBreakdown
                         {
                             CurrencyCode = "USD",
-                            Value = Math.Round(Math.Round(total,2) + shipping_fee,2).ToString(),
+                            Value = Math.Round(total,2).ToString(),
                             AmountBreakdown = new AmountBreakdown
                             {
                                 ItemTotal = new Money
                                 {
                                     CurrencyCode = "USD",
                                     Value = Math.Round(total,2).ToString()
-                                },
-                                Shipping = new Money
-                                {
-                                    CurrencyCode = "USD",
-                                    Value = Math.Round(shipping_fee,2).ToString()
                                 }
                             }
+
                         },
                         Items = ItemList
+
                     }
+
                 },
             };
 
@@ -348,14 +324,22 @@ namespace MongoShop.Controllers
 
             var response = await client.Execute(request);
 
-            PayPalCheckoutSdk.Orders.Order result = response.Result<PayPalCheckoutSdk.Orders.Order>();
+                PayPalCheckoutSdk.Orders.Order result = response.Result<PayPalCheckoutSdk.Orders.Order>();
 
-            var payPalHttpResponse = new SmartButtonHttpResponse(response)
-            {
-                orderID = result.Id
-            };
+                var payPalHttpResponse = new SmartButtonHttpResponse(response)
+                {
+                    orderID = result.Id
+                };
 
-            return payPalHttpResponse;
+                return payPalHttpResponse;
+
+
+
+        }
+
+        public IActionResult CheckoutFailed()
+        {
+            return View();
         }
 
         [Route("/Cart/CheckoutSuccess/{orderId}/{captureId}")]
@@ -374,26 +358,16 @@ namespace MongoShop.Controllers
                 //Mapper doesn't work because haven't call any asp-action via Paypal Checkout Button, cartCheckoutViewModel will be null
                 order = _mapper.Map<BusinessDomain.Orders.Order>(cartCheckoutViewModel);
 
-                string userId = GetCurrentLoggedInUserId();
-                //var user = await _userServices.GetActiveUserByIdAsync(userId);
-                //var contact = user.Contact;
-                order.UserId = userId;
-                string name = result.Payer.Name.GivenName + " " + result.Payer.Name.Surname;
+                //order.PhoneNumber = result.Payer;
+                order.ShipAddress.Street = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1;
+                order.ShipAddress.City = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AdminArea2;
 
-                //{
-                //    order.ShipAddress.Street = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1;
-                //    order.ShipAddress.City = result.PurchaseUnits[0].ShippingDetail.AddressPortable.AdminArea2;
-                //}
-                //else
-                //{
-                order.RecipientName = (TempData["Recipient"] == null) ? name : TempData["Recipient"]?.ToString();
-                order.ShipAddress.Number = TempData["Street"]?.ToString() ;
-                order.ShipAddress.Street = (TempData["AddressNumber"] == null) ? result.PurchaseUnits[0].ShippingDetail.AddressPortable.AddressLine1 : TempData["AddressNumber"]?.ToString();
-                order.ShipAddress.City = (TempData["Town"] == null) ? result.PurchaseUnits[0].ShippingDetail.AddressPortable.AdminArea2 : TempData["Town"]?.ToString();
-                order.PhoneNumber = TempData["Phone"]?.ToString();
-                //}
-                
+                string userId = GetCurrentLoggedInUserId();
+                order.UserId = userId;
+
+
                 var cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
+
                 order.OrderedProducts = cartItems;
 
                 order.Invoice = new Invoice
@@ -404,9 +378,7 @@ namespace MongoShop.Controllers
 
                 order.CreatedTime = Convert.ToDateTime(result.CreateTime);
 
-                order.Total = Math.Round(Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.AmountBreakdown.ItemTotal.Value) * 22000, 0);
-                order.ShipppingFee = Math.Round(Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.AmountBreakdown.Shipping.Value) * 22000, 0);
-
+                order.Total = Math.Round(Convert.ToDouble(result.PurchaseUnits[0].AmountWithBreakdown.Value) * 22000, 0);
                 // save order to database
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
@@ -418,6 +390,10 @@ namespace MongoShop.Controllers
             catch(ArgumentOutOfRangeException)
             {
                 //Execute Refund Procedure
+
+
+                //"94500092JB986153M"
+
                 PayPalCheckoutSdk.Payments.CapturesRefundRequest newrequest = new PayPalCheckoutSdk.Payments.CapturesRefundRequest(captureId);
                 PayPalCheckoutSdk.Payments.RefundRequest refundRequest = new PayPalCheckoutSdk.Payments.RefundRequest()
                 {
@@ -451,23 +427,6 @@ namespace MongoShop.Controllers
             ViewData["CartCount"] = ++currentCount;
 
             return PartialView("Views/Shared/CustomerTemplate/CartSummary.cshtml");
-        }
-
-        public IActionResult CheckoutFailed()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult TempAddress(string AddressNumber, string Street, string Town, string Phone, string Recipient)
-        {
-            TempData["AddressNumber"] = AddressNumber;
-            TempData["Street"] = Street;
-            TempData["Town"] = Town;
-            TempData["Phone"] = Phone;
-            TempData["Recipient"] = Recipient;
-
-            return Ok();
         }
 
     }
