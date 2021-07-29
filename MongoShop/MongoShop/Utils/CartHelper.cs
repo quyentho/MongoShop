@@ -17,19 +17,20 @@ namespace MongoShop.Utils
         {
             Cart cart = new Cart();
 
-            List<string> listShoppingCart = httpContext.Session.Get<List<string>>("ssShoppingCart");
+            Dictionary<string,string> listShoppingCart = (Dictionary<string,string>)httpContext.Session.Get<Dictionary<string,string>>("ssShoppingCart");
 
             
             if (listShoppingCart != null)
             {
-                foreach (var productId in listShoppingCart)
+                foreach (var orderedProduct in listShoppingCart)
                 {
-                    var productFromDb = await productService.GetByIdAsync(productId);
+                    var productFromDb = await productService.GetByIdAsync(orderedProduct.Key);
 
                     cart.Products.Add(new OrderedProduct()
                     {
                         OrderedQuantity = 1,
-                        Product = productFromDb
+                        Product = productFromDb,
+                        Size = orderedProduct.Value
                     });
 
                     cart.Total += productFromDb.Price;
