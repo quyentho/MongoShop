@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -9,6 +10,7 @@ namespace MongoShop.Infrastructure.Extensions
     {
         public static void Set<T>(this ISession session, string key, T value)
         {
+          
             session.SetString(key, JsonConvert.SerializeObject(value));
         }
 

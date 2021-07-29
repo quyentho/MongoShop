@@ -24,6 +24,7 @@
                                     <th>Hình ảnh</th>
                                     <th class="p-name">Tên</th>
                                     <th>Giá</th>
+                                    <th>Size</th>
                                     <th>Số Lượng</th>
                                     <th>Tổng</th>
                                     <th><i class="ti-close"></i></th>
@@ -33,6 +34,7 @@
                                 @for (int i = 0; i < Model.Products.Count; i++)
                                 {
                                     <tr>
+                                        <input type="hidden" asp-for="@Model.Products[i].Size" />
                                         <input type="hidden" asp-for="@Model.Products[i].Product.Id" />
                                         <input type="hidden" asp-for="@Model.Products[i].Product.Name" />
                                         <input type="hidden" asp-for="@Model.Products[i].Product.Images[0]" />
@@ -45,6 +47,9 @@
                                             <h5>@Model.Products[i].Product.Name</h5>
                                         </td>
                                         <td class="p-price first-row">@String.Format("{0:0,0 vnđ}", Model.Products[i].Product.Price)</td>
+                                        <td class="cart-title first-row">
+                                            <h5 style="text-transform:uppercase">@Model.Products[i].Size</h5>
+                                        </td>
                                         <td class="qua-col first-row">
                                             <div class="quantity">
                                                 <div class="pro-qty">

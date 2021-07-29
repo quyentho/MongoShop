@@ -129,14 +129,16 @@ namespace MongoShop.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Add(string productId)
+        public IActionResult Add(string productId, string size)
         {
-            List<string> lstShoppingCart = HttpContext.Session.Get<List<string>>("ssShoppingCart");
+            List<Session> lstShoppingCart = HttpContext.Session.Get<List<Session>>("ssShoppingCart");
             if (lstShoppingCart == null)
             {
-                lstShoppingCart = new List<string>();
+                lstShoppingCart = new List<Session>();
             }
-            lstShoppingCart.Add(productId);
+            
+            lstShoppingCart.Add(new Session(){ Key = productId, Value = size});
+
             HttpContext.Session.Set("ssShoppingCart", lstShoppingCart);
             return RedirectToAction("Index", "Customer");
         }

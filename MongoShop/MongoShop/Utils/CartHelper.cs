@@ -17,19 +17,19 @@ namespace MongoShop.Utils
         {
             Cart cart = new Cart();
 
-            List<string> listShoppingCart = httpContext.Session.Get<List<string>>("ssShoppingCart");
-
+            List<Session> listShoppingCart = httpContext.Session.Get<List<Session>>("ssShoppingCart");
             
             if (listShoppingCart != null)
             {
-                foreach (var productId in listShoppingCart)
+                foreach (var product in listShoppingCart)
                 {
-                    var productFromDb = await productService.GetByIdAsync(productId);
+                    var productFromDb = await productService.GetByIdAsync(product.Key);
 
                     cart.Products.Add(new OrderedProduct()
                     {
                         OrderedQuantity = 1,
-                        Product = productFromDb
+                        Product = productFromDb,
+                        Size = product.Value
                     });
 
                     cart.Total += productFromDb.Price;
@@ -39,6 +39,7 @@ namespace MongoShop.Utils
             return cart;
         }
 
+       
           public static async Task SetCartCount(
               HttpContext httpContext, 
           IProductServices productServices,
@@ -78,5 +79,13 @@ namespace MongoShop.Utils
                 }
             }
         }
+    }
+
+
+    public class Session
+    {
+        public string Key { get; set; }
+
+        public string Value { get; set; }
     }
 }
