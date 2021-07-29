@@ -46,6 +46,12 @@
     <partial name="CustomerTemplate/_Scripts" />
     <script>
 
+        $(document).ready((element) =>{
+            $.get('@Url.Action("GetCurrentCartCount", "Cart")', function(content){
+                        $("#lblCartCount").html(content);
+            });
+        });
+        
         // first case
         $('.drop-files-container').on('drop dragdrop', function (e) {
             //var files = e.originalEvent.dataTransfer.files;

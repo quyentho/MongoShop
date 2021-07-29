@@ -73,31 +73,7 @@ namespace MongoShop.Controllers
                 AccessoriesCollection = accessoriesViewModel
             };
 
-
-            // get cart items count
-            await SetCartCount();
-
             return View(model);
-        }
-
-        private async Task SetCartCount()
-        {
-            string userId = _userManager.GetUserId(HttpContext.User);
-            if (!string.IsNullOrEmpty(userId))
-            {
-                List<OrderedProduct> cartItems = await _cartServices.GetItemsByUserIdAsync(userId);
-                ViewData["CartCount"] = 0;
-                if (cartItems != null && cartItems.Count != 0)
-                {
-                    int count = 0;
-                    foreach (var item in cartItems)
-                    {
-                        count += item.OrderedQuantity;
-                    }
-
-                    ViewData["CartCount"] = count;
-                }
-            }
         }
 
         [HttpGet]
@@ -119,7 +95,7 @@ namespace MongoShop.Controllers
 
             var customerProductDetailViewModel = _mapper.Map<CustomerProductDetailViewModel>(product);
              
-            await SetCartCount();
+            
 
             return View(customerProductDetailViewModel);
         }
@@ -130,7 +106,7 @@ namespace MongoShop.Controllers
             ViewData["categoryId"] = categoryId;
             ViewData["isMainCate"] = true;
             
-            await SetCartCount();
+            
             
             var category = await _categoryServices.GetByIdAsync(categoryId);
             
@@ -146,8 +122,6 @@ namespace MongoShop.Controllers
         {
             ViewData["categoryId"] = categoryId;
             ViewData["isMainCate"] = false;
-
-             await SetCartCount();
 
             var category = await _categoryServices.GetByIdAsync(categoryId);
 

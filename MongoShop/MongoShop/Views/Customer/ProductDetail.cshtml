@@ -256,8 +256,8 @@
                     alert("product added to your cart");
 
                     var currentCount = $("#lblCartCount").text();
-                    console.log(currentCount);
-                    $.get('@Url.Action("CartSummary", "Cart")', {currentCount : currentCount}, function(content){
+                    
+                    $.get('@Url.Action("IncreaseCartCount", "Cart")', {currentCount : currentCount}, function(content){
                         $("#lblCartCount").html(content);
                     });
                     
