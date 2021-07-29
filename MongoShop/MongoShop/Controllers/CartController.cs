@@ -410,11 +410,11 @@ namespace MongoShop.Controllers
                 await _orderServices.AddAsync(order);
                 await _cartServices.ClearCartAsync(userId);
 
-                SendOrderEmail(order);
+                await SendOrderEmail(order);
 
                 return View(order);
             }
-            catch(ArgumentOutOfRangeException ex)
+            catch(ArgumentOutOfRangeException)
             {
                 //Execute Refund Procedure
 
@@ -438,6 +438,14 @@ namespace MongoShop.Controllers
                 return Redirect("/Cart/CheckoutFailed");
             }
 
+
+        }
+
+        public ActionResult CartSummary(int currentCount = 0)
+        {   
+            ViewData["CartCount"] = ++currentCount;
+
+            return PartialView("Views/Shared/CartSummary.cshtml");
         }
 
     }

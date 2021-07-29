@@ -10,11 +10,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="breadcrumb-text product-more">
-                        <a href="./home.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./shop.html">Shop</a>
-                        <span>Detail</span>
-                    </div>
+                   
                 </div>
             </div>
         </div>
@@ -79,7 +75,7 @@
                                     </div>
                                 </div>
                                 <div class="quantity">
-                                    <a href="javascript:void(0)" class="primary-btn pd-cart" onclick="AddToCart('@Model.Id');">Add To Cart</a>
+                                    <a href="javascript:void(0)" class="primary-btn pd-cart" onclick="AddToCart('@Model.Id');">Thêm vào giỏ hàng</a>
                                 </div>
                                 <ul class="pd-tags">
                                     <li><span>CATEGORIES</span>: More Accessories, Wallets & Cases</li>
@@ -253,17 +249,25 @@
         function AddToCart(productId) {
             var selectedSize;
             
-            if($('label.active').text() != ""){
+            if($('label.active').text() != "") {
                 selectedSize = $('label.active').text();
                 $.post("@Url.Action("Add", "Cart")", { productId: productId, size: selectedSize})
                 .done(function () {
                     alert("product added to your cart");
+
+                    var currentCount = $("#lblCartCount").text();
+                    console.log(currentCount);
+                    $.get('@Url.Action("CartSummary", "Cart")', {currentCount : currentCount}, function(content){
+                        $("#lblCartCount").html(content);
+                    });
+                    
                 });
-                console.log(selectedSize);
             }else{
                 alert("Mời chọn size");
             }
         };
+
+       
 </script>
 
 @section Scripts{

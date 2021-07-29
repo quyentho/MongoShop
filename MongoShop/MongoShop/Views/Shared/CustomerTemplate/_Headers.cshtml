@@ -109,7 +109,7 @@
                         <li class="cart-icon">
                             <a href="@Url.Action("Index","Cart")">
                                 <i class="icon_bag_alt"></i>
-                                <span class='badge-warning' id='lblCartCount'> 5 </span>
+                                <span class='badge-warning' id='lblCartCount'>@(ViewData["CartCount"] != null ? ViewData["CartCount"] : 0)</span>
                             </a>
                         </li>
                     </ul>
