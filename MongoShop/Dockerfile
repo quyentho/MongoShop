@@ -1,4 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:3.1 as build
+
+RUN dotnet dev-certs https
 WORKDIR /app
 
 COPY MongoShop/*.csproj MongoShop/MongoShop.csproj
@@ -14,6 +16,7 @@ RUN dotnet publish -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:3.1
 WORKDIR /app
+COPY --from=build /root/.dotnet/corefx/cryptography/x509stores/my/* /root/.dotnet/corefx/cryptography/x509stores/my/
 COPY --from=build /app/out .
 ENTRYPOINT ["dotnet", "MongoShop.dll"]
 
